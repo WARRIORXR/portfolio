@@ -7,6 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
+import { ChevronDown } from 'lucide-react'
 import './horizon-hero-section.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -45,7 +46,7 @@ export const Component: React.FC = () => {
   const smoothCameraPos = useRef<CameraPos>({ x: 0, y: 30, z: 100 })
 
   const [scrollProgress, setScrollProgress] = useState(0)
-  const [currentSection, setCurrentSection] = useState(1)
+  const [currentSection, setCurrentSection] = useState(0)
   const [isReady, setIsReady] = useState(false)
   const totalSections = 2
 
@@ -97,7 +98,9 @@ export const Component: React.FC = () => {
 
       const bloomPass = new UnrealBloomPass(
         new THREE.Vector2(window.innerWidth, window.innerHeight),
-        0.8, 0.4, 0.85
+        0.8,
+        0.4,
+        0.85
       )
       refs.composer.addPass(bloomPass)
 
@@ -239,8 +242,8 @@ export const Component: React.FC = () => {
     // ── Mountains ───────────────────────────────────────────────────────────
     const createMountains = () => {
       const layers = [
-        { distance: -50,  height: 60,  color: 0x1a1a2e, opacity: 1   },
-        { distance: -100, height: 80,  color: 0x16213e, opacity: 0.8 },
+        { distance: -50, height: 60, color: 0x1a1a2e, opacity: 1 },
+        { distance: -100, height: 80, color: 0x16213e, opacity: 0.8 },
         { distance: -150, height: 100, color: 0x0f3460, opacity: 0.6 },
         { distance: -200, height: 120, color: 0x0a4668, opacity: 0.4 },
       ]
@@ -366,9 +369,18 @@ export const Component: React.FC = () => {
     return () => {
       if (refs.animationId) cancelAnimationFrame(refs.animationId)
       window.removeEventListener('resize', handleResize)
-      refs.stars.forEach((sf) => { sf.geometry.dispose(); (sf.material as THREE.Material).dispose() })
-      refs.mountains.forEach((m) => { m.geometry.dispose(); (m.material as THREE.Material).dispose() })
-      if (refs.nebula) { refs.nebula.geometry.dispose(); (refs.nebula.material as THREE.Material).dispose() }
+      refs.stars.forEach((sf) => {
+        sf.geometry.dispose()
+        ;(sf.material as THREE.Material).dispose()
+      })
+      refs.mountains.forEach((m) => {
+        m.geometry.dispose()
+        ;(m.material as THREE.Material).dispose()
+      })
+      if (refs.nebula) {
+        refs.nebula.geometry.dispose()
+        ;(refs.nebula.material as THREE.Material).dispose()
+      }
       refs.renderer?.dispose()
     }
   }, [])
@@ -402,7 +414,9 @@ export const Component: React.FC = () => {
       tl.from(scrollProgressRef.current, { opacity: 0, y: 50, duration: 1, ease: 'power2.out' }, '-=0.5')
     }
 
-    return () => { tl.kill() }
+    return () => {
+      tl.kill()
+    }
   }, [isReady])
 
   // ── Scroll handling ──────────────────────────────────────────────────────
@@ -410,15 +424,20 @@ export const Component: React.FC = () => {
     const handleScroll = () => {
       const refs = threeRefs.current
       const scrollY = window.scrollY
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
-      const progress = Math.min(scrollY / maxScroll, 1)
+      const container = containerRef.current
+      if (!container) return
+
+      // Compute scroll within the hero container height
+      const heroHeight = container.offsetHeight || window.innerHeight * 3
+      const maxScroll = Math.max(heroHeight - window.innerHeight, 1)
+      const progress = Math.min(Math.max(scrollY / maxScroll, 0), 1)
 
       setScrollProgress(progress)
-      setCurrentSection(Math.floor(progress * totalSections))
+      const newSection = Math.min(Math.floor(progress * (totalSections + 1)), totalSections)
+      setCurrentSection(newSection)
 
       const totalProgress = progress * totalSections
       const sectionProgress = totalProgress % 1
-      const newSection = Math.floor(totalProgress)
 
       const cameraPositions: CameraPos[] = [
         { x: 0, y: 30, z: 300 },
@@ -444,9 +463,15 @@ export const Component: React.FC = () => {
       if (refs.nebula && refs.mountains.length > 3) {
         refs.nebula.position.z = refs.mountains[3].position.z
       }
+
+      // Smoothly fade out fixed hero HUD overlays when scrolling past the hero into portfolio
+      const fadeOut = Math.max(0, 1 - (scrollY - maxScroll) / 300)
+      if (menuRef.current) menuRef.current.style.opacity = String(fadeOut)
+      if (scrollProgressRef.current) scrollProgressRef.current.style.opacity = String(fadeOut)
+      if (titleRef.current?.parentElement) titleRef.current.parentElement.style.opacity = String(fadeOut)
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
   }, [totalSections])
@@ -459,22 +484,35 @@ export const Component: React.FC = () => {
       </span>
     ))
 
+  const scrollToAbout = () => {
+    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   // Section data
   const sectionTitles: Record<number, string> = { 0: 'HORIZON', 1: 'COSMOS', 2: 'INFINITY' }
   const sectionSubs: Record<number, { line1: string; line2: string }> = {
-    0: { line1: 'Where vision meets reality,',         line2: 'we shape the future of tomorrow'          },
-    1: { line1: 'Beyond the boundaries of imagination,', line2: 'lies the universe of possibilities'      },
-    2: { line1: 'In the space between thought and creation,', line2: 'we find the essence of true innovation' },
+    0: {
+      line1: 'Where vision meets reality,',
+      line2: 'we shape the future of tomorrow',
+    },
+    1: {
+      line1: 'Beyond the boundaries of imagination,',
+      line2: 'lies the universe of possibilities',
+    },
+    2: {
+      line1: 'In the space between thought and creation,',
+      line2: 'we find the essence of true innovation',
+    },
   }
 
   // ── JSX ──────────────────────────────────────────────────────────────────
   return (
-    <div ref={containerRef} className="hero-container cosmos-style">
+    <div id="hero" ref={containerRef} className="hero-container cosmos-style">
       <canvas ref={canvasRef} className="hero-canvas" />
 
       {/* Side menu */}
       <div ref={menuRef} className="side-menu" style={{ visibility: 'hidden' }}>
-        <div className="menu-icon">
+        <div className="menu-icon" onClick={scrollToAbout}>
           <span />
           <span />
           <span />
@@ -500,11 +538,11 @@ export const Component: React.FC = () => {
           <div className="progress-fill" style={{ width: `${scrollProgress * 100}%` }} />
         </div>
         <div className="section-counter">
-          {String(currentSection).padStart(2, '0')} / {String(totalSections).padStart(2, '0')}
+          {String(currentSection + 1).padStart(2, '0')} / {String(totalSections + 1).padStart(2, '0')}
         </div>
       </div>
 
-      {/* Scroll sections — create scroll height */}
+      {/* Scroll sections — create scroll height and narrative journey */}
       <div className="scroll-sections">
         {[...Array(2)].map((_, i) => (
           <section key={i} className="content-section">
@@ -513,6 +551,17 @@ export const Component: React.FC = () => {
               <p className="subtitle-line">{sectionSubs[i + 1].line1}</p>
               <p className="subtitle-line">{sectionSubs[i + 1].line2}</p>
             </div>
+
+            {/* If section is INFINITY, show prompt to explore the portfolio */}
+            {i === 1 && (
+              <button
+                onClick={scrollToAbout}
+                className="mt-12 inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/20 bg-white/[0.05] backdrop-blur-md text-xs font-mono tracking-widest text-white/80 hover:text-white hover:border-white/50 hover:bg-white/10 transition-all pointer-events-auto cursor-pointer"
+              >
+                <span>EXPLORE PORTFOLIO</span>
+                <ChevronDown className="w-3.5 h-3.5 animate-bounce" />
+              </button>
+            )}
           </section>
         ))}
       </div>

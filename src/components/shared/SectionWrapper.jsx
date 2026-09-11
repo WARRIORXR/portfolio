@@ -6,15 +6,15 @@ const containerVariants = {
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+  hidden: { opacity: 0, y: 25 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
 }
 
 export function SectionWrapper({ children, id, className = '' }) {
   return (
     <motion.section
       id={id}
-      className={`relative py-20 px-4 md:px-8 lg:px-16 xl:px-24 ${className}`}
+      className={`relative py-28 px-4 sm:px-6 md:px-12 lg:px-20 max-w-7xl mx-auto ${className}`}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
@@ -33,26 +33,30 @@ export function SectionItem({ children, className = '' }) {
   )
 }
 
-export function SectionTitle({ label, title, gradient = true }) {
+export function SectionTitle({ label, title, subtitle }) {
   return (
-    <div className="text-center mb-16">
-      <motion.span
-        variants={itemVariants}
-        className="inline-block text-sm font-mono font-medium text-blue-400 tracking-widest uppercase mb-3 
-          bg-blue-500/10 border border-blue-500/20 px-4 py-1.5 rounded-full"
-      >
-        {label}
-      </motion.span>
+    <div className="text-center mb-16 sm:mb-20 space-y-3">
+      <motion.div variants={itemVariants} className="flex items-center justify-center gap-3">
+        <span className="h-[1px] w-8 bg-white/20" />
+        <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-white/40">
+          {label}
+        </span>
+        <span className="h-[1px] w-8 bg-white/20" />
+      </motion.div>
       <motion.h2
         variants={itemVariants}
-        className={`text-4xl md:text-5xl font-bold mt-3 ${
-          gradient
-            ? 'bg-gradient-to-r from-white via-blue-100 to-violet-200 bg-clip-text text-transparent'
-            : 'text-white'
-        }`}
+        className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white uppercase"
       >
         {title}
       </motion.h2>
+      {subtitle && (
+        <motion.p
+          variants={itemVariants}
+          className="text-xs sm:text-sm font-mono tracking-widest text-white/50 uppercase max-w-xl mx-auto"
+        >
+          {subtitle}
+        </motion.p>
+      )}
     </div>
   )
 }

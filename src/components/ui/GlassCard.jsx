@@ -6,12 +6,12 @@ export default function GlassCard({
   className = '',
   hover = true,
   glow = false,
-  glowColor = 'rgba(59,130,246,0.3)',
+  glowColor = 'rgba(0, 51, 255, 0.4)',
   tilt = false,
   padding = true,
   onClick,
 }) {
-  const { ref, handleMouseMove, handleMouseLeave } = use3DTilt(10)
+  const { ref, handleMouseMove, handleMouseLeave } = use3DTilt(8)
 
   return (
     <motion.div
@@ -20,30 +20,36 @@ export default function GlassCard({
       onMouseLeave={tilt ? handleMouseLeave : undefined}
       onClick={onClick}
       className={`
-        relative rounded-2xl
-        bg-white/5 backdrop-blur-lg
-        border border-white/10
-        ${padding ? 'p-6' : ''}
-        ${hover ? 'hover:bg-white/8 hover:border-white/20 transition-all duration-300' : ''}
-        ${glow ? 'hover:shadow-[0_0_30px_rgba(59,130,246,0.3)]' : ''}
+        relative rounded-xl
+        bg-black/60 backdrop-blur-2xl
+        border border-white/[0.08]
+        overflow-hidden
+        ${padding ? 'p-6 sm:p-8' : ''}
+        ${hover ? 'hover:border-white/20 hover:bg-zinc-900/60 transition-all duration-300' : ''}
+        ${glow ? 'hover:shadow-[0_0_40px_rgba(0,51,255,0.25)]' : ''}
         ${onClick ? 'cursor-pointer' : ''}
         ${className}
       `}
       style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%)',
-        boxShadow: '0 8px 32px 0 rgba(31,38,135,0.37)',
-        transition: 'transform 0.15s ease, box-shadow 0.3s ease, background 0.3s ease',
+        boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7)',
+        transition: 'transform 0.15s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease',
       }}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Subtle gradient overlay */}
+      {/* Corner telemetry marks for cosmic aesthetic */}
+      <span className="absolute top-2 left-2 w-1.5 h-1.5 border-t border-l border-white/20 pointer-events-none" />
+      <span className="absolute top-2 right-2 w-1.5 h-1.5 border-t border-r border-white/20 pointer-events-none" />
+      <span className="absolute bottom-2 left-2 w-1.5 h-1.5 border-b border-l border-white/20 pointer-events-none" />
+      <span className="absolute bottom-2 right-2 w-1.5 h-1.5 border-b border-r border-white/20 pointer-events-none" />
+
+      {/* Subtle bloom gradient overlay on hover */}
       <div
-        className="absolute inset-0 rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+        className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{
-          background: `linear-gradient(135deg, ${glowColor.replace(')', ', 0.05)')} 0%, transparent 100%)`,
+          background: `radial-gradient(circle at 50% 0%, ${glowColor} 0%, transparent 70%)`,
         }}
       />
       <div className="relative z-10">{children}</div>

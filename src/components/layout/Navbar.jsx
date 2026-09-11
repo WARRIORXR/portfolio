@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { HiMenu, HiX } from 'react-icons/hi'
+import { Menu, X, FileText, ArrowUpRight, Terminal } from 'lucide-react'
 import GlassButton from '../ui/GlassButton'
 import { personalInfo } from '../../data/personalInfo'
 
 const navLinks = [
-  { label: 'Home', href: '#hero' },
-  { label: 'About', href: '#about' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'HORIZON', href: '#hero', index: '00' },
+  { label: 'ABOUT', href: '#about', index: '01' },
+  { label: 'SKILLS', href: '#skills', index: '02' },
+  { label: 'PROJECTS', href: '#projects', index: '03' },
+  { label: 'CONTACT', href: '#contact', index: '04' },
 ]
 
 export default function Navbar() {
@@ -19,12 +19,11 @@ export default function Navbar() {
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 50)
-      // Update active section
-      const sections = navLinks.map((l) => l.href.slice(1))
-      for (const id of [...sections].reverse()) {
+      setScrolled(window.scrollY > 40)
+      const sections = ['contact', 'projects', 'skills', 'about', 'hero']
+      for (const id of sections) {
         const el = document.getElementById(id)
-        if (el && el.getBoundingClientRect().top <= 100) {
+        if (el && el.getBoundingClientRect().top <= 200) {
           setActive(id)
           break
         }
@@ -45,62 +44,76 @@ export default function Navbar() {
       <motion.nav
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-slate-900/80 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.4)]'
+            ? 'bg-black/80 backdrop-blur-2xl border-b border-white/[0.08] shadow-[0_10px_30px_rgba(0,0,0,0.8)]'
             : 'bg-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
-          {/* Logo */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 h-16 sm:h-20 flex items-center justify-between">
+          {/* Logo / Identifier */}
           <button
             onClick={() => scrollTo('#hero')}
-            className="font-bold text-xl text-white flex items-center gap-2 group"
+            className="flex items-center gap-3 group text-left"
           >
-            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-sm font-mono group-hover:scale-110 transition-transform">
-              TJ
-            </span>
-            <span className="hidden sm:block bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
-              Tanish Jaswal
-            </span>
+            <div className="w-8 h-8 rounded border border-white/20 bg-white/[0.04] flex items-center justify-center font-mono text-xs font-bold text-white group-hover:border-white/60 transition-colors">
+              <Terminal className="w-4 h-4 text-white/80" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs tracking-[0.25em] font-mono font-bold text-white uppercase group-hover:text-white/90">
+                TANISH JASWAL
+              </span>
+              <span className="text-[9px] tracking-[0.2em] font-mono text-white/40 uppercase">
+                AI/ML &middot; CS
+              </span>
+            </div>
           </button>
 
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <button
-                key={link.label}
-                onClick={() => scrollTo(link.href)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  active === link.href.slice(1)
-                    ? 'text-blue-400 bg-blue-500/10'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                {link.label}
-              </button>
-            ))}
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
+            {navLinks.map((link) => {
+              const isActive = active === link.href.slice(1)
+              return (
+                <button
+                  key={link.label}
+                  onClick={() => scrollTo(link.href)}
+                  className={`group relative py-1 text-[11px] font-mono tracking-[0.2em] transition-colors ${
+                    isActive ? 'text-white font-semibold' : 'text-white/50 hover:text-white'
+                  }`}
+                >
+                  <span className="text-[9px] text-white/30 mr-1.5">{link.index}</span>
+                  {link.label}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeNav"
+                      className="absolute -bottom-1 left-0 right-0 h-[1px] bg-white shadow-[0_0_8px_#fff]"
+                    />
+                  )}
+                </button>
+              )
+            })}
           </div>
 
-          {/* CTA + Hamburger */}
+          {/* Action CTA + Mobile Toggle */}
           <div className="flex items-center gap-3">
             <GlassButton
               href={personalInfo.resume}
               download
-              variant="primary"
+              variant="outline"
               size="sm"
-              className="hidden sm:flex"
-              icon="📄"
+              className="hidden sm:inline-flex"
+              icon={<FileText className="w-3.5 h-3.5" />}
             >
-              Resume
+              CV / RESUME
             </GlassButton>
+
             <button
               onClick={() => setOpen(!open)}
-              className="md:hidden text-white/80 hover:text-white p-1"
-              aria-label="Toggle menu"
+              className="md:hidden p-2 rounded border border-white/10 bg-white/[0.03] text-white/80 hover:text-white"
+              aria-label="Toggle navigation"
             >
-              {open ? <HiX size={24} /> : <HiMenu size={24} />}
+              {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -110,45 +123,41 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed inset-y-0 right-0 w-72 z-40 bg-slate-900/95 backdrop-blur-xl border-l border-white/10 p-8 flex flex-col"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-x-0 top-16 z-40 bg-black/95 backdrop-blur-3xl border-b border-white/10 p-6 md:hidden flex flex-col gap-4"
           >
-            <div className="flex items-center justify-between mb-10">
-              <span className="text-white font-bold text-lg">Menu</span>
-              <button onClick={() => setOpen(false)} className="text-white/60 hover:text-white">
-                <HiX size={24} />
-              </button>
-            </div>
-            <nav className="flex flex-col gap-2">
-              {navLinks.map((link, i) => (
-                <motion.button
+            <div className="flex flex-col gap-2">
+              {navLinks.map((link) => (
+                <button
                   key={link.label}
-                  initial={{ x: 50, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: i * 0.05 }}
                   onClick={() => scrollTo(link.href)}
-                  className={`text-left px-4 py-3 rounded-xl text-base font-medium transition-all ${
-                    active === link.href.slice(1)
-                      ? 'text-blue-400 bg-blue-500/10'
-                      : 'text-white/70 hover:text-white hover:bg-white/5'
-                  }`}
+                  className="flex items-center justify-between p-3 rounded border border-white/[0.05] bg-white/[0.02] text-left text-xs font-mono tracking-widest text-white/80 hover:text-white hover:bg-white/[0.06]"
                 >
-                  {link.label}
-                </motion.button>
+                  <span>
+                    <span className="text-white/30 mr-2">{link.index}</span>
+                    {link.label}
+                  </span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-white/40" />
+                </button>
               ))}
-            </nav>
-            <div className="mt-auto pt-8 border-t border-white/10">
-              <GlassButton href={personalInfo.resume} download variant="primary" className="w-full justify-center" icon="📄">
-                Download Resume
-              </GlassButton>
             </div>
+
+            <GlassButton
+              href={personalInfo.resume}
+              download
+              variant="primary"
+              size="md"
+              className="w-full mt-2"
+              icon={<FileText className="w-4 h-4" />}
+            >
+              DOWNLOAD RESUME
+            </GlassButton>
           </motion.div>
         )}
       </AnimatePresence>
-      {open && <div className="fixed inset-0 z-30 bg-black/40" onClick={() => setOpen(false)} />}
     </>
   )
 }

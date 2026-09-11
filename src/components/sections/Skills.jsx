@@ -1,51 +1,93 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+import {
+  Code2,
+  Brain,
+  Database,
+  Cpu,
+  Terminal,
+  Globe,
+  Binary,
+  Layers,
+  Sparkles,
+  GitBranch,
+  Laptop,
+  FileCode2,
+  Radio,
+} from 'lucide-react'
 import GlassCard from '../ui/GlassCard'
-import GlassBadge from '../ui/GlassBadge'
 import { SectionWrapper, SectionItem, SectionTitle } from '../shared/SectionWrapper'
 import { skills, skillCategories } from '../../data/skills'
 
-function SkillBar({ proficiency, color, inView }) {
-  return (
-    <div className="relative h-1.5 rounded-full bg-white/10 overflow-hidden mt-2">
-      <motion.div
-        className="absolute inset-y-0 left-0 rounded-full"
-        style={{ background: `linear-gradient(90deg, ${color}80, ${color})` }}
-        initial={{ width: 0 }}
-        animate={{ width: inView ? `${proficiency}%` : 0 }}
-        transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 }}
-      />
-      {/* Shimmer */}
-      <motion.div
-        className="absolute inset-y-0 w-8 bg-white/30 blur-sm rounded-full"
-        animate={{ x: inView ? ['-20px', '400px'] : '-20px' }}
-        transition={{ duration: 1.5, ease: 'easeInOut', delay: 0.5, repeat: 0 }}
-      />
-    </div>
-  )
+// Lucide icon mapping for cosmic tech look
+const skillIconMap = {
+  Python: Code2,
+  Flask: Globe,
+  'REST APIs': Radio,
+  'SQL & Databases': Database,
+  'HTML & CSS': FileCode2,
+  C: Binary,
+  'C++': Binary,
+  'Machine Learning': Brain,
+  'NumPy & Pandas': Layers,
+  'Scikit-learn': Cpu,
+  'Deep Learning': Sparkles,
+  'Generative AI': Brain,
+  'Git & GitHub': GitBranch,
+  'Jupyter Notebook': Terminal,
+  'VS Code': Laptop,
 }
 
 function SkillCard({ skill }) {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 })
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 })
+  const IconComponent = skillIconMap[skill.name] || Terminal
 
   return (
     <div ref={ref}>
-      <GlassCard tilt glow glowColor={`${skill.color}50`} className="h-full">
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">{skill.icon}</span>
-            <div>
-              <h4 className="font-semibold text-white text-sm">{skill.name}</h4>
-              <p className="text-white/40 text-xs">{skill.years}yr{skill.years > 1 ? 's' : ''} exp</p>
+      <GlassCard
+        tilt
+        glow
+        glowColor="rgba(0,51,255,0.25)"
+        className="h-full flex flex-col justify-between"
+      >
+        <div>
+          {/* Header */}
+          <div className="flex items-start justify-between gap-3 mb-3">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded bg-white/[0.04] border border-white/10 flex items-center justify-center text-white/80 shrink-0">
+                <IconComponent className="w-4 h-4 text-blue-400" />
+              </div>
+              <div>
+                <h4 className="font-mono font-bold text-white text-sm tracking-wide">
+                  {skill.name}
+                </h4>
+                <span className="text-[10px] font-mono text-white/40 uppercase">
+                  {skill.years}YR EXP &middot; {skill.category.toUpperCase()}
+                </span>
+              </div>
             </div>
+            <span className="text-xs font-mono font-bold text-white/90 bg-white/[0.04] border border-white/10 px-2 py-0.5 rounded">
+              {skill.proficiency}%
+            </span>
           </div>
-          <span className="text-sm font-mono font-bold" style={{ color: skill.color }}>
-            {skill.proficiency}%
-          </span>
+
+          <p className="text-white/60 text-xs leading-relaxed font-light mb-4">
+            {skill.description}
+          </p>
         </div>
-        <p className="text-white/50 text-xs mb-3 leading-relaxed">{skill.description}</p>
-        <SkillBar proficiency={skill.proficiency} color={skill.color} inView={inView} />
+
+        {/* Minimalist Cosmic Telemetry Bar */}
+        <div>
+          <div className="w-full h-[2px] bg-white/10 relative overflow-hidden rounded-full">
+            <motion.div
+              className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 via-indigo-400 to-white"
+              initial={{ width: 0 }}
+              animate={{ width: inView ? `${skill.proficiency}%` : 0 }}
+              transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            />
+          </div>
+        </div>
       </GlassCard>
     </div>
   )
@@ -58,42 +100,40 @@ export default function Skills() {
 
   return (
     <SectionWrapper id="skills">
-      <SectionTitle label="// Technical Skills" title="What I Work With" />
+      <SectionTitle
+        label="// 02 · CORE CAPABILITIES"
+        title="TECHNICAL SKILLS"
+        subtitle="AI/ML SYSTEMS, ALGORITHMIC PIPELINES & PYTHON BACKEND ARCHITECTURE"
+      />
 
-      {/* Filter tabs */}
+      {/* Filter Matrix Tabs */}
       <SectionItem>
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12">
           {skillCategories.map((cat) => (
-            <motion.button
+            <button
               key={cat.id}
               onClick={() => setActive(cat.id)}
-              whileTap={{ scale: 0.95 }}
-              className={`px-5 py-2 rounded-xl text-sm font-medium transition-all duration-200 border ${
+              className={`px-4 sm:px-5 py-2 rounded text-xs font-mono tracking-widest uppercase transition-all duration-300 border ${
                 active === cat.id
-                  ? 'text-white border-transparent shadow-lg'
-                  : 'bg-white/5 border-white/10 text-white/60 hover:text-white hover:bg-white/8'
+                  ? 'bg-white text-black font-bold border-white shadow-[0_0_20px_rgba(255,255,255,0.3)]'
+                  : 'bg-white/[0.02] border-white/10 text-white/50 hover:text-white hover:border-white/30 hover:bg-white/[0.05]'
               }`}
-              style={
-                active === cat.id
-                  ? { background: `linear-gradient(135deg, ${cat.color}30, ${cat.color}20)`, borderColor: `${cat.color}50`, color: cat.color }
-                  : {}
-              }
             >
               {cat.label}
-            </motion.button>
+            </button>
           ))}
         </div>
       </SectionItem>
 
-      {/* Skill grid */}
+      {/* Skills Telemetry Grid */}
       <AnimatePresence mode="wait">
         <motion.div
           key={active}
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
+          exit={{ opacity: 0, y: -15 }}
           transition={{ duration: 0.3 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 max-w-7xl mx-auto"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
         >
           {filtered.map((skill) => (
             <SkillCard key={skill.name} skill={skill} />
@@ -101,15 +141,21 @@ export default function Skills() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Proficiency legend */}
-      <SectionItem className="mt-12 text-center">
-        <div className="inline-flex items-center gap-6 bg-white/5 border border-white/10 rounded-2xl px-6 py-3 text-xs text-white/50">
-          {[['< 70%', '#64748b'], ['70–80%', '#3b82f6'], ['80–90%', '#8b5cf6'], ['90%+', '#06b6d4']].map(([label, color]) => (
-            <div key={label} className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded-sm" style={{ background: color }} />
-              {label}
-            </div>
-          ))}
+      {/* Bottom Telemetry Legend */}
+      <SectionItem className="mt-14 text-center">
+        <div className="inline-flex flex-wrap items-center justify-center gap-6 bg-black/60 border border-white/10 rounded-lg px-6 py-3 text-[11px] font-mono text-white/40">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
+            <span>EXPERT (90%+)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-indigo-400" />
+            <span>ADVANCED (80-89%)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-white/40" />
+            <span>PROFICIENT (70-79%)</span>
+          </div>
         </div>
       </SectionItem>
     </SectionWrapper>
