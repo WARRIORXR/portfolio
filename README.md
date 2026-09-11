@@ -1,6 +1,13 @@
 # 🚀 Tanish Jaswal — Portfolio
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-blue?style=for-the-badge&logo=vercel)](https://portfolio-beige-three-6cxybtq7fh.vercel.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-WARRIORXR-black?style=for-the-badge&logo=github)](https://github.com/WARRIORXR/portfolio)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://react.dev)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-38BDF8?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com)
+
 > **AI/ML & Computer Science Student** · Python Developer · Flask · Machine Learning
+
+🌐 **Live Site:** [https://portfolio-beige-three-6cxybtq7fh.vercel.app/](https://portfolio-beige-three-6cxybtq7fh.vercel.app/)
 
 A complete glassmorphism portfolio built with **React + Vite + TailwindCSS + Framer Motion**, featuring GitHub integration, animated sections, and PWA support.
 
@@ -102,14 +109,20 @@ portfolio/
 
 ## 🌐 Deployment
 
-### Vercel (Recommended)
+### ✅ Live on Vercel
+**[https://portfolio-beige-three-6cxybtq7fh.vercel.app/](https://portfolio-beige-three-6cxybtq7fh.vercel.app/)**
+
+### Deploy your own fork
+
+**Vercel (Recommended)**
 ```bash
 npm install -g vercel
 vercel --prod
 ```
 
-### Netlify
+**Netlify**
 Drag & drop the `dist/` folder to [app.netlify.com](https://app.netlify.com)
+
 
 ---
 
