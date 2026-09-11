@@ -32,7 +32,9 @@ export default defineConfig({
         manualChunks: {
           vendor: ['react', 'react-dom'],
           motion: ['framer-motion'],
-          icons: ['react-icons']
+          icons: ['react-icons'],
+          three: ['three'],
+          gsap: ['gsap']
         }
       }
     }

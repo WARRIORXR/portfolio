@@ -1,0 +1,210 @@
+/* ────────────────────────────────────────────────────────────
+   Horizon Hero Section — Custom CSS
+   All class names used by horizon-hero-section.tsx
+──────────────────────────────────────────────────────────── */
+
+/* Container creates scroll height; canvas + content are fixed */
+.hero-container {
+  position: relative;
+  width: 100%;
+  height: 300vh; /* 3 sections × 100vh */
+  background: #000;
+}
+
+/* Fixed full-screen WebGL canvas */
+.hero-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Side menu ─────────────────────────────── */
+.side-menu {
+  position: fixed;
+  left: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.menu-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.menu-icon span {
+  display: block;
+  width: 24px;
+  height: 1.5px;
+  background: rgba(255, 255, 255, 0.7);
+  transition: width 0.3s ease;
+}
+
+.menu-icon:hover span:nth-child(2) {
+  width: 16px;
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 5px;
+  font-size: 9px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.35);
+  transform: rotate(180deg);
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── Hero content (fixed centre) ───────────── */
+.hero-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-align: center;
+  pointer-events: none;
+  width: 100%;
+  padding: 0 24px;
+}
+
+.cosmos-content {
+  /* cosmos variant — same positioning */
+}
+
+/* ── Title ─────────────────────────────────── */
+.hero-title {
+  font-size: clamp(72px, 18vw, 220px);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: #fff;
+  line-height: 0.9;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow: visible;
+
+  /* Subtle text glow */
+  text-shadow:
+    0 0 80px rgba(255, 255, 255, 0.15),
+    0 0 200px rgba(100, 120, 255, 0.1);
+}
+
+/* Each character is animated individually by GSAP */
+.title-char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* ── Subtitle ──────────────────────────────── */
+.hero-subtitle {
+  margin-top: 28px;
+}
+
+.cosmos-subtitle {
+  /* cosmos variant */
+}
+
+.subtitle-line {
+  font-size: clamp(11px, 1.4vw, 16px);
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin: 5px 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  will-change: transform, opacity;
+}
+
+/* ── Scroll progress indicator ─────────────── */
+.scroll-progress {
+  position: fixed;
+  bottom: 36px;
+  right: 40px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.scroll-text {
+  font-size: 9px;
+  letter-spacing: 5px;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+}
+
+.progress-track {
+  width: 80px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.3), #fff);
+  transition: width 0.08s linear;
+}
+
+.section-counter {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.35);
+  font-family: 'Fira Code', monospace;
+  min-width: 40px;
+}
+
+/* ── Scroll sections (create scroll height) ── */
+.scroll-sections {
+  position: relative;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.content-section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
+}
+
+/* ── Mobile ────────────────────────────────── */
+@media (max-width: 768px) {
+  .side-menu {
+    left: 16px;
+  }
+
+  .scroll-progress {
+    right: 16px;
+    bottom: 24px;
+  }
+
+  .progress-track {
+    width: 50px;
+  }
+
+  .subtitle-line {
+    letter-spacing: 2px;
+  }
+}
