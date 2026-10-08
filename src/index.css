@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── shadcn / CSS-variable colour tokens ─────────────────── */
+/* Required by components that use Tailwind's semantic classes
+   (bg-background, text-foreground, bg-muted, text-muted-foreground).
+   Values are HSL channels WITHOUT the hsl() wrapper — Tailwind adds it. */
+@layer base {
+  :root {
+    --background: 0 0% 0%;          /* #000 — matches body bg */
+    --foreground: 0 0% 100%;        /* #fff — matches body text */
+    --muted: 0 0% 10%;              /* dark grey card fills */
+    --muted-foreground: 0 0% 60%;   /* subdued index text */
+  }
+}
+
 /* ── Base Reset ──────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 

@@ -128,6 +128,127 @@
   will-change: transform, opacity;
 }
 
+/* ── Identity block (name / role / CTAs) ───── */
+.hero-identity {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.identity-kicker {
+  font-family: 'Fira Code', 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 5px;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+  margin: 0;
+  will-change: transform, opacity;
+}
+
+.identity-name {
+  font-size: clamp(26px, 4.6vw, 54px);
+  font-weight: 800;
+  letter-spacing: 10px;
+  padding-left: 10px; /* optically centers letter-spaced text */
+  color: #fff;
+  line-height: 1;
+  margin: 0;
+  text-shadow: 0 0 60px rgba(100, 120, 255, 0.35);
+  will-change: transform, opacity;
+}
+
+.identity-tag {
+  font-size: clamp(10px, 1.2vw, 13px);
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  margin: 0;
+  will-change: transform, opacity;
+}
+
+/* CTA row — only this block captures clicks inside hero-content */
+.hero-cta {
+  pointer-events: auto;
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  will-change: transform, opacity;
+}
+
+/* Disable CTAs once the intro fades into the scroll sections */
+.hero-content.is-faded .hero-cta {
+  pointer-events: none;
+}
+
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 26px;
+  border-radius: 999px;
+  font-family: 'Fira Code', 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.cta-primary {
+  background: #fff;
+  color: #000;
+  border: 1px solid #fff;
+  font-weight: 600;
+}
+
+.cta-primary:hover {
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.cta-ghost {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.cta-ghost:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.cta-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.cta-icon:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
 /* ── Scroll progress indicator ─────────────── */
 .scroll-progress {
   position: fixed;
@@ -177,6 +298,9 @@
   position: relative;
   z-index: 5;
   pointer-events: none;
+  /* Push the scroll narrative below the fixed intro viewport:
+     intro owns 0–100vh, COSMOS 100–200vh, INFINITY 200–300vh. */
+  margin-top: 100vh;
 }
 
 .content-section {
@@ -206,5 +330,36 @@
 
   .subtitle-line {
     letter-spacing: 2px;
+  }
+
+  .identity-name {
+    letter-spacing: 6px;
+    padding-left: 6px;
+  }
+
+  .identity-kicker,
+  .identity-tag {
+    letter-spacing: 2.5px;
+    text-align: center;
+  }
+
+  .hero-identity {
+    margin-top: 22px;
+    gap: 8px;
+  }
+
+  .hero-cta {
+    margin-top: 14px;
+    gap: 10px;
+  }
+
+  .cta-btn {
+    padding: 11px 20px;
+    letter-spacing: 2px;
+  }
+
+  .cta-icon {
+    width: 40px;
+    height: 40px;
   }
 }

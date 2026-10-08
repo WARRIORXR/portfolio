@@ -8,10 +8,11 @@ import Contact from './components/sections/Contact'
 import ScrollProgress from './components/shared/ScrollProgress'
 import { initEmailJS } from './lib/emailjs'
 
-// Lazy-load the Three.js hero so bundle splits cleanly
+// Lazy-load heavy interactive sections for clean bundle splits
 const HorizonHero = lazy(() =>
   import('./components/ui/horizon-hero-section').then((m) => ({ default: m.Component }))
 )
+const WorksWheelDemo = lazy(() => import('./components/ui/works-wheel-demo'))
 
 function HeroFallback() {
   return (
@@ -55,6 +56,24 @@ export default function App() {
           <About />
           <Skills />
           <Projects />
+
+          {/* WorksWheel — interactive 3D project showcase */}
+          <section id="works-wheel" className="relative z-10">
+            <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+            <Suspense
+              fallback={
+                <div className="h-screen flex items-center justify-center bg-black">
+                  <p className="text-xs font-mono tracking-[0.3em] text-white/40 uppercase animate-pulse">
+                    Loading project wheel...
+                  </p>
+                </div>
+              }
+            >
+              <WorksWheelDemo />
+            </Suspense>
+            <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+          </section>
+
           <Contact />
         </main>
         <Footer />

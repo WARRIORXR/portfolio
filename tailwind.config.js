@@ -4,6 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
+        /* shadcn semantic tokens — resolved via CSS variables in index.css */
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
         primary: { 900: '#0f172a', 800: '#1e1b4b', 700: '#312e81' },
         accent: {
           blue: '#3b82f6',

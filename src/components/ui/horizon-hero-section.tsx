@@ -7,7 +7,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, ArrowRight, FileText } from 'lucide-react'
+import { Github, Linkedin } from './BrandIcons'
+import { personalInfo } from '../../data/personalInfo'
 import './horizon-hero-section.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -39,7 +41,7 @@ export const Component: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
-  const subtitleRef = useRef<HTMLDivElement>(null)
+  const identityRef = useRef<HTMLDivElement>(null)
   const scrollProgressRef = useRef<HTMLDivElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -115,7 +117,8 @@ export const Component: React.FC = () => {
 
     // ── Star field ──────────────────────────────────────────────────────────
     const createStarField = () => {
-      const starCount = 5000
+      // Fewer stars on small screens keeps mobile frame rates healthy
+      const starCount = window.innerWidth < 768 ? 2400 : 5000
       for (let i = 0; i < 3; i++) {
         const geometry = new THREE.BufferGeometry()
         const positions = new Float32Array(starCount * 3)
@@ -390,7 +393,7 @@ export const Component: React.FC = () => {
     if (!isReady) return
 
     gsap.set(
-      [menuRef.current, titleRef.current, subtitleRef.current, scrollProgressRef.current],
+      [menuRef.current, titleRef.current, identityRef.current, scrollProgressRef.current],
       { visibility: 'visible' }
     )
 
@@ -405,9 +408,9 @@ export const Component: React.FC = () => {
       tl.from(chars, { y: 200, opacity: 0, duration: 1.5, stagger: 0.05, ease: 'power4.out' }, '-=0.5')
     }
 
-    if (subtitleRef.current) {
-      const lines = subtitleRef.current.querySelectorAll('.subtitle-line')
-      tl.from(lines, { y: 50, opacity: 0, duration: 1, stagger: 0.2, ease: 'power3.out' }, '-=0.8')
+    if (identityRef.current) {
+      const lines = identityRef.current.querySelectorAll('.identity-anim')
+      tl.from(lines, { y: 40, opacity: 0, duration: 1, stagger: 0.12, ease: 'power3.out' }, '-=0.8')
     }
 
     if (scrollProgressRef.current) {
@@ -421,6 +424,11 @@ export const Component: React.FC = () => {
 
   // ── Scroll handling ──────────────────────────────────────────────────────
   useEffect(() => {
+    // The cinematic journey always starts from the top — restoring a
+    // mid-flight camera position on reload looks broken.
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
+    window.scrollTo(0, 0)
+
     const handleScroll = () => {
       const refs = threeRefs.current
       const scrollY = window.scrollY
@@ -454,21 +462,31 @@ export const Component: React.FC = () => {
 
       refs.mountains.forEach((mountain, i) => {
         const speed = 1 + i * 0.9
-        if (refs.nebula) {
-          refs.nebula.position.z = mountain.userData.baseZ + scrollY * speed * 0.5 - 100
-        }
         mountain.position.z = progress > 0.7 ? 600000 : refs.locations[i]
       })
 
-      if (refs.nebula && refs.mountains.length > 3) {
-        refs.nebula.position.z = refs.mountains[3].position.z
+      // Nebula stays deep in space and drifts farther back as the camera
+      // flies forward — never yanked in front of the lens.
+      if (refs.nebula) {
+        refs.nebula.position.z = -1050 - progress * 600
       }
 
       // Smoothly fade out fixed hero HUD overlays when scrolling past the hero into portfolio
       const fadeOut = Math.max(0, 1 - (scrollY - maxScroll) / 300)
       if (menuRef.current) menuRef.current.style.opacity = String(fadeOut)
       if (scrollProgressRef.current) scrollProgressRef.current.style.opacity = String(fadeOut)
-      if (titleRef.current?.parentElement) titleRef.current.parentElement.style.opacity = String(fadeOut)
+
+      // The fixed intro (HORIZON + identity) fades out as the first scroll
+      // section approaches, so COSMOS/INFINITY never collide with it.
+      // COSMOS enters the viewport at progress 0.25 (scrollY = 50vh).
+      const introFade = Math.min(Math.max(1 - progress / 0.25, 0), 1)
+      const contentOpacity = Math.min(introFade, fadeOut)
+      const contentEl = titleRef.current?.parentElement
+      if (contentEl) {
+        contentEl.style.opacity = String(contentOpacity)
+        contentEl.style.transform = `translate(-50%, -50%) scale(${0.9 + 0.1 * contentOpacity}) translateY(${(1 - contentOpacity) * -50}px)`
+        contentEl.classList.toggle('is-faded', contentOpacity <= 0.5)
+      }
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -484,11 +502,11 @@ export const Component: React.FC = () => {
       </span>
     ))
 
-  const scrollToAbout = () => {
-    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  // Section data
+  // Section data — a narrative intro to the person behind the portfolio
   const sectionTitles: Record<number, string> = { 0: 'HORIZON', 1: 'COSMOS', 2: 'INFINITY' }
   const sectionSubs: Record<number, { line1: string; line2: string }> = {
     0: {
@@ -496,12 +514,12 @@ export const Component: React.FC = () => {
       line2: 'we shape the future of tomorrow',
     },
     1: {
-      line1: 'Beyond the boundaries of imagination,',
-      line2: 'lies the universe of possibilities',
+      line1: 'From raw data to deployed models —',
+      line2: 'ML pipelines · REST APIs · Recommendation systems',
     },
     2: {
-      line1: 'In the space between thought and creation,',
-      line2: 'we find the essence of true innovation',
+      line1: 'The journey has only begun —',
+      line2: 'step into the portfolio',
     },
   }
 
@@ -512,7 +530,7 @@ export const Component: React.FC = () => {
 
       {/* Side menu */}
       <div ref={menuRef} className="side-menu" style={{ visibility: 'hidden' }}>
-        <div className="menu-icon" onClick={scrollToAbout}>
+        <div className="menu-icon" onClick={() => scrollTo('about')}>
           <span />
           <span />
           <span />
@@ -525,9 +543,40 @@ export const Component: React.FC = () => {
         <h1 ref={titleRef} className="hero-title" style={{ visibility: 'hidden' }}>
           {splitTitle('HORIZON')}
         </h1>
-        <div ref={subtitleRef} className="hero-subtitle cosmos-subtitle" style={{ visibility: 'hidden' }}>
-          <p className="subtitle-line">Where vision meets reality,</p>
-          <p className="subtitle-line">we shape the future of tomorrow</p>
+        <div ref={identityRef} className="hero-identity" style={{ visibility: 'hidden' }}>
+          <p className="identity-kicker identity-anim">
+            {'//'} AI/ML &amp; COMPUTER SCIENCE STUDENT
+          </p>
+          <p className="identity-name identity-anim">TANISH JASWAL</p>
+          <p className="identity-tag identity-anim">
+            Python · Machine Learning · Deep Learning · Flask
+          </p>
+          <div className="hero-cta identity-anim">
+            <button onClick={() => scrollTo('projects')} className="cta-btn cta-primary">
+              VIEW PROJECTS <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+            <a href={personalInfo.resume} download className="cta-btn cta-ghost">
+              RESUME <FileText className="w-3.5 h-3.5" />
+            </a>
+            <a
+              href={personalInfo.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              className="cta-icon"
+            >
+              <Github className="w-4 h-4" />
+            </a>
+            <a
+              href={personalInfo.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="cta-icon"
+            >
+              <Linkedin className="w-4 h-4" />
+            </a>
+          </div>
         </div>
       </div>
 
@@ -555,7 +604,7 @@ export const Component: React.FC = () => {
             {/* If section is INFINITY, show prompt to explore the portfolio */}
             {i === 1 && (
               <button
-                onClick={scrollToAbout}
+                onClick={() => scrollTo('about')}
                 className="mt-12 inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/20 bg-white/[0.05] backdrop-blur-md text-xs font-mono tracking-widest text-white/80 hover:text-white hover:border-white/50 hover:bg-white/10 transition-all pointer-events-auto cursor-pointer"
               >
                 <span>EXPLORE PORTFOLIO</span>
