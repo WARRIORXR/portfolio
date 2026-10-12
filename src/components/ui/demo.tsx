@@ -1,7 +1,9 @@
-import { Component } from "@/components/ui/horizon-hero-section";
+import { ProjectShowcase } from "@/components/ui/project-showcase";
 
 const DemoOne = () => {
-  return <Component />;
+  return (
+    <ProjectShowcase />
+  );
 };
 
 export { DemoOne };
