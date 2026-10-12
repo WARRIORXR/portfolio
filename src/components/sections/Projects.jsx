@@ -4,6 +4,7 @@ import { Github } from '../ui/BrandIcons'
 import { ProjectShowcase } from '../ui/project-showcase'
 import { useGithubRepos } from '../../hooks/useGithubRepos'
 import { SectionWrapper, SectionItem, SectionTitle } from '../shared/SectionWrapper'
+import ErrorBoundary from '../shared/ErrorBoundary'
 import { personalInfo } from '../../data/personalInfo'
 
 // Raw GitHub API repo → showcase item. OG card endpoint renders a branded
@@ -51,7 +52,9 @@ export default function Projects() {
         {loading ? (
           <SkeletonList />
         ) : (
-          <ProjectShowcase projects={items} title="Repositories" />
+          <ErrorBoundary>
+            <ProjectShowcase projects={items} title="Repositories" />
+          </ErrorBoundary>
         )}
       </SectionItem>
 

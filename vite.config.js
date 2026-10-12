@@ -9,6 +9,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg'],
+      cleanupOutdatedCaches: true,
       manifest: {
         name: 'Tanish Jaswal — Portfolio',
         short_name: 'TJ Portfolio',
@@ -30,10 +31,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          motion: ['framer-motion'],
-          icons: ['react-icons'],
-          three: ['three'],
-          gsap: ['gsap']
+          motion: ['framer-motion']
         }
       }
     }

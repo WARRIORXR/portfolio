@@ -3,6 +3,7 @@ import { Mail, MapPin, Phone, ArrowUpRight } from 'lucide-react'
 import CountUp from 'react-countup'
 import { useInView } from 'react-intersection-observer'
 import { SectionWrapper, SectionItem, SectionTitle } from '../shared/SectionWrapper'
+import ErrorBoundary from '../shared/ErrorBoundary'
 import { personalInfo, education, experience, stats } from '../../data/personalInfo'
 import useGithubContributions from '../../hooks/useGithubContributions'
 
@@ -128,7 +129,13 @@ export default function About() {
         <Suspense
           fallback={<div className="h-40 rounded-xl border border-white/[0.08] bg-black" />}
         >
-          <ContributionSkyline data={contributions} className="border-white/[0.08]" />
+          <ErrorBoundary
+            fallback={
+              <div className="h-40 rounded-xl border border-white/[0.08] bg-black" aria-hidden />
+            }
+          >
+            <ContributionSkyline data={contributions} className="border-white/[0.08]" />
+          </ErrorBoundary>
         </Suspense>
       </SectionItem>
     </SectionWrapper>
