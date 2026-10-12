@@ -1,7 +1,5 @@
 "use client"
 
-import * as React from "react"
-
 /**
  * Contribution Skyline — a year of activity as a GitHub-style heat map that
  * folds up into an isometric skyline, and back down again.
@@ -185,7 +183,17 @@ export const monthLabels = (cells: Cell[], weeks: number, locale = "en-US") => {
     const c = cells[w * 7]
     if (!c) break
     const m = +c.date.slice(5, 7)
-    if (m !== prev) out.push({ week: w, label: fmt.format(dayMs(c.date)) })
+    if (m !== prev) {
+      const ms = dayMs(c.date)
+      // Guard against invalid dates that Intl.DateTimeFormat would reject
+      let label = ""
+      try {
+        label = fmt.format(ms)
+      } catch {
+        label = ""
+      }
+      out.push({ week: w, label })
+    }
     prev = m
   }
   if (out.length > 1 && out[1].week - out[0].week < 3) out.shift()
@@ -256,6 +264,7 @@ export const resolvePalette = (p: PaletteInput | undefined, dark: boolean): stri
 // #endregion
 
 // #region UI
+import React, { useState, useMemo, useRef, useEffect, useLayoutEffect } from "react"
 import { ChevronDown, ArrowRight, FileText } from "lucide-react"
 import { GitHub, Linkedin } from "./BrandIcons"
 
@@ -460,19 +469,7 @@ export default function ContributionSkyline({
   const cfg = useRef({ model, duration, heightScale, orbit, palette, legendLevel, onCellClick, target: view === "3d" ? 1 : 0, setActive, setWidth, setTheme, setAnnounce, describe })
   cfg.current = { model, duration, heightScale, orbit, palette, legendLevel, onCellClick, target: view === "3d" ? 1 : 0, setActive, setWidth, setTheme, setAnnounce, describe }
 
-  // Check for browser environment
-  const isBrowser = typeof window !== 'undefined'
-
-  // Helper to safely create canvas and get context
-  const createProbe = () => {
-    if (!isBrowser) return null
-    const c = document.createElement("canvas")
-    c.width = c.height = 1
-    return c.getContext("2d", { willReadFrequently: true })
-  }
-
   useEffect(() => {
-    if (!isBrowser) return
 
     const root = rootRef.current
     const stage = stageRef.current
@@ -1123,7 +1120,15 @@ export default function ContributionSkyline({
   const range = (a: string | null, b: string | null, withYear = false) => {
     if (!a || !b) return "—"
     const f = withYear ? dfy : df
-    return f.format(dayMs(a)) + " — " + f.format(dayMs(b))
+    let startStr = "—"
+    let endStr = "—"
+    try {
+      startStr = f.format(dayMs(a))
+    } catch {}
+    try {
+      endStr = f.format(dayMs(b))
+    } catch {}
+    return startStr + " — " + endStr
   }
   const is3d = view === "3d"
   const corners = showStats && width >= 560
@@ -1362,6 +1367,15 @@ export default function ContributionSkyline({
 // #region browser-only utilities
 
 // Safely create and get 2D canvas context
+const isBrowser = typeof window !== 'undefined'
+
+function createProbe() {
+  if (!isBrowser) return null
+  const c = document.createElement("canvas")
+  c.width = c.height = 1
+  return c.getContext("2d", { willReadFrequently: true })
+}
+
 function toRGB(color: string, fallback: RGB | null): RGB | null {
   if (!isBrowser) return fallback
   const probe = createProbe()
