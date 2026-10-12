@@ -13,7 +13,7 @@ interface Project {
   image: string
 }
 
-const projects: Project[] = [
+const defaultProjects: Project[] = [
   {
     title: "Lumina",
     description: "AI-powered design system generator.",
@@ -44,7 +44,16 @@ const projects: Project[] = [
   },
 ]
 
-export function ProjectShowcase() {
+export interface ProjectShowcaseProps {
+  /** Items to render. Falls back to the built-in demo projects. */
+  projects?: Project[]
+  /** Heading above the list. Defaults to "Selected Work". */
+  title?: string
+  className?: string
+}
+
+export function ProjectShowcase({ projects, title = "Selected Work", className = "" }: ProjectShowcaseProps) {
+  const items = projects && projects.length > 0 ? projects : defaultProjects
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 })
@@ -96,7 +105,7 @@ export function ProjectShowcase() {
 
   return (
     <section ref={containerRef} onMouseMove={handleMouseMove} className="relative w-full max-w-2xl mx-auto px-6 py-16">
-      <h2 className="text-muted-foreground text-sm font-medium tracking-wide uppercase mb-8">Selected Work</h2>
+      <h2 className="text-muted-foreground text-sm font-medium tracking-wide uppercase mb-8">{title}</h2>
 
       <div
         className="pointer-events-none fixed z-50 overflow-hidden rounded-xl shadow-2xl"
@@ -110,7 +119,7 @@ export function ProjectShowcase() {
         }}
       >
         <div className="relative w-[280px] h-[180px] bg-secondary rounded-xl overflow-hidden">
-          {projects.map((project, index) => (
+          {items.map((project, index) => (
             <img
               key={project.title}
               src={project.image || "/placeholder.svg"}
@@ -129,7 +138,7 @@ export function ProjectShowcase() {
       </div>
 
       <div className="space-y-0">
-        {projects.map((project, index) => (
+        {items.map((project, index) => (
           <a
             key={project.title}
             href={project.link}

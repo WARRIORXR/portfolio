@@ -2,19 +2,19 @@ import { motion } from 'framer-motion'
 
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
+  visible: { transition: { staggerChildren: 0.08 } },
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 25 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
 }
 
 export function SectionWrapper({ children, id, className = '' }) {
   return (
     <motion.section
       id={id}
-      className={`relative py-28 px-4 sm:px-6 md:px-12 lg:px-20 max-w-7xl mx-auto ${className}`}
+      className={`relative py-24 sm:py-32 px-6 max-w-5xl mx-auto ${className}`}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
@@ -33,26 +33,24 @@ export function SectionItem({ children, className = '' }) {
   )
 }
 
-export function SectionTitle({ label, title, subtitle }) {
+export function SectionTitle({ index, label, title, subtitle }) {
   return (
-    <div className="text-center mb-16 sm:mb-20 space-y-3">
-      <motion.div variants={itemVariants} className="flex items-center justify-center gap-3">
-        <span className="h-[1px] w-8 bg-white/20" />
-        <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-white/40">
-          {label}
-        </span>
-        <span className="h-[1px] w-8 bg-white/20" />
+    <div className="mb-14 sm:mb-20">
+      <motion.div variants={itemVariants} className="flex items-center gap-4 mb-5">
+        <span className="mono-label text-white/30">{index}</span>
+        <span className="h-[1px] flex-1 bg-white/10" />
+        <span className="mono-label">{label}</span>
       </motion.div>
       <motion.h2
         variants={itemVariants}
-        className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white uppercase"
+        className="text-3xl sm:text-5xl font-semibold tracking-tight text-white"
       >
         {title}
       </motion.h2>
       {subtitle && (
         <motion.p
           variants={itemVariants}
-          className="text-xs sm:text-sm font-mono tracking-widest text-white/50 uppercase max-w-xl mx-auto"
+          className="mt-4 text-sm text-white/50 max-w-xl leading-relaxed"
         >
           {subtitle}
         </motion.p>

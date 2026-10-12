@@ -151,36 +151,3 @@ export const skills = [
     years: 2,
   },
 ]
-
-export const featuredProjects = [
-  {
-    id: 1,
-    title: 'Movie Recommendation & Information Website',
-    description:
-      'Web application where users can search movies and view key information — genre, director, cast, ratings, and streaming availability. Features recommendation logic based on movie category, director, and related attributes.',
-    tech: ['Python', 'Flask', 'Machine Learning', 'REST APIs', 'SQL', 'HTML', 'CSS'],
-    highlights: [
-      'Built recommendation logic based on category & director attributes',
-      'Integrated external APIs for movie data retrieval',
-      'Python + Flask backend with database integration',
-    ],
-    type: 'personal',
-    category: 'ml',
-    github: 'https://github.com/WARRIORXR',
-  },
-  {
-    id: 2,
-    title: 'Machine Learning Practice Portfolio',
-    description:
-      'Comprehensive ML practice collection using academic datasets. Covers full ML pipeline from data preprocessing to model evaluation.',
-    tech: ['Python', 'Pandas', 'Scikit-learn', 'NumPy', 'Jupyter Notebook'],
-    highlights: [
-      'KNN, Decision Trees, Random Forest, Naive Bayes, SVM',
-      'Data preprocessing, feature scaling, train-test splitting',
-      'Model evaluation and performance comparison',
-    ],
-    type: 'personal',
-    category: 'ml',
-    github: 'https://github.com/WARRIORXR',
-  },
-]

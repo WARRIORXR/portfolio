@@ -10,12 +10,18 @@
   :root {
     --background: 0 0% 0%;          /* #000 — matches body bg */
     --foreground: 0 0% 100%;        /* #fff — matches body text */
-    --muted: 0 0% 10%;              /* dark grey card fills */
-    --muted-foreground: 0 0% 60%;   /* subdued index text */
+    --muted: 0 0% 10%;              /* dark grey fills */
+    --muted-foreground: 0 0% 60%;   /* subdued text */
+
+    /* Aliases consumed by contribution-skyline (expects --color-* names) */
+    --color-background: #000000;
+    --color-foreground: #ffffff;
+    --color-border: rgba(255, 255, 255, 0.12);
+    --color-muted-foreground: #a3a3a3;
   }
 }
 
-/* ── Base Reset ──────────────────────────────────────────── */
+/* ── Base ────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
@@ -32,109 +38,66 @@ body {
   overflow-x: hidden;
 }
 
-/* Custom minimal scrollbar */
+/* Minimal scrollbar */
 ::-webkit-scrollbar { width: 2px; }
 ::-webkit-scrollbar-track { background: #000; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 1px; }
 
-/* Selection */
 ::selection { background: rgba(255,255,255,0.15); color: #fff; }
 
-/* Focus */
 :focus-visible { outline: 1px solid rgba(255,255,255,0.3); outline-offset: 2px; }
 
-/* ── Cosmic Typography Scale ─────────────────────────────── */
-.cosmic-label {
-  font-size: 9px;
-  letter-spacing: 6px;
-  font-weight: 500;
+/* ── Minimal utilities ───────────────────────────────────── */
+
+/* Section eyebrow label — mono, small, tracked out */
+.mono-label {
   font-family: 'Fira Code', 'JetBrains Mono', monospace;
-  color: rgba(255,255,255,0.3);
-  text-transform: uppercase;
-}
-
-.cosmic-title {
-  font-size: clamp(48px, 8vw, 120px);
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  line-height: 0.92;
-  color: #fff;
-}
-
-.cosmic-subtitle {
-  font-size: clamp(11px, 1.2vw, 14px);
-  letter-spacing: 4px;
+  font-size: 11px;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.4);
-  font-weight: 400;
 }
 
-.cosmic-body {
-  font-size: 14px;
-  line-height: 1.8;
-  color: rgba(255,255,255,0.55);
-  font-weight: 300;
-}
-
-/* ── Cosmic Section ──────────────────────────────────────── */
-.cosmic-section {
+/* Underline link that draws in on hover */
+.link-underline {
   position: relative;
-  background: rgba(0, 0, 0, 0.92);
-  padding: 8rem 0;
-  border-top: 1px solid rgba(255,255,255,0.06);
 }
-
-/* Thin line divider */
-.cosmic-divider {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1) 30%, rgba(255,255,255,0.1) 70%, transparent);
-}
-
-/* ── Cosmic Card ─────────────────────────────────────────── */
-.cosmic-card {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.06);
-  transition: border-color 0.3s ease, background 0.3s ease;
-}
-.cosmic-card:hover {
-  background: rgba(255,255,255,0.04);
-  border-color: rgba(255,255,255,0.12);
-}
-
-/* ── Progress bar ────────────────────────────────────────── */
-.skill-track {
-  width: 100%;
-  height: 1px;
-  background: rgba(255,255,255,0.1);
-  position: relative;
-  overflow: visible;
-}
-.skill-fill {
+.link-underline::after {
+  content: '';
   position: absolute;
-  top: 0; left: 0;
-  height: 100%;
-  background: #fff;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
   transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+.link-underline:hover::after { transform: scaleX(1); }
 
-/* ── Form inputs ─────────────────────────────────────────── */
-.cosmic-input {
+/* Hairline divider */
+.hairline { height: 1px; background: rgba(255,255,255,0.08); }
+
+/* Form inputs — underline style */
+.input-line {
   width: 100%;
   background: transparent;
   border: none;
   border-bottom: 1px solid rgba(255,255,255,0.12);
   padding: 12px 0;
   color: #fff;
-  font-size: 13px;
+  font-size: 14px;
   font-family: 'Inter', sans-serif;
   outline: none;
   transition: border-color 0.2s ease;
   caret-color: #fff;
 }
-.cosmic-input::placeholder { color: rgba(255,255,255,0.2); }
-.cosmic-input:focus { border-bottom-color: rgba(255,255,255,0.5); }
-.cosmic-input.error { border-bottom-color: rgba(255,100,100,0.6); }
+.input-line::placeholder { color: rgba(255,255,255,0.25); }
+.input-line:focus { border-bottom-color: rgba(255,255,255,0.5); }
+.input-line.error { border-bottom-color: rgba(248,113,113,0.6); }
+
+textarea.input-line { resize: none; }
 
 /* ── Animations ──────────────────────────────────────────── */
 @keyframes fadeUp {
@@ -142,8 +105,3 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 .fade-up { animation: fadeUp 0.8s ease forwards; }
-
-@keyframes lineGrow {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}

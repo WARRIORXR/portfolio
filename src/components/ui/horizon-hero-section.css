@@ -1,28 +1,28 @@
-/* ────────────────────────────────────────────────────────────
-   Horizon Hero Section — Custom CSS
-   All class names used by horizon-hero-section.tsx
-──────────────────────────────────────────────────────────── */
+/* horizon-hero-section.css
+   Full-page Three.js + GSAP cinematic hero — scroll through HORIZON → COSMOS → INFINITY
+   Minimal dark styling for the hero canvas and overlays.
+*/
 
-/* Container creates scroll height; canvas + content are fixed */
+/* Root container — full viewport, black */
 .hero-container {
   position: relative;
   width: 100%;
-  height: 300vh; /* 3 sections × 100vh */
-  background: #000;
+  height: 300vh;
+  background: #000000;
+  overflow: hidden;
+  color: #fff;
 }
 
-/* Fixed full-screen WebGL canvas */
+/* Canvas fills the viewport */
 .hero-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: 100vh;
-  z-index: 0;
-  pointer-events: none;
+  height: 100%;
+  display: block;
 }
 
-/* ── Side menu ─────────────────────────────── */
+/* Side menu — left edge, vertically centered */
 .side-menu {
   position: fixed;
   left: 32px;
@@ -32,334 +32,216 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.6s ease;
 }
 
+/* Menu icon — three horizontal lines */
 .menu-icon {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4.5px;
   cursor: pointer;
-  padding: 4px;
+  pointer-events: auto;
 }
-
 .menu-icon span {
   display: block;
   width: 24px;
   height: 1.5px;
   background: rgba(255, 255, 255, 0.7);
-  transition: width 0.3s ease;
+  transition: all 0.3s ease;
 }
-
+.menu-icon span:nth-child(2) {
+  width: 18px;
+}
+.menu-icon:hover span {
+  background: rgba(255, 255, 255, 0.9);
+}
 .menu-icon:hover span:nth-child(2) {
-  width: 16px;
+  width: 24px;
 }
 
 .vertical-text {
   writing-mode: vertical-rl;
-  text-orientation: mixed;
-  letter-spacing: 5px;
-  font-size: 9px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.35);
   transform: rotate(180deg);
   font-family: 'Inter', sans-serif;
-}
-
-/* ── Hero content (fixed centre) ───────────── */
-.hero-content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  text-align: center;
-  pointer-events: none;
-  width: 100%;
-  padding: 0 24px;
-}
-
-.cosmos-content {
-  /* cosmos variant — same positioning */
-}
-
-/* ── Title ─────────────────────────────────── */
-.hero-title {
-  font-size: clamp(72px, 18vw, 220px);
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  color: #fff;
-  line-height: 0.9;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  overflow: visible;
-
-  /* Subtle text glow */
-  text-shadow:
-    0 0 80px rgba(255, 255, 255, 0.15),
-    0 0 200px rgba(100, 120, 255, 0.1);
-}
-
-/* Each character is animated individually by GSAP */
-.title-char {
-  display: inline-block;
-  will-change: transform, opacity;
-}
-
-/* ── Subtitle ──────────────────────────────── */
-.hero-subtitle {
-  margin-top: 28px;
-}
-
-.cosmos-subtitle {
-  /* cosmos variant */
-}
-
-.subtitle-line {
-  font-size: clamp(11px, 1.4vw, 16px);
-  color: rgba(255, 255, 255, 0.5);
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  margin: 5px 0;
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  will-change: transform, opacity;
-}
-
-/* ── Identity block (name / role / CTAs) ───── */
-.hero-identity {
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.identity-kicker {
-  font-family: 'Fira Code', 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 9px;
+  font-weight: 500;
   letter-spacing: 5px;
-  color: rgba(255, 255, 255, 0.45);
-  text-transform: uppercase;
-  margin: 0;
-  will-change: transform, opacity;
+  color: rgba(255, 255, 255, 0.35);
 }
 
-.identity-name {
-  font-size: clamp(26px, 4.6vw, 54px);
-  font-weight: 800;
-  letter-spacing: 10px;
-  padding-left: 10px; /* optically centers letter-spaced text */
-  color: #fff;
-  line-height: 1;
-  margin: 0;
-  text-shadow: 0 0 60px rgba(100, 120, 255, 0.35);
-  will-change: transform, opacity;
-}
-
-.identity-tag {
-  font-size: clamp(10px, 1.2vw, 13px);
-  color: rgba(255, 255, 255, 0.5);
-  letter-spacing: 4px;
-  text-transform: uppercase;
+/* Scroll indicator — bottom center */
+.scroll-text {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  margin: 0;
-  will-change: transform, opacity;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 5px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
 }
 
-/* CTA row — only this block captures clicks inside hero-content */
+/* Hero title — big, centered */
+.hero-title {
+  position: absolute;
+  top: 48vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 900;
+  font-size: clamp(72px, 18vw, 220px);
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  color: #fff;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Hero subtitle */
+.hero-subtitle {
+  position: absolute;
+  top: calc(48vh + 140px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Fira Code', 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+}
+
+/* Section titles for each scroll segment */
+.hero-section-title {
+  position: absolute;
+  font-weight: 900;
+  font-size: clamp(72px, 18vw, 220px);
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  color: #fff;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Identity card in COSMOS section */
+.hero-identity {
+  position: absolute;
+  top: 52vh;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+.hero-identity .name {
+  font-weight: 900;
+  font-size: clamp(72px, 18vw, 220px);
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  color: #fff;
+  text-transform: uppercase;
+}
+.hero-identity .tagline {
+  font-family: 'Fira Code', 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+/* CTA buttons */
 .hero-cta {
-  pointer-events: auto;
-  margin-top: 18px;
+  position: absolute;
+  top: calc(52vh + 120px);
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  align-items: center;
-  justify-content: center;
+  gap: 16px;
   flex-wrap: wrap;
-  gap: 12px;
-  will-change: transform, opacity;
+  justify-content: center;
 }
-
-/* Disable CTAs once the intro fades into the scroll sections */
-.hero-content.is-faded .hero-cta {
-  pointer-events: none;
-}
-
-.cta-btn {
+.hero-cta a,
+.hero-cta button {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 26px;
-  border-radius: 999px;
+  padding: 10px 20px;
+  font-family: 'Fira Code', 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+.hero-cta a:hover,
+.hero-cta button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+/* Stats row in COSMOS section */
+.hero-stats {
+  position: absolute;
+  top: calc(52vh + 200px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.hero-stats .stat {
+  text-align: center;
+}
+.hero-stats .stat .value {
+  font-weight: 900;
+  font-size: clamp(72px, 18vw, 220px);
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+.hero-stats .stat .label {
   font-family: 'Fira Code', 'JetBrains Mono', monospace;
   font-size: 11px;
-  letter-spacing: 3px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  letter-spacing: 6px;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  margin-top: 4px;
 }
 
-.cta-primary {
-  background: #fff;
-  color: #000;
-  border: 1px solid #fff;
-  font-weight: 600;
-}
-
-.cta-primary:hover {
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
-  transform: translateY(-2px);
-}
-
-.cta-ghost {
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-.cta-ghost:hover {
-  border-color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
-}
-
-.cta-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-
-.cta-icon:hover {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
-}
-
-/* ── Scroll progress indicator ─────────────── */
-.scroll-progress {
-  position: fixed;
-  bottom: 36px;
-  right: 40px;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.scroll-text {
-  font-size: 9px;
-  letter-spacing: 5px;
-  color: rgba(255, 255, 255, 0.4);
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-}
-
-.progress-track {
-  width: 80px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.15);
-  position: relative;
-  overflow: hidden;
-}
-
-.progress-fill {
+/* INFINITY section overlay */
+.infinity-overlay {
   position: absolute;
-  top: 0;
+  top: 200vh;
   left: 0;
-  height: 100%;
-  background: linear-gradient(90deg, rgba(255,255,255,0.3), #fff);
-  transition: width 0.08s linear;
-}
-
-.section-counter {
-  font-size: 9px;
-  letter-spacing: 2px;
-  color: rgba(255, 255, 255, 0.35);
-  font-family: 'Fira Code', monospace;
-  min-width: 40px;
-}
-
-/* ── Scroll sections (create scroll height) ── */
-.scroll-sections {
-  position: relative;
-  z-index: 5;
-  pointer-events: none;
-  /* Push the scroll narrative below the fixed intro viewport:
-     intro owns 0–100vh, COSMOS 100–200vh, INFINITY 200–300vh. */
-  margin-top: 100vh;
-}
-
-.content-section {
+  width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 24px;
   text-align: center;
-  padding: 40px 24px;
 }
 
-/* ── Mobile ────────────────────────────────── */
+/* Responsive tweaks */
 @media (max-width: 768px) {
   .side-menu {
-    left: 16px;
+    left: 20px;
   }
-
-  .scroll-progress {
-    right: 16px;
-    bottom: 24px;
+  .hero-title {
+    top: 42vh;
   }
-
-  .progress-track {
-    width: 50px;
-  }
-
-  .subtitle-line {
-    letter-spacing: 2px;
-  }
-
-  .identity-name {
-    letter-spacing: 6px;
-    padding-left: 6px;
-  }
-
-  .identity-kicker,
-  .identity-tag {
-    letter-spacing: 2.5px;
-    text-align: center;
-  }
-
-  .hero-identity {
-    margin-top: 22px;
-    gap: 8px;
-  }
-
-  .hero-cta {
-    margin-top: 14px;
-    gap: 10px;
-  }
-
-  .cta-btn {
-    padding: 11px 20px;
-    letter-spacing: 2px;
-  }
-
-  .cta-icon {
-    width: 40px;
-    height: 40px;
+  .hero-subtitle {
+    top: calc(42vh + 120px);
   }
 }

@@ -1376,7 +1376,9 @@ function toRGB(color: string, fallback: RGB | null): RGB | null {
   return [d[0], d[1], d[2]]
 }
 
-function rgbString(r: number, g: number, b: number): string => "rgb(" + Math.round(r) + "," + Math.round(g) + "," + Math.round(b) + ")"
+function rgbString(r: number, g: number, b: number): string {
+  return "rgb(" + Math.round(r) + "," + Math.round(g) + "," + Math.round(b) + ")"
+}
 
 function pointInQuad(p: Float32Array, o: number, x: number, y: number): boolean {
   let sign = 0
@@ -1414,7 +1416,7 @@ function quadPath(ctx: CanvasRenderingContext2D, p: Float32Array, o: number, r: 
 // #endregion
 
 // Demo component following existing patterns
-export default function Demo() {
+export function Demo() {
   return (
     <div className="w-full bg-background px-4 py-10 sm:px-8">
       <div className="mx-auto w-full max-w-[980px]">

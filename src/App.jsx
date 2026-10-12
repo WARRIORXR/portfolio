@@ -8,23 +8,16 @@ import Contact from './components/sections/Contact'
 import ScrollProgress from './components/shared/ScrollProgress'
 import { initEmailJS } from './lib/emailjs'
 
-// Lazy-load heavy interactive sections for clean bundle splits
+// Lazy-load the heavy Three.js hero for a clean bundle split
 const HorizonHero = lazy(() =>
   import('./components/ui/horizon-hero-section').then((m) => ({ default: m.Component }))
 )
-const WorksWheelDemo = lazy(() => import('./components/ui/works-wheel-demo'))
 
 function HeroFallback() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white p-4">
-      <div className="text-center space-y-4">
-        <div className="text-5xl sm:text-7xl md:text-9xl font-black tracking-tighter text-white">
-          HORIZON
-        </div>
-        <p className="text-xs sm:text-sm font-mono tracking-[0.3em] text-white/40 uppercase">
-          INITIALIZING CELESTIAL ENVIRONMENT...
-        </p>
-      </div>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white">
+      <div className="text-5xl sm:text-7xl md:text-8xl font-semibold tracking-tighter">HORIZON</div>
+      <p className="mt-6 mono-label">Loading…</p>
     </div>
   )
 }
@@ -35,45 +28,20 @@ export default function App() {
   }, [])
 
   return (
-    <div className="relative text-white min-h-screen bg-black selection:bg-white/20 selection:text-white">
+    <div className="relative min-h-screen bg-black text-white selection:bg-white/20 selection:text-white">
       <ScrollProgress />
       <Navbar />
 
-      {/* Horizon Three.js Hero — full-page cinematic opener (300vh) */}
+      {/* Horizon Three.js hero — full-page cinematic opener (300vh) */}
       <Suspense fallback={<HeroFallback />}>
         <HorizonHero />
       </Suspense>
 
-      {/* Portfolio sections below the hero */}
-      <div
-        className="relative z-10"
-        style={{
-          background:
-            'radial-gradient(ellipse at 50% 0%, rgba(12, 18, 48, 0.85) 0%, rgba(0, 0, 0, 0.97) 50%, #000000 100%)',
-        }}
-      >
+      <div className="relative z-10 bg-black">
         <main>
           <About />
           <Skills />
           <Projects />
-
-          {/* WorksWheel — interactive 3D project showcase */}
-          <section id="works-wheel" className="relative z-10">
-            <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-            <Suspense
-              fallback={
-                <div className="h-screen flex items-center justify-center bg-black">
-                  <p className="text-xs font-mono tracking-[0.3em] text-white/40 uppercase animate-pulse">
-                    Loading project wheel...
-                  </p>
-                </div>
-              }
-            >
-              <WorksWheelDemo />
-            </Suspense>
-            <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-          </section>
-
           <Contact />
         </main>
         <Footer />
