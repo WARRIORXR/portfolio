@@ -37,7 +37,7 @@ interface CameraPos {
 }
 
 // ── Component ──────────────────────────────────────────────────────────────
-export const Component: React.FC = () => {
+export function Component() {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
