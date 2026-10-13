@@ -69,7 +69,8 @@ export default function Navbar() {
             ))}
             <a
               href={personalInfo.resume}
-              download
+              target="_blank"
+              rel="noopener noreferrer"
               className="ml-1 inline-flex items-center gap-1 rounded-full border border-white/15 px-3.5 py-1.5 text-[12px] text-white/80 transition-colors hover:border-white/40 hover:text-white"
             >
               Resume
@@ -111,7 +112,8 @@ export default function Navbar() {
               ))}
               <a
                 href={personalInfo.resume}
-                download
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center justify-between py-3.5 text-sm text-white/80"
               >
                 <span>

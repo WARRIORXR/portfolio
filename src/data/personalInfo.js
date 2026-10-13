@@ -23,7 +23,7 @@ export const personalInfo = {
   github: 'https://github.com/WARRIORXR',
   githubUsername: 'WARRIORXR',
   linkedin: 'https://linkedin.com/in/tanish-jaswal-9b49b3370',
-  resume: '/Tanish_Jaswal_Data_Analyst_Resume.pdf',
+  resume: 'https://drive.google.com/file/d/1rX31i0c0w21FJnODwlh5fGs9YinbugK2/view?usp=drive_link',
 }
 
 export const education = {
