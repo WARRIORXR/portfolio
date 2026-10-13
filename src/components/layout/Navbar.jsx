@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ArrowUpRight } from 'lucide-react'
-import { personalInfo } from '../../data/personalInfo'
+import { Menu, X, ArrowUpRight, Mail, FileText } from 'lucide-react'
+import { Github, Linkedin, Whatsapp } from '../ui/BrandIcons'
+import { contactLinks } from '../../lib/links'
 
 const navLinks = [
   { label: 'About', href: '#about', index: '01' },
@@ -9,6 +10,24 @@ const navLinks = [
   { label: 'Projects', href: '#projects', index: '03' },
   { label: 'Contact', href: '#contact', index: '04' },
 ]
+
+// Icon per link id; the pills stay compact so the top bar never wraps.
+// Every contactLinks id must appear here — the mobile menu renders an icon for
+// each of them, and a missing entry throws during render.
+const linkIcons = {
+  github: Github,
+  linkedin: Linkedin,
+  email: Mail,
+  whatsapp: Whatsapp,
+  resume: FileText,
+}
+
+// Only links with an icon become pills; Resume keeps its labelled pill.
+const iconLinks = contactLinks.filter((link) => link.id !== 'resume' && linkIcons[link.id])
+const resumeLink = contactLinks.find((link) => link.id === 'resume')
+
+const pillClass =
+  'inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-white/40 hover:text-white'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -47,7 +66,7 @@ export default function Navbar() {
           scrolled ? 'bg-black/70 backdrop-blur-md border-b border-white/[0.08]' : 'bg-transparent border-b border-transparent'
         }`}
       >
-        <nav className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+        <nav className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="text-sm font-medium tracking-tight text-white"
@@ -55,7 +74,7 @@ export default function Navbar() {
             Tanish Jaswal
           </button>
 
-          <div className="hidden md:flex items-center gap-7">
+          <div className="hidden md:flex items-center gap-5 lg:gap-7">
             {navLinks.map((link) => (
               <button
                 key={link.label}
@@ -67,8 +86,27 @@ export default function Navbar() {
                 {link.label}
               </button>
             ))}
+          </div>
+
+          {/* Every profile link lives in the top bar, beside the resume pill. */}
+          <div className="hidden md:flex items-center gap-2">
+            {iconLinks.map((link) => {
+              const Icon = linkIcons[link.id]
+              return (
+                <a
+                  key={link.id}
+                  href={link.href}
+                  {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  aria-label={link.label}
+                  title={link.label}
+                  className={pillClass}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                </a>
+              )
+            })}
             <a
-              href={personalInfo.resume}
+              href={resumeLink.href}
               target="_blank"
               rel="noopener noreferrer"
               className="ml-1 inline-flex items-center gap-1 rounded-full border border-white/15 px-3.5 py-1.5 text-[12px] text-white/80 transition-colors hover:border-white/40 hover:text-white"
@@ -110,18 +148,24 @@ export default function Navbar() {
                   <ArrowUpRight className="w-3.5 h-3.5 text-white/30" />
                 </button>
               ))}
-              <a
-                href={personalInfo.resume}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between py-3.5 text-sm text-white/80"
-              >
-                <span>
-                  <span className="font-mono text-[10px] text-white/30 mr-3">CV</span>
-                  Resume
-                </span>
-                <ArrowUpRight className="w-3.5 h-3.5 text-white/30" />
-              </a>
+
+              {contactLinks.map((link) => {
+                const Icon = linkIcons[link.id]
+                return (
+                  <a
+                    key={link.id}
+                    href={link.href}
+                    {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    className="flex items-center justify-between py-3.5 border-b border-white/[0.06] text-left last:border-b-0"
+                  >
+                    <span className="flex items-center gap-3 text-sm text-white/80">
+                      <Icon className="w-4 h-4 text-white/40" />
+                      {link.label}
+                    </span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-white/30" />
+                  </a>
+                )
+              })}
             </div>
           </motion.div>
         )}

@@ -1,6 +1,5 @@
-import { Mail, ArrowUp } from 'lucide-react'
-import { Github, Linkedin } from '../ui/BrandIcons'
-import { personalInfo } from '../../data/personalInfo'
+import { ArrowUp } from 'lucide-react'
+import { contactLinks } from '../../lib/links'
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -19,32 +18,18 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex items-center gap-5">
-          <a
-            href={personalInfo.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub"
-            className="link-underline text-xs text-white/50 hover:text-white transition-colors"
-          >
-            GitHub
-          </a>
-          <a
-            href={personalInfo.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            className="link-underline text-xs text-white/50 hover:text-white transition-colors"
-          >
-            LinkedIn
-          </a>
-          <a
-            href={`mailto:${personalInfo.email}`}
-            aria-label="Email"
-            className="link-underline text-xs text-white/50 hover:text-white transition-colors"
-          >
-            Email
-          </a>
+        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+          {contactLinks.map((link) => (
+            <a
+              key={link.id}
+              href={link.href}
+              {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              aria-label={link.label}
+              className="link-underline text-xs text-white/50 hover:text-white transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
           <button
             onClick={scrollToTop}
             aria-label="Back to top"
