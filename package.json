@@ -7,7 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
+    "check:api": "node scripts/check-api.mjs",
+    "dev:api": "cargo run --manifest-path backend/rust-api/Cargo.toml",
+    "setup:py": "node scripts/setup-python.mjs",
+    "dev:py": "node scripts/py.mjs -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload",
+    "test:py": "node scripts/py.mjs -m pytest"
   },
   "dependencies": {
     "@emailjs/browser": "^4.3.2",
