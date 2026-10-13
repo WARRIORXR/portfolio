@@ -1,28 +1,29 @@
 // ============================================================
-// Tanish Jaswal — Personal Info (sourced from resume)
-// ============================================================
+// Tanish Jaswal — Personal Info (Data Analyst resume)
+============================================================
 
 export const personalInfo = {
   name: 'Tanish Jaswal',
-  title: 'AI/ML & Computer Science Student',
+  title: 'Data Analyst | AI/ML Enthusiast',
   taglines: [
+    'Data Analyst',
     'Python Developer',
-    'ML Engineer',
-    'AI Enthusiast',
-    'Flask Developer',
-    'Deep Learning Explorer',
+    'SQL Specialist',
+    'Machine Learning',
+    'Dashboard Builder',
   ],
-  bio: `B.Tech Computer Science student at IKGPTU with hands-on experience in Python, 
-machine learning, recommendation systems, APIs, and databases. Completed a 6-week 
-AI/ML internship at Netmax in Chandigarh and developed a movie recommendation and 
-information platform. Seeking an AI/ML internship or entry-level AI Engineer role.`,
+  bio: `B.Tech Computer Science student at IKGPTU who builds data-driven products end to end: 
+	gather data, analyze it, visualize it and deploy it. Built live analytics dashboards 
+	(movie ROI analysis, spending trends), a real-time journaling app with a PostgreSQL 
+	backends, and an AWS serverless air-quality alert system for schools. Completed an AI/ML 
+	internship at Netmax. Seeking a Data Analyst internship to turn raw data into decisions.`,
   email: 'tanishjaswal56@gmail.com',
   phone: '+91 88727 94962',
   location: 'Punjab, India',
   github: 'https://github.com/WARRIORXR',
   githubUsername: 'WARRIORXR',
   linkedin: 'https://linkedin.com/in/tanish-jaswal-9b49b3370',
-  resume: '/Tanish_Jaswal_AI_ML_Resume_UPDATED.pdf',
+  resume: '/Tanish_Jaswal_Data_Analyst_Resume.pdf',
 }
 
 export const education = {
