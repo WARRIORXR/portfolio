@@ -7,6 +7,10 @@ import { SectionWrapper, SectionItem, SectionTitle } from '../shared/SectionWrap
 import ErrorBoundary from '../shared/ErrorBoundary'
 import { personalInfo } from '../../data/personalInfo'
 
+// Cap the list so a future flood of repositories can't make the section
+// endless; with today's filter (documented, non-fork repos) everything matches.
+const MAX_PROJECTS = 12
+
 // Raw GitHub API repo → showcase item. OG card endpoint renders a branded
 // preview for any public repo, so no stock photos are needed.
 function toShowcaseItem(repo) {
@@ -37,7 +41,10 @@ function SkeletonList() {
 export default function Projects() {
   const { repos, loading } = useGithubRepos()
 
-  const items = useMemo(() => repos.slice(0, 6).map(toShowcaseItem), [repos])
+  const items = useMemo(
+    () => repos.slice(0, MAX_PROJECTS).map(toShowcaseItem),
+    [repos]
+  )
 
   return (
     <SectionWrapper id="projects">
