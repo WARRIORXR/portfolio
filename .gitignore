@@ -4,3 +4,17 @@ dist
 .env.local
 .DS_Store
 *.log
+
+# Local agent/tooling state
+.freebuff/
+
+# Rust gateway
+backend/rust-api/target
+
+# Python service
+backend/py-service/.venv
+backend/py-service/data/*
+!backend/py-service/data/.gitkeep
+__pycache__/
+*.py[cod]
+.pytest_cache/

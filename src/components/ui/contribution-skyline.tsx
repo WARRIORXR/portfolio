@@ -266,7 +266,6 @@ export const resolvePalette = (p: PaletteInput | undefined, dark: boolean): stri
 // #region UI
 import React, { useState, useMemo, useRef, useEffect, useLayoutEffect } from "react"
 import { ChevronDown, ArrowRight, FileText } from "lucide-react"
-import { GitHub, Linkedin } from "./BrandIcons"
 
 type View = "2d" | "3d"
 

@@ -42,6 +42,31 @@ A complete glassmorphism portfolio built with **React + Vite + TailwindCSS + Fra
 | Counters | react-countup |
 | Toasts | react-hot-toast |
 | PWA | vite-plugin-pwa |
+| API gateway | Rust + Axum (`backend/rust-api`) |
+| Data service | Python + FastAPI (`backend/py-service`) |
+
+---
+
+## 🧱 Architecture
+
+The site's logic runs server-side, with the browser talking to one origin:
+
+```
+React (Vite)  ──/api/*──►  Rust gateway :8080  ──►  Python service :8000
+     │                     (cache, CORS, rate limit)   (analytics, delivery)
+     └── fallback if the gateway is offline ──► api.github.com
+```
+
+* **Rust gateway** — serves the resume data, fetches + caches GitHub repos and contributions,
+  validates and rate limits contact submissions, and serves the built `dist/` in production.
+* **Python service** — skills/resume analytics, contribution streaks, language mix, and contact
+  delivery (SMTP, or a JSONL queue when no SMTP credentials are configured).
+* **Static hosting still works** — with no gateway configured (or unreachable) the UI falls back to
+  browser-side GitHub calls and demo/EmailJS delivery.
+
+Resume, skills and stats live in [`shared/profile.json`](shared/profile.json) and are consumed by the
+React app, the Rust gateway (embedded at compile time) and the Python service. Full details, endpoint
+contracts and toolchain notes: **[backend/README.md](backend/README.md)**.
 
 ---
 
@@ -66,10 +91,27 @@ VITE_EMAILJS_PUBLIC_KEY=your_public_key
 npm run dev
 ```
 
+The frontend runs standalone. To run the full stack instead:
+```bash
+npm run setup:py     # create the Python service venv + install requirements
+npm run dev:py       # Python data service on :8000
+npm run dev:api      # Rust gateway on :8080
+```
+Set `VITE_API_BASE_URL=http://127.0.0.1:8080` so the UI uses the gateway; without it the site falls
+back to browser-side GitHub calls.
+
 ### 4. Build for production
 ```bash
 npm run build
 npm run preview
+```
+
+### 5. Checks
+```bash
+npm run lint          # ESLint
+npx tsc --noEmit      # TypeScript
+npm run test:py       # Python service tests (pytest)
+npm run check:api     # Rust gateway (cargo check)
 ```
 
 ---
@@ -81,6 +123,12 @@ portfolio/
 ├── public/
 │   ├── favicon.svg
 │   └── manifest.json           # PWA manifest
+├── shared/
+│   └── profile.json            # single source of truth (resume, skills, stats)
+├── backend/
+│   ├── rust-api/               # Axum gateway: /api/*, GitHub cache, static serving
+│   └── py-service/             # FastAPI: analytics + contact delivery
+├── scripts/                    # cross-platform Python venv helpers
 ├── src/
 │   ├── components/
 │   │   ├── ui/                 # GlassCard, GlassButton, GlassBadge
@@ -94,8 +142,9 @@ portfolio/
 │   │   ├── useGithubRepos.js
 │   │   └── use3DTilt.js
 │   ├── lib/
-│   │   ├── github.js           # API + cache
-│   │   └── emailjs.js
+│   │   ├── api.js              # Rust gateway client (health probe + fallback)
+│   │   ├── github.js           # API-first, direct GitHub fallback + cache
+│   │   └── emailjs.js          # API-first contact, EmailJS fallback
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── index.css
