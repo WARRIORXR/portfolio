@@ -6,6 +6,7 @@ import { SectionWrapper, SectionItem, SectionTitle } from '../shared/SectionWrap
 import ErrorBoundary from '../shared/ErrorBoundary'
 import { personalInfo, education, experience, stats } from '../../data/personalInfo'
 import useGithubContributions from '../../hooks/useGithubContributions'
+import { gmailComposeUrl, whatsappUrl } from '../../lib/links'
 
 const ContributionSkyline = lazy(() => import('../ui/contribution-skyline'))
 
@@ -43,23 +44,33 @@ export default function About() {
           <SectionItem>
             <div className="flex flex-col divide-y divide-white/[0.08] border-y border-white/[0.08]">
               <a
-                href={`mailto:${personalInfo.email}`}
+                href={gmailComposeUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group flex items-center justify-between py-3.5 text-sm"
               >
                 <span className="flex items-center gap-3 text-white/40">
-                  <Mail className="w-3.5 h-3.5" /> Email
+                  <Mail className="w-3.5 h-3.5" /> Gmail
                 </span>
                 <span className="flex items-center gap-1.5 text-white/70 group-hover:text-white transition-colors">
                   {personalInfo.email}
                   <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </span>
               </a>
-              <div className="flex items-center justify-between py-3.5 text-sm">
+              <a
+                href={whatsappUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between py-3.5 text-sm"
+              >
                 <span className="flex items-center gap-3 text-white/40">
-                  <Phone className="w-3.5 h-3.5" /> Phone
+                  <Phone className="w-3.5 h-3.5" /> WhatsApp
                 </span>
-                <span className="text-white/70">{personalInfo.phone}</span>
-              </div>
+                <span className="flex items-center gap-1.5 text-white/70 group-hover:text-white transition-colors">
+                  {personalInfo.phone}
+                  <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </span>
+              </a>
               <div className="flex items-center justify-between py-3.5 text-sm">
                 <span className="flex items-center gap-3 text-white/40">
                   <MapPin className="w-3.5 h-3.5" /> Location

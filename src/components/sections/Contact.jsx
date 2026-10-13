@@ -1,12 +1,22 @@
 import { useState } from 'react'
-import { Send, Loader2 } from 'lucide-react'
+import { Send, Loader2, Mail, ArrowUpRight } from 'lucide-react'
 import toast, { Toaster } from 'react-hot-toast'
-import { Github, Linkedin } from '../ui/BrandIcons'
+import { Github, Linkedin, Whatsapp } from '../ui/BrandIcons'
 import { SectionWrapper, SectionItem, SectionTitle } from '../shared/SectionWrapper'
 import { personalInfo } from '../../data/personalInfo'
 import { sendContactEmail } from '../../lib/emailjs'
+import { composeMessage, gmailComposeUrl, handleFromUrl, whatsappUrl } from '../../lib/links'
 
 const INITIAL = { name: '', email: '', subject: '', message: '' }
+
+// Direct channels — Gmail compose and WhatsApp deep links derived from the
+// shared profile, so the address and number live in exactly one place.
+const channels = [
+  { label: 'Gmail', icon: Mail, value: personalInfo.email, href: gmailComposeUrl() },
+  { label: 'WhatsApp', icon: Whatsapp, value: personalInfo.phone, href: whatsappUrl() },
+  { label: 'GitHub', icon: Github, value: handleFromUrl(personalInfo.github), href: personalInfo.github },
+  { label: 'LinkedIn', icon: Linkedin, value: handleFromUrl(personalInfo.linkedin), href: personalInfo.linkedin },
+]
 
 function validate(fields) {
   const e = {}
@@ -94,30 +104,24 @@ export default function Contact() {
         <div className="md:col-span-2 space-y-8">
           <SectionItem>
             <div className="flex flex-col divide-y divide-white/[0.08] border-y border-white/[0.08]">
-              <a
-                href={`mailto:${personalInfo.email}`}
-                className="link-underline self-start py-3.5 text-sm text-white/70 hover:text-white transition-colors"
-              >
-                {personalInfo.email}
-              </a>
-              <a
-                href={personalInfo.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 py-3.5 text-sm text-white/70 hover:text-white transition-colors"
-              >
-                <Github className="w-4 h-4 text-white/40" />
-                GitHub
-              </a>
-              <a
-                href={personalInfo.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 py-3.5 text-sm text-white/70 hover:text-white transition-colors"
-              >
-                <Linkedin className="w-4 h-4 text-white/40" />
-                LinkedIn
-              </a>
+              {channels.map((channel) => (
+                <a
+                  key={channel.label}
+                  href={channel.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-between gap-4 py-3.5 text-sm"
+                >
+                  <span className="flex shrink-0 items-center gap-3 text-white/40">
+                    <channel.icon className="w-4 h-4" />
+                    {channel.label}
+                  </span>
+                  <span className="flex min-w-0 items-center gap-1.5 text-white/70 group-hover:text-white transition-colors">
+                    <span className="truncate">{channel.value}</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </span>
+                </a>
+              ))}
             </div>
           </SectionItem>
 
@@ -167,18 +171,43 @@ export default function Contact() {
               error={errors.message}
               placeholder="Tell me about it…"
             />
-            <button
-              type="submit"
-              disabled={sending}
-              className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition-opacity hover:opacity-85 disabled:opacity-50"
-            >
-              {sending ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Send className="w-4 h-4" />
-              )}
-              {sending ? 'Sending…' : 'Send message'}
-            </button>
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                type="submit"
+                disabled={sending}
+                className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition-opacity hover:opacity-85 disabled:opacity-50"
+              >
+                {sending ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4" />
+                )}
+                {sending ? 'Sending…' : 'Send message'}
+              </button>
+
+              {/* Send the same text through Gmail or WhatsApp instead. */}
+              <a
+                href={gmailComposeUrl({
+                  subject: fields.subject,
+                  body: composeMessage(fields, { includeSubject: false }),
+                })}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2.5 text-sm text-white/70 transition-colors hover:border-white/40 hover:text-white"
+              >
+                <Mail className="w-4 h-4" />
+                Gmail
+              </a>
+              <a
+                href={whatsappUrl({ text: composeMessage(fields) })}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2.5 text-sm text-white/70 transition-colors hover:border-white/40 hover:text-white"
+              >
+                <Whatsapp className="w-4 h-4" />
+                WhatsApp
+              </a>
+            </div>
           </form>
         </SectionItem>
       </div>
