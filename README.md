@@ -1,13 +1,13 @@
 # 🚀 Tanish Jaswal — Portfolio
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-blue?style=for-the-badge&logo=vercel)](https://portfolio-beige-three-6cxybtq7fh.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-F38020?style=for-the-badge&logo=cloudflare)](https://tanish-portfolio.tanishjaswal56.workers.dev)
 [![GitHub](https://img.shields.io/badge/GitHub-WARRIORXR-black?style=for-the-badge&logo=github)](https://github.com/WARRIORXR/portfolio)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://react.dev)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-38BDF8?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com)
 
 > **AI/ML & Computer Science Student** · Python Developer · Flask · Machine Learning
 
-🌐 **Live Site:** [https://portfolio-beige-three-6cxybtq7fh.vercel.app/](https://portfolio-beige-three-6cxybtq7fh.vercel.app/)
+🌐 **Live Site:** [https://tanish-portfolio.tanishjaswal56.workers.dev/](https://tanish-portfolio.tanishjaswal56.workers.dev/)
 
 A complete glassmorphism portfolio built with **React + Vite + TailwindCSS + Framer Motion**, featuring GitHub integration, animated sections, and PWA support.
 
@@ -149,8 +149,7 @@ portfolio/
 │   ├── main.jsx
 │   └── index.css
 ├── .env.example
-├── vercel.json                 # Vercel deployment
-├── netlify.toml                # Netlify deployment
+├── wrangler.toml               # Cloudflare deployment config
 └── vite.config.js
 ```
 
@@ -158,19 +157,19 @@ portfolio/
 
 ## 🌐 Deployment
 
-### ✅ Live on Vercel
-**[https://portfolio-beige-three-6cxybtq7fh.vercel.app/](https://portfolio-beige-three-6cxybtq7fh.vercel.app/)**
+### ✅ Live on Cloudflare
+**[https://tanish-portfolio.tanishjaswal56.workers.dev/](https://tanish-portfolio.tanishjaswal56.workers.dev/)**
 
-### Deploy your own fork
+### Deploy your own
 
-**Vercel (Recommended)**
+**Cloudflare (Recommended)**
 ```bash
-npm install -g vercel
-vercel --prod
-```
+# 1. Login to Cloudflare
+npx wrangler login
 
-**Netlify**
-Drag & drop the `dist/` folder to [app.netlify.com](https://app.netlify.com)
+# 2. Build and deploy
+npm run deploy
+```
 
 
 ---
