@@ -8,6 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
+    "deploy": "npm run build && npx wrangler pages deploy dist --project-name tanish-portfolio",
+    "deploy:preview": "npm run build && npx wrangler pages deploy dist --project-name tanish-portfolio --branch preview",
     "check:api": "node scripts/check-api.mjs",
     "dev:api": "cargo run --manifest-path backend/rust-api/Cargo.toml",
     "setup:py": "node scripts/setup-python.mjs",
@@ -48,6 +50,7 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^7.0.2",
     "vite": "^5.1.0",
-    "vite-plugin-pwa": "^0.19.2"
+    "vite-plugin-pwa": "^0.19.2",
+    "wrangler": "^4.152.0"
   }
 }
