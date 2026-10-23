@@ -1,14 +1,14 @@
 # 🚀 Tanish Jaswal — Portfolio
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://tanish-portfolio.tanishjaswal56.workers.dev)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-tanishjaswal.tech-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://tanishjaswal.tech)
 [![GitHub](https://img.shields.io/badge/GitHub-WARRIORXR-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/WARRIORXR/portfolio)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![Cloudflare](https://img.shields.io/badge/Deployed%20on-Cloudflare%20Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://tanish-portfolio.tanishjaswal56.workers.dev)
+[![Cloudflare](https://img.shields.io/badge/Deployed%20on-Cloudflare%20Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://tanishjaswal.tech)
 
 > **AI/ML & Computer Science Student** · Python Developer · Machine Learning · Deep Learning · Full-Stack Systems
 
-🌐 **Live Site:** [https://tanish-portfolio.tanishjaswal56.workers.dev/](https://tanish-portfolio.tanishjaswal56.workers.dev/)
+🌐 **Live Site:** [https://tanishjaswal.tech/](https://tanishjaswal.tech/) *(Preview: [https://tanish-portfolio.tanishjaswal56.workers.dev/](https://tanish-portfolio.tanishjaswal56.workers.dev/))*
 
 A modern, high-performance portfolio featuring an interactive **Three.js / 3D Skyline**, animated glassmorphism cards, dynamic GitHub insights, PWA offline capabilities, and a decoupled architecture deployed on **Cloudflare Workers**.
 
@@ -218,10 +218,12 @@ npm run deploy
 ```
 
 ### Configuration Details
+- **Primary Domain**: `https://tanishjaswal.tech`
+- **Fallback / Preview**: `https://tanish-portfolio.tanishjaswal56.workers.dev`
 - **Configuration File**: [`wrangler.toml`](wrangler.toml)
 - **SPA Fallback**: Configured via `[assets] not_found_handling = "single-page-application"`.
 - **Security Headers**: Specified in [`public/_headers`](public/_headers), including `X-Content-Type-Options`, `X-Frame-Options`, and `Permissions-Policy`.
-- **Custom Domains**: In your Cloudflare Dashboard, navigate to **Workers & Pages** → `tanish-portfolio` → **Settings** → **Domains & Routes** to attach a custom domain.
+- **Custom Domains**: In your Cloudflare Dashboard, navigate to **Workers & Pages** → `tanish-portfolio` → **Settings** → **Domains & Routes** to attach `tanishjaswal.tech`.
 
 ---
 

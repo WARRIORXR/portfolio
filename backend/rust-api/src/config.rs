@@ -74,7 +74,7 @@ impl Config {
 
         let allowed_origins = env_string(
             "ALLOWED_ORIGINS",
-            "http://localhost:5173,http://localhost:5199,http://127.0.0.1:5173,http://127.0.0.1:5199",
+            "http://localhost:5173,http://localhost:5199,http://127.0.0.1:5173,http://127.0.0.1:5199,https://tanishjaswal.tech,https://www.tanishjaswal.tech,https://tanish-portfolio.tanishjaswal56.workers.dev",
         )
         .split(',')
         .map(|origin| origin.trim().to_string())
