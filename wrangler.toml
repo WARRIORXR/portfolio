@@ -1,0 +1,9 @@
+# Cloudflare Pages project configuration
+# https://developers.cloudflare.com/pages/configuration/wrangler-configuration/
+
+name = "tanish-portfolio"
+compatibility_date = "2026-10-23"
+
+# Pages-specific settings
+[pages]
+build_output_dir = "dist"
