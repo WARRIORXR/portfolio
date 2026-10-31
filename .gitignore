@@ -21,3 +21,9 @@ __pycache__/
 
 # Cloudflare local dev
 .wrangler/
+
+# Runtime contact store
+backend/data/
+
+# Rust (any depth)
+target/
