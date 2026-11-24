@@ -9,12 +9,16 @@ export default function Footer() {
   }
 
   return (
-    <footer className="border-t border-white/[0.08] px-6 py-12">
+    <footer className="border-t border-white/[0.08] px-6 py-14 bg-black/40">
       <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-        <div className="text-center sm:text-left">
-          <div className="text-sm font-medium tracking-tight text-white">Tanish Jaswal</div>
-          <div className="mt-1 text-xs text-white/40">
-            &copy; {year} &middot; Punjab, India
+        <div className="text-center sm:text-left space-y-1">
+          <div className="text-sm font-semibold tracking-tight text-white flex items-center justify-center sm:justify-start gap-2">
+            <span>Tanish Jaswal</span>
+            <span className="text-white/20">&middot;</span>
+            <span className="text-xs text-white/50 font-normal">Data Analyst &amp; AI/ML</span>
+          </div>
+          <div className="text-xs text-white/40">
+            &copy; {year} &middot; Designed for simplicity, performance, and clarity. Deployed on Cloudflare.
           </div>
         </div>
 
@@ -25,7 +29,7 @@ export default function Footer() {
               href={link.href}
               {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               aria-label={link.label}
-              className="link-underline text-xs text-white/50 hover:text-white transition-colors"
+              className="text-xs text-white/50 hover:text-white transition-colors"
             >
               {link.label}
             </a>
@@ -33,9 +37,10 @@ export default function Footer() {
           <button
             onClick={scrollToTop}
             aria-label="Back to top"
-            className="ml-2 p-1.5 text-white/40 hover:text-white transition-colors"
+            className="ml-2 inline-flex items-center gap-1 text-xs text-white/40 hover:text-white transition-colors border border-white/10 rounded-full px-2.5 py-1"
           >
-            <ArrowUp className="w-4 h-4" />
+            <span>Top</span>
+            <ArrowUp className="w-3 h-3" />
           </button>
         </div>
       </div>

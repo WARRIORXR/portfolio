@@ -13,11 +13,14 @@ const ContributionSkyline = lazy(() => import('../ui/contribution-skyline'))
 function Stat({ value, suffix, label }) {
   const { ref, inView } = useInView({ triggerOnce: true })
   return (
-    <div ref={ref}>
-      <div className="text-2xl sm:text-3xl font-semibold tracking-tight text-white tabular-nums">
+    <div
+      ref={ref}
+      className="glass-card rounded-2xl p-4 sm:p-5 flex flex-col justify-between"
+    >
+      <div className="text-2xl sm:text-3xl font-bold tracking-tight text-white tabular-nums">
         {inView ? <CountUp end={value} duration={1.6} suffix={suffix} /> : `0${suffix}`}
       </div>
-      <div className="mt-1 text-xs text-white/40">{label}</div>
+      <div className="mt-2 text-xs text-white/50 font-medium">{label}</div>
     </div>
   )
 }
@@ -29,30 +32,37 @@ export default function About() {
     <SectionWrapper id="about">
       <SectionTitle
         index="01"
-        label="About"
+        label="Background"
         title="Turning data into decisions."
-        subtitle={personalInfo.title}
+        subtitle="Bridging Computer Science theory and real-world analytical systems."
       />
 
-      <div className="grid gap-12 md:grid-cols-5 md:gap-16">
+      <div className="grid gap-10 md:grid-cols-5 md:gap-12">
         {/* Bio + contact rows */}
         <div className="md:col-span-3 space-y-8">
           <SectionItem>
-            <p className="text-base sm:text-lg leading-relaxed text-white/70">{personalInfo.bio}</p>
+            <div className="glass-card rounded-2xl p-6 sm:p-8 space-y-4">
+              <div className="flex items-center gap-2">
+                <span className="mono-label text-[10px] text-emerald-400/90">Personal Narrative</span>
+              </div>
+              <p className="text-base sm:text-lg leading-relaxed text-white/80">
+                {personalInfo.bio}
+              </p>
+            </div>
           </SectionItem>
 
           <SectionItem>
-            <div className="flex flex-col divide-y divide-white/[0.08] border-y border-white/[0.08]">
+            <div className="glass-card rounded-2xl p-5 divide-y divide-white/[0.08]">
               <a
                 href={gmailComposeUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between py-3.5 text-sm"
+                className="group flex items-center justify-between py-3 text-sm"
               >
-                <span className="flex items-center gap-3 text-white/40">
-                  <Mail className="w-3.5 h-3.5" /> Gmail
+                <span className="flex items-center gap-3 text-white/50 group-hover:text-white/80 transition-colors">
+                  <Mail className="w-4 h-4 text-white/40" /> Email
                 </span>
-                <span className="flex items-center gap-1.5 text-white/70 group-hover:text-white transition-colors">
+                <span className="flex items-center gap-1.5 text-white/80 group-hover:text-white transition-colors">
                   {personalInfo.email}
                   <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </span>
@@ -61,41 +71,41 @@ export default function About() {
                 href={whatsappUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between py-3.5 text-sm"
+                className="group flex items-center justify-between py-3 text-sm"
               >
-                <span className="flex items-center gap-3 text-white/40">
-                  <Phone className="w-3.5 h-3.5" /> WhatsApp
+                <span className="flex items-center gap-3 text-white/50 group-hover:text-white/80 transition-colors">
+                  <Phone className="w-4 h-4 text-white/40" /> WhatsApp
                 </span>
-                <span className="flex items-center gap-1.5 text-white/70 group-hover:text-white transition-colors">
+                <span className="flex items-center gap-1.5 text-white/80 group-hover:text-white transition-colors">
                   {personalInfo.phone}
                   <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </span>
               </a>
-              <div className="flex items-center justify-between py-3.5 text-sm">
-                <span className="flex items-center gap-3 text-white/40">
-                  <MapPin className="w-3.5 h-3.5" /> Location
+              <div className="flex items-center justify-between py-3 text-sm">
+                <span className="flex items-center gap-3 text-white/50">
+                  <MapPin className="w-4 h-4 text-white/40" /> Location
                 </span>
-                <span className="text-white/70">{personalInfo.location}</span>
+                <span className="text-white/80">{personalInfo.location}</span>
               </div>
               <a
                 href={personalInfo.resume}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between py-3.5 text-sm"
+                className="group flex items-center justify-between py-3 text-sm font-medium text-emerald-400/90 hover:text-emerald-300 transition-colors"
               >
-                <span className="flex items-center gap-3 text-white/40">
-                  <FileText className="w-3.5 h-3.5" /> Resume
+                <span className="flex items-center gap-3">
+                  <FileText className="w-4 h-4" /> Resume PDF
                 </span>
-                <span className="flex items-center gap-1.5 text-white/70 group-hover:text-white transition-colors">
+                <span className="flex items-center gap-1.5">
                   View Data Analyst Resume
-                  <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </span>
               </a>
             </div>
           </SectionItem>
 
           <SectionItem>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {stats.map((s) => (
                 <Stat key={s.label} value={s.value} suffix={s.suffix} label={s.label} />
               ))}
@@ -104,46 +114,66 @@ export default function About() {
         </div>
 
         {/* Education + experience */}
-        <div className="md:col-span-2 space-y-10">
+        <div className="md:col-span-2 space-y-6">
           <SectionItem>
-            <h3 className="mono-label mb-5">Education</h3>
-            <div className="border-l border-white/[0.08] pl-5 space-y-1.5">
-              <div className="text-sm font-medium text-white">{education.degree}</div>
-              <div className="text-sm text-white/50">
-                {education.field} &middot; {education.institution}
+            <div className="glass-card rounded-2xl p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="mono-label text-[10px]">Education</h3>
+                <span className="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+                  2023 &ndash; 2027
+                </span>
               </div>
-              <div className="text-xs text-white/40">
-                {education.location} &middot; Class of {education.expectedGraduation}
+              <div className="space-y-1.5 pt-1">
+                <div className="text-base font-semibold text-white">{education.degree}</div>
+                <div className="text-sm text-white/60">
+                  {education.field} &middot; {education.institution}
+                </div>
+                <div className="text-xs text-white/40">
+                  {education.location} &middot; Class of {education.expectedGraduation}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-2 pt-2">
-                {education.coursework.map((c) => (
-                  <span
-                    key={c}
-                    className="inline-flex items-center rounded-md border border-white/[0.08] bg-white/[0.03] px-2 py-0.5 text-xs text-white/60"
-                  >
-                    {c}
-                  </span>
-                ))}
+              <div className="pt-2 border-t border-white/[0.08]">
+                <div className="text-[11px] text-white/40 font-mono mb-2 uppercase">Key Coursework</div>
+                <div className="flex flex-wrap gap-1.5">
+                  {education.coursework.map((c) => (
+                    <span
+                      key={c}
+                      className="inline-flex items-center rounded-md border border-white/[0.08] bg-white/[0.03] px-2 py-0.5 text-xs text-white/60"
+                    >
+                      {c}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </SectionItem>
 
           <SectionItem>
-            <h3 className="mono-label mb-5">Experience</h3>
-            <div className="space-y-8">
+            <div className="glass-card rounded-2xl p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="mono-label text-[10px]">Work Experience</h3>
+                <span className="text-[11px] font-mono text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded-full">
+                  Internship
+                </span>
+              </div>
               {experience.map((job) => (
-                <div key={job.company} className="border-l border-white/[0.08] pl-5 space-y-2">
-                  <div className="flex items-baseline justify-between gap-4">
-                    <div className="text-sm font-medium text-white">
-                      {job.role} &middot; {job.company}
+                <div key={job.company} className="space-y-2 pt-1">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <div className="text-base font-semibold text-white">
+                      {job.role}
                     </div>
+                    <div className="text-xs font-mono text-white/40 shrink-0">{job.period}</div>
                   </div>
-                  <div className="text-xs text-white/40">{job.period}</div>
-                  {job.description.map((line) => (
-                    <p key={line} className="text-sm leading-relaxed text-white/55">
-                      {line}
-                    </p>
-                  ))}
+                  <div className="text-xs text-white/50">
+                    {job.company} &middot; {job.location}
+                  </div>
+                  <ul className="space-y-1.5 pt-2 text-xs leading-relaxed text-white/65 list-disc list-inside">
+                    {job.description.map((line) => (
+                      <li key={line} className="text-white/60">
+                        {line}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ))}
             </div>
