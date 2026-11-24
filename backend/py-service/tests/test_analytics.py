@@ -10,7 +10,7 @@ def test_summarize_real_profile() -> None:
     document = load_profile()
     summary = summarize(document)
 
-    assert summary["totals"]["skills"] == len(document["skills"]) == 15
+    assert summary["totals"]["skills"] == len(document["skills"]) == 16
     assert summary["totals"]["categories"] == 3
     assert summary["totals"]["declaredCategories"] == 3
     assert summary["totals"]["coursework"] == 6

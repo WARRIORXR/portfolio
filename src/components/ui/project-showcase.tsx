@@ -221,3 +221,5 @@ export function ProjectShowcase({ projects, title = "Selected Work", className =
     </section>
   )
 }
+
+export default ProjectShowcase

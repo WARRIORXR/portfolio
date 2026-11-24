@@ -109,13 +109,13 @@ def test_health(client: TestClient) -> None:
 def test_profile_and_analytics(client: TestClient) -> None:
     document = client.get("/profile").json()
     assert document["profile"]["name"] == "Tanish Jaswal"
-    assert len(document["skills"]) == 15
+    assert len(document["skills"]) == 16
 
     personal = client.get("/profile/personal").json()
     assert personal["githubUsername"] == "WARRIORXR"
 
     summary = client.get("/analytics/summary").json()
-    assert summary["totals"]["skills"] == 15
+    assert summary["totals"]["skills"] == 16
     assert summary["focus"] == "python"
 
 

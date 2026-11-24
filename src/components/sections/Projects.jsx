@@ -1,15 +1,16 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, lazy, Suspense } from 'react'
 import { ArrowUpRight, ExternalLink, Sparkles, FolderGit2, Layers } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Github } from '../ui/BrandIcons'
-import { ProjectShowcase } from '../ui/project-showcase'
-import ClothingRailHero from '../ui/product-rail-gallery'
 import { useGithubRepos } from '../../hooks/useGithubRepos'
 import { SectionWrapper, SectionItem, SectionTitle } from '../shared/SectionWrapper'
 import ErrorBoundary from '../shared/ErrorBoundary'
 import { personalInfo } from '../../data/personalInfo'
 import { featuredProjects } from '../../data/featuredProjects'
 import { DataAnalyticsWidget } from '../ui/DataAnalyticsWidget'
+
+const ClothingRailHero = lazy(() => import('../ui/product-rail-gallery'))
+const ProjectShowcase = lazy(() => import('../ui/project-showcase'))
 
 const MAX_PROJECTS = 12
 
@@ -254,14 +255,25 @@ export default function Projects() {
           >
             <SectionItem>
               <div className="glass-card rounded-3xl p-4 sm:p-8 border border-slate-200/80 dark:border-white/[0.08] shadow-sm overflow-hidden">
-                <ClothingRailHero
-                  items={PROJECT_RAIL_ITEMS}
-                  eyebrow="Interactive 3D Engineering Showcase"
-                  heading="Project Clothing Rail"
-                  caption="Hover over hangers to tilt • Click any project to open full architecture breakdown • Rotate 360°"
-                  autoplay={false}
-                  hanger="wood"
-                />
+                <Suspense
+                  fallback={
+                    <div className="flex items-center justify-center min-h-[380px]">
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="w-8 h-8 rounded-full border-2 border-emerald-500/20 border-t-emerald-500 animate-spin" />
+                        <span className="text-xs font-mono text-neutral-500 dark:text-white/40">Loading 3D Project Rail…</span>
+                      </div>
+                    </div>
+                  }
+                >
+                  <ClothingRailHero
+                    items={PROJECT_RAIL_ITEMS}
+                    eyebrow="Interactive 3D Engineering Showcase"
+                    heading="Project Clothing Rail"
+                    caption="Hover over hangers to tilt • Click any project to open full architecture breakdown • Rotate 360°"
+                    autoplay={false}
+                    hanger="wood"
+                  />
+                </Suspense>
               </div>
             </SectionItem>
           </motion.div>
@@ -279,7 +291,9 @@ export default function Projects() {
                 <SkeletonList />
               ) : (
                 <ErrorBoundary>
-                  <ProjectShowcase projects={items} title="All Public Repositories" />
+                  <Suspense fallback={<SkeletonList />}>
+                    <ProjectShowcase projects={items} title="All Public Repositories" />
+                  </Suspense>
                 </ErrorBoundary>
               )}
             </SectionItem>

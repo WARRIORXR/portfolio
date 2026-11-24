@@ -1,8 +1,11 @@
+import { lazy, Suspense } from 'react'
 import { ArrowUp } from 'lucide-react'
-import StarburstThanksFooter from '../ui/starburst-thanks-footer'
 import { personalInfo } from '../../data/personalInfo'
 import { useTheme } from '../../context/ThemeContext'
 import { whatsappUrl } from '../../lib/links'
+import ErrorBoundary from '../shared/ErrorBoundary'
+
+const StarburstThanksFooter = lazy(() => import('../ui/starburst-thanks-footer'))
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -20,22 +23,26 @@ export default function Footer() {
 
   return (
     <footer className="relative border-t border-slate-200/80 dark:border-white/[0.08]">
-      <StarburstThanksFooter
-        name={personalInfo.name}
-        thanks={['Thank you', 'Dhanyawad', 'Shukriya', 'Merci', 'Gracias', 'Arigato', 'Danke']}
-        tagline="for stopping by"
-        signoff="Turning raw data into decisive impact • Class of '27"
-        links={links}
-        email={personalInfo.email}
-        phone={personalInfo.phone}
-        height="auto"
-        background={isDark ? '#000000' : '#fafafa'}
-        ink={isDark ? '#ffffff' : '#0f172a'}
-        accent={isDark ? '#34d399' : '#059669'}
-        grain={isDark ? 0.12 : 0.03}
-        starPoints={10}
-        className="pt-12 pb-8"
-      />
+      <ErrorBoundary fallback={<div className="h-24" />}>
+        <Suspense fallback={<div className="h-64 flex items-center justify-center animate-pulse text-xs font-mono text-neutral-400">Loading sign-off…</div>}>
+          <StarburstThanksFooter
+            name={personalInfo.name}
+            thanks={['Thank you', 'Dhanyawad', 'Shukriya', 'Merci', 'Gracias', 'Arigato', 'Danke']}
+            tagline="for stopping by"
+            signoff="Turning raw data into decisive impact • Class of '27"
+            links={links}
+            email={personalInfo.email}
+            phone={personalInfo.phone}
+            height="auto"
+            background={isDark ? '#000000' : '#fafafa'}
+            ink={isDark ? '#ffffff' : '#0f172a'}
+            accent={isDark ? '#34d399' : '#059669'}
+            grain={isDark ? 0.12 : 0.03}
+            starPoints={10}
+            className="pt-12 pb-8"
+          />
+        </Suspense>
+      </ErrorBoundary>
 
       <div className="border-t border-slate-200/60 dark:border-white/[0.06] px-6 py-6 bg-slate-50/50 dark:bg-black/60">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500 dark:text-white/40">

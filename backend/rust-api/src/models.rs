@@ -181,7 +181,7 @@ mod tests {
     fn embedded_profile_matches_the_rust_types() {
         let document = ProfileDocument::embedded().expect("embedded profile must parse");
         assert_eq!(document.profile.github_username, "WARRIORXR");
-        assert_eq!(document.skills.len(), 15);
+        assert_eq!(document.skills.len(), 16);
         assert_eq!(document.skill_categories.len(), 4);
         assert_eq!(document.stats.len(), 4);
         assert!(!document.experience.is_empty());

@@ -28,14 +28,18 @@ fn app() -> Router {
     build_router(AppState::new(config).expect("state must build from the shared profile"))
 }
 
-async fn send(request: Request<Body>) -> (StatusCode, Value) {
-    let response: Response = app().oneshot(request).await.expect("router responds");
+async fn send_on(router: &Router, request: Request<Body>) -> (StatusCode, Value) {
+    let response: Response = router.clone().oneshot(request).await.expect("router responds");
     let status = response.status();
     let bytes = axum::body::to_bytes(response.into_body(), usize::MAX)
         .await
         .expect("body is readable");
     let json = serde_json::from_slice(&bytes).unwrap_or(Value::Null);
     (status, json)
+}
+
+async fn send(request: Request<Body>) -> (StatusCode, Value) {
+    send_on(&app(), request).await
 }
 
 fn get(uri: &str) -> Request<Body> {
@@ -62,7 +66,7 @@ async fn health_reports_gateway_and_downstream_state() {
     assert_eq!(body["status"], "ok");
     assert_eq!(body["service"], "rust-api");
     assert_eq!(body["profile"]["name"], "Tanish Jaswal");
-    assert_eq!(body["profile"]["skills"], 15);
+    assert_eq!(body["profile"]["skills"], 16);
     assert_eq!(body["python"]["reachable"], false);
     assert_eq!(body["static"]["ready"], false);
 }
@@ -72,7 +76,7 @@ async fn profile_routes_serve_the_shared_document() {
     let (status, body) = send(get("/api/profile")).await;
     assert_eq!(status, StatusCode::OK);
     assert_eq!(body["profile"]["githubUsername"], "WARRIORXR");
-    assert_eq!(body["skills"].as_array().expect("skills array").len(), 15);
+    assert_eq!(body["skills"].as_array().expect("skills array").len(), 16);
 
     let (status, body) = send(get("/api/profile/personal")).await;
     assert_eq!(status, StatusCode::OK);
@@ -84,7 +88,7 @@ async fn profile_routes_serve_the_shared_document() {
 
     let (status, body) = send(get("/api/stats")).await;
     assert_eq!(status, StatusCode::OK);
-    assert_eq!(body["counts"]["skills"], 15);
+    assert_eq!(body["counts"]["skills"], 16);
     assert_eq!(body["counts"]["categories"], 3);
     assert_eq!(body["counts"]["categoriesCovered"], 3);
     assert_eq!(body["declared"].as_array().expect("stats").len(), 4);
@@ -148,6 +152,7 @@ async fn valid_contact_reports_the_unreachable_data_service() {
 
 #[tokio::test]
 async fn contact_is_rate_limited_per_client() {
+    let router = app();
     let valid = serde_json::json!({
         "name": "Recruiter",
         "email": "recruiter@example.com",
@@ -158,11 +163,11 @@ async fn contact_is_rate_limited_per_client() {
     // The limiter counts before the upstream call, so the first CONTACT_LIMIT
     // attempts reach the (unreachable) data service and the next one is 429.
     for _ in 0..CONTACT_LIMIT {
-        let (status, _) = send(post_json("/api/contact", &valid)).await;
+        let (status, _) = send_on(&router, post_json("/api/contact", &valid)).await;
         assert_ne!(status, StatusCode::TOO_MANY_REQUESTS);
     }
 
-    let (status, body) = send(post_json("/api/contact", &valid)).await;
+    let (status, body) = send_on(&router, post_json("/api/contact", &valid)).await;
     assert_eq!(status, StatusCode::TOO_MANY_REQUESTS);
     assert_eq!(body["error"]["kind"], "rate_limited");
 }

@@ -47,7 +47,7 @@
     }
   ],
   "stats": [
-    { "label": "Skills Mastered", "value": 15, "suffix": "+" },
+    { "label": "Skills Mastered", "value": 16, "suffix": "+" },
     { "label": "Projects Built", "value": 5, "suffix": "+" },
     { "label": "Internship Weeks", "value": 6, "suffix": "" },
     { "label": "Algorithms Explored", "value": 10, "suffix": "+" }

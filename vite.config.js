@@ -4,6 +4,16 @@ import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 
 export default defineConfig({
+  server: {
+    watch: {
+      ignored: [
+        '**/backend/**',
+        '**/target/**',
+        '**/.venv/**',
+        '**/.git/**',
+      ],
+    },
+  },
   plugins: [
     react(),
     VitePWA({
@@ -13,9 +23,9 @@ export default defineConfig({
       manifest: {
         name: 'Tanish Jaswal — Portfolio',
         short_name: 'TJ Portfolio',
-        description: 'AI/ML & Computer Science Student Portfolio',
-        theme_color: '#000000',
-        background_color: '#000000',
+        description: 'Data Analyst & AI/ML Portfolio',
+        theme_color: '#fafafa',
+        background_color: '#fafafa',
         display: 'standalone',
         icons: [
           { src: 'favicon.svg', sizes: 'any', type: 'image/svg+xml' }
@@ -31,7 +41,8 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          motion: ['framer-motion']
+          motion: ['framer-motion'],
+          icons: ['lucide-react'],
         }
       }
     }
