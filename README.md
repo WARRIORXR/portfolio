@@ -6,7 +6,7 @@
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![Cloudflare](https://img.shields.io/badge/Deployed%20on-Cloudflare%20Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://tanishjaswal.tech)
 
-> **AI/ML & Computer Science Student** · Python Developer · Machine Learning · Deep Learning · Full-Stack Systems
+> **Data Analyst & AI/ML Enthusiast** · Python Developer · SQL Specialist · Interactive Dashboards · Machine Learning
 
 🌐 **Live Site:** [https://tanishjaswal.tech/](https://tanishjaswal.tech/) *(Preview: [https://tanish-portfolio.tanishjaswal56.workers.dev/](https://tanish-portfolio.tanishjaswal56.workers.dev/))*
 
@@ -22,7 +22,7 @@ A modern, high-performance portfolio featuring an interactive **Three.js / 3D Sk
 - **Smooth Animations** — Framer Motion scroll reveals, GSAP transitions, and interactive tilt effects.
 - **Dual-Mode Architecture** — runs standalone as an ultra-fast static SPA on Cloudflare edge, with graceful fallback if the backend gateway is offline.
 - **Full-Stack API Gateway** — high-throughput Rust Axum gateway (`backend/rust-api`) providing caching, CORS control, and rate limiting.
-- **Python Analytics Service** — FastAPI backend (`backend/py-service`) performing resume/skill aggregation, analytics, and contact messaging.
+- **Dual Data Service Implementations** — choice of a Python FastAPI backend (`backend/py-service`) or a high-performance native Rust rewrite (`backend/py-service-rs`) for resume analytics, GitHub streak calculations, and contact handling.
 - **Contact Handling** — validated form submission supporting both direct EmailJS delivery and server-side SMTP / queue processing.
 - **PWA Ready** — installable progressive web app with service worker caching via `vite-plugin-pwa`.
 - **Security Hardened** — HTTP security headers (`_headers`) enforcing strict CSP, frame options, and referrer policies.
@@ -39,7 +39,8 @@ A modern, high-performance portfolio featuring an interactive **Three.js / 3D Sk
 | **Hosting & CDN** | Cloudflare Workers (Static Assets with SPA routing) |
 | **Edge Tooling** | Cloudflare Wrangler v4, Model Context Protocol (MCP) |
 | **API Gateway (Optional)** | Rust, Axum, Tokio, Tower-HTTP (`backend/rust-api`) |
-| **Data Service (Optional)**| Python 3, FastAPI, Uvicorn, Pytest (`backend/py-service`) |
+| **Data Service (Python)**| Python 3, FastAPI, Uvicorn, Pytest (`backend/py-service`) |
+| **Data Service (Rust)**  | Rust, Axum, Tokio, Serde (`backend/py-service-rs`) |
 | **PWA & Icons** | Vite PWA, Lucide React, React Icons |
 | **Notifications** | React Hot Toast |
 
@@ -58,8 +59,9 @@ flowchart TD
     end
 
     subgraph OptionalBackend ["Backend Services (Self-Hosted / VPS)"]
-        Rust["Rust Axum Gateway (:8080)\n• In-memory Cache\n• Rate Limiter\n• CORS & Reverse Proxy"]
-        Python["Python FastAPI (:8000)\n• Resume Analytics\n• Contact Delivery (SMTP)\n• GitHub Metrics"]
+        RustGateway["Rust Axum Gateway (:8080)\n• In-memory Cache\n• Rate Limiter\n• CORS & Reverse Proxy"]
+        PythonService["Python FastAPI (:8000)\n• Resume Analytics\n• Contact Delivery (SMTP)\n• GitHub Metrics"]
+        RustService["Rust py-service-rs (:8000)\n• Native Axum data service\n• Zero-dependency binary"]
     end
 
     subgraph External ["External Services"]
@@ -68,9 +70,10 @@ flowchart TD
     end
 
     CF -->|"Serves static bundle"| Browser
-    Browser -.->|"Optional: VITE_API_BASE_URL"| Rust
-    Rust -->|"Proxies analytics / contact"| Python
-    Rust -->|"Caches API calls"| GitHub
+    Browser -.->|"Optional: VITE_API_BASE_URL"| RustGateway
+    RustGateway -->|"Proxies analytics / contact"| PythonService
+    RustGateway -.->|"Alternative: Pure Rust stack"| RustService
+    RustGateway -->|"Caches API calls"| GitHub
     Browser -->|"Fallback if gateway offline"| GitHub
     Browser -->|"Fallback form delivery"| EmailJS
 ```
@@ -122,8 +125,9 @@ Open `http://localhost:5173` in your browser.
 
 ## 💻 Full-Stack Development (Optional)
 
-To run the complete system with the local Rust gateway and Python analytics service:
+The portfolio can run in standalone mode (no backend needed) or with a high-throughput local backend gateway. You can choose between the **Python data service** or the **native Rust data service (`py-service-rs`)**:
 
+### Option A: With Python Data Service
 ```bash
 # 1. Setup Python virtual environment & install requirements
 npm run setup:py
@@ -135,6 +139,18 @@ npm run dev:py
 npm run dev:api
 
 # 4. Start frontend connected to gateway
+npm run dev
+```
+
+### Option B: With Pure Rust Data Service (`py-service-rs`)
+```bash
+# 1. Start the Rust data service (port 8000)
+cargo run --manifest-path backend/py-service-rs/Cargo.toml
+
+# 2. Start the Rust API gateway (port 8080)
+npm run dev:api
+
+# 3. Start frontend connected to gateway
 npm run dev
 ```
 
@@ -166,6 +182,7 @@ portfolio/
 │   └── mcp.json                # Cloudflare Model Context Protocol (MCP) config
 ├── backend/
 │   ├── py-service/             # FastAPI: analytics, GitHub streaks & contact delivery
+│   ├── py-service-rs/          # Native Rust Axum data service (high-performance drop-in)
 │   ├── rust-api/               # Axum gateway: /api/*, rate limiting, caching & proxy
 │   └── README.md               # Backend architecture & API specifications
 ├── public/

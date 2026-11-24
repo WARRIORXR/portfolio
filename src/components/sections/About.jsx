@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { Mail, MapPin, Phone, ArrowUpRight } from 'lucide-react'
+import { Mail, MapPin, Phone, ArrowUpRight, FileText } from 'lucide-react'
 import CountUp from 'react-countup'
 import { useInView } from 'react-intersection-observer'
 import { SectionWrapper, SectionItem, SectionTitle } from '../shared/SectionWrapper'
@@ -30,7 +30,7 @@ export default function About() {
       <SectionTitle
         index="01"
         label="About"
-        title="Building things that learn."
+        title="Turning data into decisions."
         subtitle={personalInfo.title}
       />
 
@@ -77,6 +77,20 @@ export default function About() {
                 </span>
                 <span className="text-white/70">{personalInfo.location}</span>
               </div>
+              <a
+                href={personalInfo.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between py-3.5 text-sm"
+              >
+                <span className="flex items-center gap-3 text-white/40">
+                  <FileText className="w-3.5 h-3.5" /> Resume
+                </span>
+                <span className="flex items-center gap-1.5 text-white/70 group-hover:text-white transition-colors">
+                  View Data Analyst Resume
+                  <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </span>
+              </a>
             </div>
           </SectionItem>
 
@@ -101,9 +115,12 @@ export default function About() {
               <div className="text-xs text-white/40">
                 {education.location} &middot; Class of {education.expectedGraduation}
               </div>
-              <div className="flex flex-wrap gap-x-3 gap-y-1 pt-2">
+              <div className="flex flex-wrap gap-2 pt-2">
                 {education.coursework.map((c) => (
-                  <span key={c} className="text-xs text-white/40">
+                  <span
+                    key={c}
+                    className="inline-flex items-center rounded-md border border-white/[0.08] bg-white/[0.03] px-2 py-0.5 text-xs text-white/60"
+                  >
                     {c}
                   </span>
                 ))}

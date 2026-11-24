@@ -1,14 +1,14 @@
-# Backend — Rust gateway + Python data service
+# Backend — Rust gateway + Data service (Python / Rust)
 
 The portfolio's site logic was moved out of the browser into two services:
 
 ```
-        ┌──────────────┐   /api/*    ┌────────────────────────┐   HTTP   ┌──────────────────────┐
-        │  React (Vite)│ ──────────► │  Rust gateway :8080    │ ───────► │  Python service :8000 │
-        │  browser     │ ◄────────── │  backend/rust-api      │ ◄─────── │  backend/py-service   │
-        └──────────────┘   JSON      └────────────────────────┘    JSON  └──────────────────────┘
-                 │                              │                                 │
-                 │ fallback when the gateway    │ GitHub REST (cached)            │ SMTP / JSONL queue
+        ┌──────────────┐   /api/*    ┌────────────────────────┐   HTTP   ┌───────────────────────────────────┐
+        │  React (Vite)│ ──────────► │  Rust gateway :8080    │ ───────► │  Python service :8000 (py-service)│
+        │  browser     │ ◄────────── │  backend/rust-api      │ ◄─────── │  OR Rust port :8000 (py-service-rs)
+        └──────────────┘   JSON      └────────────────────────┘    JSON  └───────────────────────────────────┘
+                 │                              │                                         │
+                 │ fallback when the gateway    │ GitHub REST (cached)                    │ SMTP / JSONL queue
                  └──── is unreachable ─────────► api.github.com, jogruber mirror
 ```
 
@@ -16,10 +16,12 @@ The portfolio's site logic was moved out of the browser into two services:
   embedded resume data, fetches and caches GitHub repositories and contributions, validates and
   rate limits contact submissions, applies CORS, and serves the built frontend (`dist/`) with SPA
   fallback in production.
-* **Python service** (`backend/py-service`, FastAPI) — owns the analytics (skills/resume metrics,
-  contribution streaks, language mix) and contact delivery (SMTP, or a JSONL queue in dry-run mode).
+* **Data service** — provides analytics (skills/resume metrics, contribution streaks, language mix)
+  and contact handling. Two interchangeable implementations are provided:
+  * **Python service** (`backend/py-service`, FastAPI) — default Python service with full SMTP support.
+  * **Rust service** (`backend/py-service-rs`, Axum) — drop-in high-performance native Rust port.
 * **Frontend** — talks to the gateway when `VITE_API_BASE_URL` points at it, and falls back to
-  calling GitHub directly when the gateway is absent or down, so the static Vercel deploy keeps
+  calling GitHub directly when the gateway is absent or down, so the static Cloudflare Workers deploy keeps
   working.
 
 ## Single source of truth
@@ -30,7 +32,8 @@ Resume, skills and stats live in [`shared/profile.json`](../shared/profile.json)
 |---|---|
 | React app | imported by `src/data/personalInfo.js` and `src/data/skills.js` |
 | Rust gateway | embedded at compile time (`include_str!`) and served from memory |
-| Python service | read at runtime (`GET /profile`, analytics) |
+| Python service (`py-service`) | read at runtime (`GET /profile`, analytics) |
+| Rust data service (`py-service-rs`) | read and cached in memory at runtime |
 
 Edit the JSON only — all three pick the change up automatically, and a schema drift fails the Rust
 build/startup instead of silently serving wrong data.
@@ -72,11 +75,17 @@ generic gateway error.
 
 ```bash
 npm install                 # frontend
-npm run setup:py            # creates backend/py-service/.venv and installs requirements
 
+# Option A: Start Python service
+npm run setup:py            # creates backend/py-service/.venv and installs requirements
 npm run dev:py              # Python service on :8000
-npm run dev:api             # Rust gateway on :8080  (needs a working Rust linker, see below)
-npm run dev                 # Vite on :5173/5199
+
+# Option B: Start Rust data service (py-service-rs)
+cargo run --manifest-path backend/py-service-rs/Cargo.toml  # Rust data service on :8000
+
+# Start gateway and frontend
+npm run dev:api             # Rust gateway on :8080 (needs a working Rust linker, see below)
+npm run dev                 # Vite on :5173
 ```
 
 Point the frontend at the gateway with `VITE_API_BASE_URL=http://127.0.0.1:8080` (see

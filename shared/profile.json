@@ -9,7 +9,7 @@
       "Machine Learning",
       "Dashboard Builder"
     ],
-    "bio": "B.Tech Computer Science student at IKGPTU who builds data-driven products end to end: gather data, analyze it, visualize it and deploy it. Built live analytics dashboards (movie ROI analysis, spending trends), a real-time journaling app with a PostgreSQL backend, and an AWS serverless air-quality alert system for schools. Completed an AI/ML internship at Netmax. Seeking a Data Analyst internship to turn raw data into decisions.",
+    "bio": "B.Tech Computer Science student (2027) at IKGPTU who builds data-driven products end to end: gather data, analyze it, visualize it, and deploy it. Built live analytics dashboards (movie ROI analysis, spending trends), a real-time journaling app with a PostgreSQL backend, and an AWS serverless air-quality alert system for schools. Completed an AI/ML internship at Netmax. Seeking a Data Analyst internship to turn raw data into decisions.",
     "email": "tanishjaswal56@gmail.com",
     "phone": "+91 88727 94962",
     "location": "Punjab, India",
@@ -25,12 +25,12 @@
     "location": "Kapurthala, Punjab",
     "expectedGraduation": "2027",
     "coursework": [
-      "Artificial Intelligence",
-      "Machine Learning",
-      "Cloud Computing",
       "Data Mining",
-      "Compiler Design",
-      "Database Management Systems"
+      "Machine Learning",
+      "Artificial Intelligence",
+      "Database Management Systems",
+      "Cloud Computing",
+      "Compiler Design"
     ]
   },
   "experience": [
@@ -40,8 +40,8 @@
       "location": "Chandigarh",
       "period": "June 2025 (6 weeks)",
       "description": [
-        "Completed a structured 6-week internship focused on practical AI/ML concepts and Python-based workflows.",
-        "Strengthened skills in data preparation, machine learning experimentation, model evaluation, and technical documentation."
+        "Worked on Python-based data preparation, machine learning experiments, and model evaluation during a 6-week internship.",
+        "Documented experiments, methods, and findings in clear technical write-ups."
       ],
       "type": "internship"
     }
@@ -88,11 +88,11 @@
     },
     {
       "name": "SQL & Databases",
-      "proficiency": 72,
+      "proficiency": 75,
       "category": "python",
       "icon": "🗄️",
       "color": "#3b82f6",
-      "description": "Relational databases, queries, data management",
+      "description": "Relational queries, PostgreSQL, Supabase, data modeling",
       "years": 1
     },
     {
@@ -137,7 +137,7 @@
       "category": "ml",
       "icon": "📊",
       "color": "#06b6d4",
-      "description": "Data manipulation, numerical computing",
+      "description": "Data wrangling, EDA, preprocessing, and statistical analysis",
       "years": 1
     },
     {
@@ -165,6 +165,15 @@
       "icon": "✨",
       "color": "#8b5cf6",
       "description": "Generative models, prompt engineering concepts",
+      "years": 1
+    },
+    {
+      "name": "Power BI & Excel",
+      "proficiency": 82,
+      "category": "tools",
+      "icon": "📈",
+      "color": "#10b981",
+      "description": "Interactive BI dashboards, KPI reports, and spreadsheet analytics",
       "years": 1
     },
     {
