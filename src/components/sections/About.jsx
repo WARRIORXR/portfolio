@@ -52,7 +52,7 @@ export default function About() {
           </SectionItem>
 
           <SectionItem>
-            <div className="glass-card rounded-2xl p-5 divide-y divide-black/[0.06] dark:divide-white/[0.08]">
+            <div className="glass-card rounded-2xl p-5 divide-y divide-slate-100 dark:divide-white/[0.08]">
               <a
                 href={gmailComposeUrl()}
                 target="_blank"
@@ -132,13 +132,13 @@ export default function About() {
                   {education.location} &middot; Class of {education.expectedGraduation}
                 </div>
               </div>
-              <div className="pt-2 border-t border-black/[0.06] dark:border-white/[0.08]">
-                <div className="text-[11px] text-neutral-400 dark:text-white/40 font-mono mb-2 uppercase">Key Coursework</div>
+              <div className="pt-2 border-t border-slate-100 dark:border-white/[0.08]">
+                <div className="text-[11px] text-neutral-500 dark:text-white/40 font-mono mb-2 uppercase">Key Coursework</div>
                 <div className="flex flex-wrap gap-1.5">
                   {education.coursework.map((c) => (
                     <span
                       key={c}
-                      className="inline-flex items-center rounded-md border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] px-2 py-0.5 text-xs text-neutral-700 dark:text-white/60"
+                      className="inline-flex items-center rounded-md border border-slate-200/80 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-2 py-0.5 text-xs text-neutral-700 dark:text-white/60"
                     >
                       {c}
                     </span>

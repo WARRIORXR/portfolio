@@ -86,7 +86,7 @@ export function DataAnalyticsWidget() {
         </div>
 
         {/* Dataset Switcher Pills */}
-        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-black/[0.04] dark:bg-white/[0.04] border border-black/[0.06] dark:border-white/[0.08] self-start sm:self-auto">
+        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] self-start sm:self-auto shadow-xs">
           <button
             onClick={() => {
               setSelected('movies')
@@ -94,8 +94,8 @@ export function DataAnalyticsWidget() {
             }}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
               selected === 'movies'
-                ? 'bg-white dark:bg-white/10 text-neutral-900 dark:text-white shadow-sm'
-                : 'text-neutral-500 dark:text-white/50 hover:text-neutral-900 dark:hover:text-white'
+                ? 'bg-white dark:bg-white/10 text-neutral-900 dark:text-white shadow-xs'
+                : 'text-neutral-600 dark:text-white/50 hover:text-neutral-900 dark:hover:text-white'
             }`}
           >
             <BarChart3 className="w-3.5 h-3.5" />
@@ -108,8 +108,8 @@ export function DataAnalyticsWidget() {
             }}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
               selected === 'expenses'
-                ? 'bg-white dark:bg-white/10 text-neutral-900 dark:text-white shadow-sm'
-                : 'text-neutral-500 dark:text-white/50 hover:text-neutral-900 dark:hover:text-white'
+                ? 'bg-white dark:bg-white/10 text-neutral-900 dark:text-white shadow-xs'
+                : 'text-neutral-600 dark:text-white/50 hover:text-neutral-900 dark:hover:text-white'
             }`}
           >
             <PieChart className="w-3.5 h-3.5" />
@@ -122,8 +122,8 @@ export function DataAnalyticsWidget() {
             }}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
               selected === 'models'
-                ? 'bg-white dark:bg-white/10 text-neutral-900 dark:text-white shadow-sm'
-                : 'text-neutral-500 dark:text-white/50 hover:text-neutral-900 dark:hover:text-white'
+                ? 'bg-white dark:bg-white/10 text-neutral-900 dark:text-white shadow-xs'
+                : 'text-neutral-600 dark:text-white/50 hover:text-neutral-900 dark:hover:text-white'
             }`}
           >
             <Cpu className="w-3.5 h-3.5" />
@@ -137,12 +137,12 @@ export function DataAnalyticsWidget() {
         {current.stats.map((stat) => (
           <div
             key={stat.label}
-            className="p-3 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] border border-black/[0.05] dark:border-white/[0.06] space-y-0.5"
+            className="p-3 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/[0.06] space-y-0.5"
           >
-            <div className="text-[10px] font-mono text-neutral-400 dark:text-white/40 uppercase">
+            <div className="text-[10px] font-mono text-neutral-500 dark:text-white/40 uppercase">
               {stat.label}
             </div>
-            <div className="text-xs sm:text-sm font-semibold text-neutral-800 dark:text-white">
+            <div className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-white">
               {stat.value}
             </div>
           </div>
@@ -171,8 +171,8 @@ export function DataAnalyticsWidget() {
                   onMouseLeave={() => setActiveItem(null)}
                   className={`p-2.5 rounded-xl transition-all cursor-pointer ${
                     isHovered
-                      ? 'bg-black/[0.04] dark:bg-white/[0.06]'
-                      : 'hover:bg-black/[0.02] dark:hover:bg-white/[0.02]'
+                      ? 'bg-slate-100 dark:bg-white/[0.06]'
+                      : 'hover:bg-slate-50/80 dark:hover:bg-white/[0.02]'
                   }`}
                 >
                   <div className="flex items-center justify-between text-xs mb-1.5">
@@ -180,7 +180,7 @@ export function DataAnalyticsWidget() {
                       {item.name}
                     </span>
                     <div className="flex items-center gap-2">
-                      <span className="text-[11px] text-neutral-400 dark:text-white/40 font-mono">
+                      <span className="text-[11px] text-neutral-500 dark:text-white/40 font-mono">
                         {item.benchmark}
                       </span>
                       <span className="font-mono font-semibold text-neutral-900 dark:text-white">
@@ -194,7 +194,7 @@ export function DataAnalyticsWidget() {
                   </div>
 
                   {/* Visual Bar */}
-                  <div className="h-2 w-full bg-black/[0.06] dark:bg-white/[0.06] rounded-full overflow-hidden">
+                  <div className="h-2 w-full bg-slate-100 dark:bg-white/[0.06] rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${pct}%` }}

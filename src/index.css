@@ -8,13 +8,13 @@
    Values are HSL channels WITHOUT the hsl() wrapper — Tailwind adds it. */
 @layer base {
   :root {
-    --background: 0 0% 99%;          /* #fcfcfc — crisp clean paper */
+    --background: 0 0% 100%;          /* #ffffff — pure clean paper */
     --foreground: 222 47% 11%;       /* #0f172a — deep slate/ink */
     --muted: 210 40% 96.1%;          /* #f1f5f9 — soft card bg */
     --muted-foreground: 215 16% 47%; /* #64748b — muted body text */
 
-    /* Aliases consumed by contribution-skyline */
-    --color-background: #fcfcfc;
+    /* Aliases consumed by contribution-skyline and components */
+    --color-background: #ffffff;
     --color-foreground: #0f172a;
     --color-border: rgba(0, 0, 0, 0.08);
     --color-muted-foreground: #64748b;
@@ -40,6 +40,8 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #fafafa;
+  color: #0f172a;
 }
 
 body {
@@ -50,7 +52,7 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-.dark body, html.dark body {
+html.dark, html.dark body {
   background-color: #000000;
   color: #ffffff;
 }
@@ -83,9 +85,9 @@ body {
 
 /* Modern minimal glass card */
 .glass-card {
-  background: rgba(255, 255, 255, 0.85);
+  background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.02);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -93,7 +95,7 @@ body {
 .glass-card:hover {
   background: #ffffff;
   border-color: rgba(0, 0, 0, 0.16);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
   transform: translateY(-2px);
 }
 

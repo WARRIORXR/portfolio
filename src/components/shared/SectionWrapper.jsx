@@ -37,9 +37,9 @@ export function SectionTitle({ index, label, title, subtitle }) {
   return (
     <div className="mb-14 sm:mb-20">
       <motion.div variants={itemVariants} className="flex items-center gap-4 mb-5">
-        <span className="mono-label text-neutral-400 dark:text-white/30">{index}</span>
-        <span className="h-[1px] flex-1 bg-black/[0.08] dark:bg-white/10" />
-        <span className="mono-label text-neutral-500 dark:text-white/45">{label}</span>
+        <span className="mono-label text-neutral-500 dark:text-white/30">{index}</span>
+        <span className="h-[1px] flex-1 bg-slate-200 dark:bg-white/10" />
+        <span className="mono-label text-neutral-700 dark:text-white/45">{label}</span>
       </motion.div>
       <motion.h2
         variants={itemVariants}

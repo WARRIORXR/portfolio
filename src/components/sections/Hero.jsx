@@ -83,7 +83,7 @@ export default function Hero() {
             href={personalInfo.resume}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-black/10 dark:border-white/15 bg-white/70 dark:bg-white/[0.04] px-5 py-3 text-sm font-medium text-neutral-800 dark:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.08] hover:border-black/20 dark:hover:border-white/30 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-sm"
+            className="inline-flex items-center gap-2 rounded-full border border-slate-200 dark:border-white/15 bg-white dark:bg-white/[0.04] px-5 py-3 text-sm font-medium text-neutral-800 dark:text-white hover:bg-slate-50 dark:hover:bg-white/[0.08] hover:border-slate-300 dark:hover:border-white/30 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xs"
           >
             <FileText className="w-4 h-4 text-neutral-500 dark:text-white/60" />
             <span>Resume</span>
@@ -92,7 +92,7 @@ export default function Hero() {
 
           <button
             onClick={() => scrollTo('contact')}
-            className="inline-flex items-center gap-1.5 px-4 py-3 text-sm font-medium text-neutral-600 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors link-underline"
+            className="inline-flex items-center gap-1.5 px-4 py-3 text-sm font-medium text-neutral-700 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors link-underline"
           >
             <span>Get in touch</span>
           </button>
@@ -104,7 +104,7 @@ export default function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub profile"
-              className="p-2.5 rounded-full border border-black/10 dark:border-white/10 text-neutral-600 dark:text-white/60 hover:text-black dark:hover:text-white hover:border-black/20 dark:hover:border-white/30 hover:bg-black/[0.03] dark:hover:bg-white/[0.04] transition-all"
+              className="p-2.5 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-transparent text-neutral-700 dark:text-white/60 hover:text-black dark:hover:text-white hover:border-slate-300 dark:hover:border-white/30 hover:bg-slate-50 dark:hover:bg-white/[0.04] transition-all shadow-xs"
             >
               <Github className="w-4 h-4" />
             </a>
@@ -113,7 +113,7 @@ export default function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="p-2.5 rounded-full border border-black/10 dark:border-white/10 text-neutral-600 dark:text-white/60 hover:text-black dark:hover:text-white hover:border-black/20 dark:hover:border-white/30 hover:bg-black/[0.03] dark:hover:bg-white/[0.04] transition-all"
+              className="p-2.5 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-transparent text-neutral-700 dark:text-white/60 hover:text-black dark:hover:text-white hover:border-slate-300 dark:hover:border-white/30 hover:bg-slate-50 dark:hover:bg-white/[0.04] transition-all shadow-xs"
             >
               <Linkedin className="w-4 h-4" />
             </a>
@@ -122,7 +122,7 @@ export default function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Email Tanish"
-              className="p-2.5 rounded-full border border-black/10 dark:border-white/10 text-neutral-600 dark:text-white/60 hover:text-black dark:hover:text-white hover:border-black/20 dark:hover:border-white/30 hover:bg-black/[0.03] dark:hover:bg-white/[0.04] transition-all"
+              className="p-2.5 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-transparent text-neutral-700 dark:text-white/60 hover:text-black dark:hover:text-white hover:border-slate-300 dark:hover:border-white/30 hover:bg-slate-50 dark:hover:bg-white/[0.04] transition-all shadow-xs"
             >
               <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400/80" />
             </a>

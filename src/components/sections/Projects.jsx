@@ -62,7 +62,7 @@ export default function Projects() {
 
       {/* Mode Switcher Tabs */}
       <SectionItem className="mb-10">
-        <div className="flex items-center gap-2 p-1 rounded-full bg-black/[0.04] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.08] w-fit">
+        <div className="flex items-center gap-2 p-1 rounded-full bg-slate-100 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] w-fit shadow-xs">
           <button
             onClick={() => setActiveTab('featured')}
             className={`flex items-center gap-2 px-5 py-2 text-xs font-medium rounded-full transition-all duration-200 ${
@@ -139,12 +139,12 @@ export default function Projects() {
                   </div>
 
                   {/* Tech stack & CTAs */}
-                  <div className="pt-6 mt-4 border-t border-black/[0.06] dark:border-white/[0.08] flex flex-wrap items-center justify-between gap-3">
+                  <div className="pt-6 mt-4 border-t border-slate-100 dark:border-white/[0.08] flex flex-wrap items-center justify-between gap-3">
                     <div className="flex flex-wrap gap-1.5">
                       {project.tech.map((t) => (
                         <span
                           key={t}
-                          className="text-[11px] font-mono rounded px-2 py-0.5 bg-black/[0.03] dark:bg-white/[0.04] text-neutral-600 dark:text-white/50 border border-black/[0.06] dark:border-white/[0.06]"
+                          className="text-[11px] font-mono rounded px-2 py-0.5 bg-slate-100 dark:bg-white/[0.04] text-neutral-700 dark:text-white/50 border border-slate-200/80 dark:border-white/[0.06]"
                         >
                           {t}
                         </span>
@@ -156,7 +156,7 @@ export default function Projects() {
                         href={project.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-full border border-black/10 dark:border-white/10 px-3.5 py-1.5 text-xs text-neutral-700 dark:text-white/70 hover:text-black dark:hover:text-white hover:border-black/25 dark:hover:border-white/30 transition-all hover:bg-black/[0.03] dark:hover:bg-white/[0.04]"
+                        className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] px-3.5 py-1.5 text-xs text-neutral-800 dark:text-white/70 hover:text-black dark:hover:text-white hover:border-slate-300 dark:hover:border-white/30 transition-all hover:bg-slate-50 shadow-xs"
                       >
                         <Github className="w-3.5 h-3.5" />
                         <span>Source</span>

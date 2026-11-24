@@ -25,7 +25,7 @@ const iconLinks = contactLinks.filter((link) => link.id !== 'resume' && linkIcon
 const resumeLink = contactLinks.find((link) => link.id === 'resume')
 
 const pillClass =
-  'inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/10 dark:border-white/10 text-neutral-600 dark:text-white/70 transition-all hover:border-black/30 dark:hover:border-white/40 hover:text-black dark:hover:text-white hover:scale-105 active:scale-95 bg-black/[0.02] dark:bg-transparent'
+  'inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 dark:border-white/10 text-neutral-700 dark:text-white/70 transition-all hover:border-slate-300 dark:hover:border-white/40 hover:text-black dark:hover:text-white hover:scale-105 active:scale-95 bg-white dark:bg-transparent shadow-xs'
 
 export default function Navbar() {
   const { theme, toggleTheme, isDark } = useTheme()
@@ -66,8 +66,8 @@ export default function Navbar() {
         <nav
           className={`max-w-4xl mx-auto h-13 px-4 sm:px-5 flex items-center justify-between gap-4 rounded-full transition-all duration-300 pointer-events-auto ${
             scrolled
-              ? 'bg-white/85 dark:bg-black/80 backdrop-blur-xl border border-black/[0.08] dark:border-white/[0.12] shadow-xl shadow-black/5 dark:shadow-black/80'
-              : 'bg-white/60 dark:bg-black/40 backdrop-blur-md border border-black/[0.06] dark:border-white/[0.08]'
+              ? 'bg-white/95 dark:bg-black/80 backdrop-blur-xl border border-slate-200/90 dark:border-white/[0.12] shadow-lg shadow-slate-900/5 dark:shadow-black/80'
+              : 'bg-white/80 dark:bg-black/40 backdrop-blur-md border border-slate-200/70 dark:border-white/[0.08] shadow-xs'
           }`}
         >
           <button

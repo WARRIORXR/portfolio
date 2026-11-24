@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light" style="background-color: #fafafa; color: #0f172a;">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -29,7 +29,31 @@
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#fafafa" />
+
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('portfolio-theme');
+          // Default to light mode for the modern light aesthetic
+          if (!saved || saved === 'dark') {
+            localStorage.setItem('portfolio-theme', 'light');
+            saved = 'light';
+          }
+          if (saved === 'light') {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+            document.documentElement.style.backgroundColor = '#fafafa';
+            document.documentElement.style.color = '#0f172a';
+          } else {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+            document.documentElement.style.backgroundColor = '#000000';
+            document.documentElement.style.color = '#ffffff';
+          }
+        } catch (e) {}
+      })();
+    </script>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

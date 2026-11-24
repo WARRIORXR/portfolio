@@ -7,33 +7,43 @@ const ThemeContext = createContext({
 })
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(() => {
-    try {
-      const saved = localStorage.getItem('portfolio-theme')
-      return saved ? saved : 'light' // default to light theme as requested
-    } catch {
-      return 'light'
-    }
-  })
+  const [theme, setTheme] = useState('light')
 
   useEffect(() => {
     const root = document.documentElement
-    if (theme === 'dark') {
-      root.classList.add('dark')
-      root.classList.remove('light')
-    } else {
-      root.classList.remove('dark')
-      root.classList.add('light')
-    }
+    root.classList.remove('dark')
+    root.classList.add('light')
+    root.style.backgroundColor = '#fafafa'
+    root.style.color = '#0f172a'
     try {
-      localStorage.setItem('portfolio-theme', theme)
+      localStorage.setItem('portfolio-theme', 'light')
     } catch {
       // ignore
     }
-  }, [theme])
+  }, [])
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
+    setTheme((prev) => {
+      const next = prev === 'light' ? 'dark' : 'light'
+      const root = document.documentElement
+      if (next === 'dark') {
+        root.classList.add('dark')
+        root.classList.remove('light')
+        root.style.backgroundColor = '#000000'
+        root.style.color = '#ffffff'
+      } else {
+        root.classList.remove('dark')
+        root.classList.add('light')
+        root.style.backgroundColor = '#fafafa'
+        root.style.color = '#0f172a'
+      }
+      try {
+        localStorage.setItem('portfolio-theme', next)
+      } catch {
+        // ignore
+      }
+      return next
+    })
   }
 
   return (

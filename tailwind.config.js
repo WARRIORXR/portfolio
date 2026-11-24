@@ -12,6 +12,11 @@ export default {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
         },
+        border: 'var(--color-border)',
+        secondary: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--foreground))',
+        },
         accent: {
           blue: '#3b82f6',
           violet: '#8b5cf6',
