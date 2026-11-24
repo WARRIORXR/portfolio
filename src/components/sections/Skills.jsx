@@ -31,8 +31,8 @@ export default function Skills() {
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`text-xs font-medium px-4 py-2 rounded-full transition-all duration-200 ${
                   isSelected
-                    ? 'bg-white text-black shadow-lg scale-105'
-                    : 'bg-white/[0.04] text-white/60 hover:text-white hover:bg-white/[0.08] border border-white/[0.06]'
+                    ? 'bg-neutral-900 text-white dark:bg-white dark:text-black shadow-md scale-105'
+                    : 'bg-black/[0.04] text-neutral-600 hover:text-black hover:bg-black/[0.08] dark:bg-white/[0.04] dark:text-white/60 dark:hover:text-white dark:hover:bg-white/[0.08] border border-black/[0.06] dark:border-white/[0.06]'
                 }`}
               >
                 {cat.label}
@@ -65,23 +65,23 @@ export default function Skills() {
                       <span className="text-xl" role="img" aria-label={skill.name}>
                         {skill.icon}
                       </span>
-                      <h4 className="text-sm font-semibold text-white tracking-tight">
+                      <h4 className="text-sm font-semibold text-neutral-900 dark:text-white tracking-tight">
                         {skill.name}
                       </h4>
                     </div>
-                    <span className="font-mono text-xs tabular-nums text-white/50 group-hover:text-emerald-400 transition-colors">
+                    <span className="font-mono text-xs tabular-nums text-neutral-500 dark:text-white/50 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                       {skill.proficiency}%
                     </span>
                   </div>
 
-                  <p className="text-xs leading-relaxed text-white/50 line-clamp-2">
+                  <p className="text-xs leading-relaxed text-neutral-600 dark:text-white/50 line-clamp-2">
                     {skill.description}
                   </p>
                 </div>
 
                 {/* Proficiency progress bar */}
-                <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center gap-3">
-                  <div className="flex-1 h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
+                <div className="mt-4 pt-3 border-t border-black/[0.06] dark:border-white/[0.06] flex items-center gap-3">
+                  <div className="flex-1 h-1.5 bg-black/[0.06] dark:bg-white/[0.06] rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all duration-500"
                       style={{
@@ -90,7 +90,7 @@ export default function Skills() {
                       }}
                     />
                   </div>
-                  <span className="text-[10px] font-mono text-white/40 shrink-0">
+                  <span className="text-[10px] font-mono text-neutral-400 dark:text-white/40 shrink-0">
                     {skill.years} {skill.years === 1 ? 'yr' : 'yrs'} exp
                   </span>
                 </div>

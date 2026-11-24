@@ -8,12 +8,24 @@
    Values are HSL channels WITHOUT the hsl() wrapper — Tailwind adds it. */
 @layer base {
   :root {
+    --background: 0 0% 99%;          /* #fcfcfc — crisp clean paper */
+    --foreground: 222 47% 11%;       /* #0f172a — deep slate/ink */
+    --muted: 210 40% 96.1%;          /* #f1f5f9 — soft card bg */
+    --muted-foreground: 215 16% 47%; /* #64748b — muted body text */
+
+    /* Aliases consumed by contribution-skyline */
+    --color-background: #fcfcfc;
+    --color-foreground: #0f172a;
+    --color-border: rgba(0, 0, 0, 0.08);
+    --color-muted-foreground: #64748b;
+  }
+
+  .dark {
     --background: 0 0% 0%;          /* #000 — matches body bg */
     --foreground: 0 0% 100%;        /* #fff — matches body text */
     --muted: 0 0% 10%;              /* dark grey fills */
     --muted-foreground: 0 0% 60%;   /* subdued text */
 
-    /* Aliases consumed by contribution-skyline (expects --color-* names) */
     --color-background: #000000;
     --color-foreground: #ffffff;
     --color-border: rgba(255, 255, 255, 0.12);
@@ -28,25 +40,32 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #000;
 }
 
 body {
   font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
-  background: #000;
-  color: #fff;
+  background-color: #fafafa;
+  color: #0f172a;
   overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.dark body, html.dark body {
+  background-color: #000000;
+  color: #ffffff;
 }
 
 /* Minimal scrollbar */
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: #000; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 4px; }
+.dark ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.3); }
+.dark ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.35); }
 
-::selection { background: rgba(255,255,255,0.18); color: #fff; }
+::selection { background: rgba(59, 130, 246, 0.2); color: inherit; }
 
-:focus-visible { outline: 1px solid rgba(255,255,255,0.4); outline-offset: 2px; }
+:focus-visible { outline: 2px solid rgba(59, 130, 246, 0.5); outline-offset: 2px; }
 
 /* ── Minimal utilities ───────────────────────────────────── */
 
@@ -56,21 +75,37 @@ body {
   font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
+  color: #64748b;
+}
+.dark .mono-label {
+  color: rgba(255, 255, 255, 0.45);
 }
 
 /* Modern minimal glass card */
 .glass-card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .glass-card:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.16);
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.16);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
   transform: translateY(-2px);
+}
+
+.dark .glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+.dark .glass-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 /* Ambient glow container */
@@ -78,7 +113,11 @@ body {
   position: absolute;
   pointer-events: none;
   border-radius: 50%;
-  filter: blur(100px);
+  filter: blur(90px);
+  opacity: 0.25;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, rgba(16, 185, 129, 0.15) 50%, transparent 100%);
+}
+.dark .ambient-glow {
   opacity: 0.15;
   background: radial-gradient(circle, rgba(59, 130, 246, 0.5) 0%, rgba(139, 92, 246, 0.2) 60%, transparent 100%);
 }
@@ -101,26 +140,30 @@ body {
 }
 .link-underline:hover::after { transform: scaleX(1); }
 
-/* Hairline divider */
-.hairline { height: 1px; background: rgba(255,255,255,0.08); }
-
 /* Form inputs — underline style */
 .input-line {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(255,255,255,0.12);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   padding: 12px 0;
-  color: #fff;
+  color: #0f172a;
   font-size: 14px;
-  font-family: 'Inter', sans-serif;
+  font-family: inherit;
   outline: none;
   transition: border-color 0.2s ease;
-  caret-color: #fff;
+  caret-color: #0f172a;
 }
-.input-line::placeholder { color: rgba(255,255,255,0.25); }
-.input-line:focus { border-bottom-color: rgba(255,255,255,0.5); }
-.input-line.error { border-bottom-color: rgba(248,113,113,0.6); }
+.dark .input-line {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  caret-color: #ffffff;
+}
+.input-line::placeholder { color: rgba(100, 116, 139, 0.6); }
+.dark .input-line::placeholder { color: rgba(255, 255, 255, 0.3); }
+.input-line:focus { border-bottom-color: #0f172a; }
+.dark .input-line:focus { border-bottom-color: #ffffff; }
+.input-line.error { border-bottom-color: rgba(239, 68, 68, 0.8); }
 
 textarea.input-line { resize: none; }
 

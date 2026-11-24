@@ -7,6 +7,7 @@ import Skills from './components/sections/Skills'
 import Projects from './components/sections/Projects'
 import Contact from './components/sections/Contact'
 import ScrollProgress from './components/shared/ScrollProgress'
+import { ThemeProvider } from './context/ThemeContext'
 import { initEmailJS } from './lib/emailjs'
 
 export default function App() {
@@ -15,18 +16,20 @@ export default function App() {
   }, [])
 
   return (
-    <div className="relative min-h-screen bg-black text-white selection:bg-white/20 selection:text-white font-sans antialiased">
-      <ScrollProgress />
-      <Navbar />
+    <ThemeProvider>
+      <div className="relative min-h-screen bg-[#fafafa] text-slate-900 dark:bg-black dark:text-white selection:bg-blue-500/20 selection:text-inherit font-sans antialiased transition-colors duration-300">
+        <ScrollProgress />
+        <Navbar />
 
-      <main>
-        <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Contact />
-      </main>
-      <Footer />
-    </div>
+        <main>
+          <Hero />
+          <About />
+          <Skills />
+          <Projects />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
+    </ThemeProvider>
   )
 }
