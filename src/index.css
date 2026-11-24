@@ -12,6 +12,9 @@
     --foreground: 222 47% 11%;       /* #0f172a — deep slate/ink */
     --muted: 210 40% 96.1%;          /* #f1f5f9 — soft card bg */
     --muted-foreground: 215 16% 47%; /* #64748b — muted body text */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --ring: 222 47% 11%;
 
     /* Aliases consumed by contribution-skyline and components */
     --color-background: #ffffff;
@@ -25,6 +28,9 @@
     --foreground: 0 0% 100%;        /* #fff — matches body text */
     --muted: 0 0% 10%;              /* dark grey fills */
     --muted-foreground: 0 0% 60%;   /* subdued text */
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 100%;
+    --ring: 0 0% 100%;
 
     --color-background: #000000;
     --color-foreground: #ffffff;

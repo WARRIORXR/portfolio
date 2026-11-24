@@ -13,6 +13,11 @@ export default {
           foreground: 'hsl(var(--muted-foreground))',
         },
         border: 'var(--color-border)',
+        card: {
+          DEFAULT: 'hsl(var(--card, var(--background)))',
+          foreground: 'hsl(var(--card-foreground, var(--foreground)))',
+        },
+        ring: 'hsl(var(--ring, var(--foreground)))',
         secondary: {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--foreground))',
@@ -34,5 +39,7 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwindcss-animate'),
+  ],
 }
