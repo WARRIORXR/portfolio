@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react'
 import Navbar from './components/layout/Navbar'
 import Hero from './components/sections/Hero'
-import ScrollProgress from './components/shared/ScrollProgress'
 import { ThemeProvider } from './context/ThemeContext'
 
 const About = lazy(() => import('./components/sections/About'))
@@ -23,7 +22,6 @@ export default function App() {
           <div className="absolute bottom-[-10%] left-[25%] h-[420px] w-[520px] rounded-full bg-violet-400/10 dark:bg-violet-500/10 blur-[130px]" />
         </div>
 
-        <ScrollProgress />
         <Navbar />
 
         <main className="relative z-10">
