@@ -24,8 +24,8 @@ export default defineConfig({
         name: 'Tanish Jaswal — Portfolio',
         short_name: 'TJ Portfolio',
         description: 'Data Analyst & AI/ML Portfolio',
-        theme_color: '#fafafa',
-        background_color: '#fafafa',
+        theme_color: '#faf9f6',
+        background_color: '#faf9f6',
         display: 'standalone',
         icons: [
           { src: 'favicon.svg', sizes: 'any', type: 'image/svg+xml' }

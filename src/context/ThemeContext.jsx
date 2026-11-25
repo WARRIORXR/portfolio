@@ -6,44 +6,46 @@ const ThemeContext = createContext({
   isDark: false,
 })
 
-export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState('light')
-
-  useEffect(() => {
-    const root = document.documentElement
+function applyTheme(next) {
+  const root = document.documentElement
+  if (next === 'dark') {
+    root.classList.add('dark')
+    root.classList.remove('light')
+    root.style.backgroundColor = '#09090b'
+    root.style.color = '#f4f4f5'
+  } else {
     root.classList.remove('dark')
     root.classList.add('light')
-    root.style.backgroundColor = '#fafafa'
-    root.style.color = '#0f172a'
+    root.style.backgroundColor = '#faf9f6'
+    root.style.color = '#0e1422'
+  }
+  const meta = document.querySelector('meta[name="theme-color"]')
+  if (meta) {
+    meta.setAttribute('content', next === 'dark' ? '#09090b' : '#faf9f6')
+  }
+}
+
+export function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState(() => {
     try {
-      localStorage.setItem('portfolio-theme', 'light')
+      const saved = localStorage.getItem('portfolio-theme')
+      return saved === 'dark' ? 'dark' : 'light'
     } catch {
-      // ignore
+      return 'light'
     }
-  }, [])
+  })
+
+  useEffect(() => {
+    applyTheme(theme)
+    try {
+      localStorage.setItem('portfolio-theme', theme)
+    } catch {
+      // ignore storage failures
+    }
+  }, [theme])
 
   const toggleTheme = () => {
-    setTheme((prev) => {
-      const next = prev === 'light' ? 'dark' : 'light'
-      const root = document.documentElement
-      if (next === 'dark') {
-        root.classList.add('dark')
-        root.classList.remove('light')
-        root.style.backgroundColor = '#000000'
-        root.style.color = '#ffffff'
-      } else {
-        root.classList.remove('dark')
-        root.classList.add('light')
-        root.style.backgroundColor = '#fafafa'
-        root.style.color = '#0f172a'
-      }
-      try {
-        localStorage.setItem('portfolio-theme', next)
-      } catch {
-        // ignore
-      }
-      return next
-    })
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
   }
 
   return (

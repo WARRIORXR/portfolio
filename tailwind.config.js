@@ -32,7 +32,7 @@ export default {
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', '"Fira Code"', 'monospace'],
-        serif: ['"Newsreader"', 'Georgia', 'serif'],
+        serif: ['"Instrument Serif"', '"Newsreader"', 'Georgia', 'serif'],
       },
       animation: {
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',

@@ -1,5 +1,5 @@
 import { useState, useMemo, lazy, Suspense } from 'react'
-import { ArrowUpRight, ExternalLink, Sparkles, FolderGit2, Layers } from 'lucide-react'
+import { ArrowUpRight, Sparkles, FolderGit2, Layers } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Github } from '../ui/BrandIcons'
 import { useGithubRepos } from '../../hooks/useGithubRepos'
@@ -14,31 +14,69 @@ const ProjectShowcase = lazy(() => import('../ui/project-showcase'))
 
 const MAX_PROJECTS = 12
 
+const PROJECT_THEMES = [
+  {
+    topBar: 'from-emerald-500 to-teal-500',
+    numBadge: 'bg-emerald-500/12 text-emerald-800 dark:text-emerald-300',
+    catText: 'text-emerald-700 dark:text-emerald-400',
+    pill: 'bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border-emerald-500/25',
+    arrow: 'text-emerald-600 dark:text-emerald-400',
+    hoverTitle: 'group-hover:text-emerald-700 dark:group-hover:text-emerald-400',
+  },
+  {
+    topBar: 'from-blue-500 to-cyan-500',
+    numBadge: 'bg-blue-500/12 text-blue-800 dark:text-blue-300',
+    catText: 'text-blue-700 dark:text-blue-400',
+    pill: 'bg-blue-500/10 text-blue-800 dark:text-blue-300 border-blue-500/25',
+    arrow: 'text-blue-600 dark:text-blue-400',
+    hoverTitle: 'group-hover:text-blue-700 dark:group-hover:text-blue-400',
+  },
+  {
+    topBar: 'from-violet-500 to-indigo-500',
+    numBadge: 'bg-violet-500/12 text-violet-800 dark:text-violet-300',
+    catText: 'text-violet-700 dark:text-violet-400',
+    pill: 'bg-violet-500/10 text-violet-800 dark:text-violet-300 border-violet-500/25',
+    arrow: 'text-violet-600 dark:text-violet-400',
+    hoverTitle: 'group-hover:text-violet-700 dark:group-hover:text-violet-400',
+  },
+  {
+    topBar: 'from-amber-500 to-emerald-500',
+    numBadge: 'bg-amber-500/12 text-amber-800 dark:text-amber-300',
+    catText: 'text-amber-700 dark:text-amber-400',
+    pill: 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border-amber-500/25',
+    arrow: 'text-amber-600 dark:text-amber-400',
+    hoverTitle: 'group-hover:text-amber-700 dark:group-hover:text-amber-400',
+  },
+]
+
 const PROJECT_RAIL_ITEMS = [
   {
     id: 'cinescope',
     name: 'CineScope · Film Economics & AI',
-    description: 'RESTful film analytics engine calculating box office ROI, margins, and ratings intelligence across 1,200+ titles with Gemini recommendations.',
+    description:
+      'RESTful film analytics engine calculating box office ROI, margins, and ratings intelligence across 1,200+ titles with Gemini recommendations.',
     kind: 'jacket',
-    color: '#1e293b',
-    trim: '#38bdf8',
+    color: '#065f46',
+    trim: '#34d399',
     tag: 'Python & Flask',
     details: ['8 REST APIs', 'Gemini AI', 'Pandas EDA', 'Box-Office ROI', '1,200 Titles'],
   },
   {
     id: 'expenseflow',
     name: 'ExpenseFlow · FinTech Dashboard',
-    description: 'Personal finance and cash flow command center with interactive Chart.js visualizations, automated budget threshold alerts, and multi-currency tracking.',
+    description:
+      'Personal finance and cash flow command center with interactive Chart.js visualizations, automated budget threshold alerts, and multi-currency tracking.',
     kind: 'hoodie',
-    color: '#065f46',
-    trim: '#34d399',
+    color: '#1e40af',
+    trim: '#60a5fa',
     tag: 'Chart.js & BI',
     details: ['3 Chart.js Views', '7 Currencies', 'PDF / CSV Export', 'Cap Alerts at 80%'],
   },
   {
     id: 'daily-ink',
     name: 'Daily Ink · Spaced Repetition PWA',
-    description: 'Progressive web application implementing the SuperMemo-2 (SM-2) memory retention algorithm with offline sync, mood analytics, and PostgreSQL RLS.',
+    description:
+      'Progressive web application implementing the SuperMemo-2 (SM-2) memory retention algorithm with offline sync, mood analytics, and PostgreSQL RLS.',
     kind: 'knit',
     color: '#4338ca',
     trim: '#a5b4fc',
@@ -48,7 +86,8 @@ const PROJECT_RAIL_ITEMS = [
   {
     id: 'school-aqi',
     name: 'School AQI Alert · IoT Cloud Pipeline',
-    description: 'Hackathon winner: event-driven serverless system ingesting atmospheric Open-Meteo feeds to dispatch automated morning air safety SMS alerts.',
+    description:
+      'Hackathon winner: event-driven serverless system ingesting atmospheric Open-Meteo feeds to dispatch automated morning air safety SMS alerts.',
     kind: 'coat',
     color: '#b45309',
     trim: '#fde68a',
@@ -58,7 +97,8 @@ const PROJECT_RAIL_ITEMS = [
   {
     id: 'airline-satisfaction',
     name: 'Airline Passenger Satisfaction ML',
-    description: 'End-to-end classification pipeline predicting passenger satisfaction with 94.2% accuracy using hyperparameter-tuned ensemble models.',
+    description:
+      'End-to-end classification pipeline predicting passenger satisfaction with 94.2% accuracy using hyperparameter-tuned ensemble models.',
     kind: 'shirt',
     color: '#0369a1',
     trim: '#7dd3fc',
@@ -68,7 +108,8 @@ const PROJECT_RAIL_ITEMS = [
   {
     id: 'credit-risk',
     name: 'Credit Risk Scoring & Default Prediction',
-    description: 'Financial risk assessment model evaluating borrower default probabilities with cost-benefit analysis and ROC-AUC curve optimization.',
+    description:
+      'Financial risk assessment model evaluating borrower default probabilities with cost-benefit analysis and ROC-AUC curve optimization.',
     kind: 'tee',
     color: '#831843',
     trim: '#f472b6',
@@ -92,12 +133,12 @@ function SkeletonList() {
   return (
     <div className="flex flex-col" aria-hidden="true">
       {[0, 1, 2, 3].map((i) => (
-        <div key={i} className="py-5 border-t border-white/[0.08]">
-          <div className="h-4 w-32 bg-white/[0.06] rounded animate-pulse" />
-          <div className="mt-2 h-3 w-64 bg-white/[0.04] rounded animate-pulse" />
+        <div key={i} className="py-5 border-t border-black/[0.08] dark:border-white/[0.08]">
+          <div className="h-4 w-36 bg-black/[0.06] dark:bg-white/[0.06] rounded animate-pulse" />
+          <div className="mt-2 h-3 w-72 bg-black/[0.04] dark:bg-white/[0.04] rounded animate-pulse" />
         </div>
       ))}
-      <div className="border-t border-white/[0.08]" />
+      <div className="border-t border-black/[0.08] dark:border-white/[0.08]" />
     </div>
   )
 }
@@ -111,56 +152,53 @@ export default function Projects() {
     [repos]
   )
 
+  const modeTabs = [
+    { id: 'featured', label: `Case Studies & Data Lab (${featuredProjects.length})`, icon: Sparkles, dot: 'bg-violet-500' },
+    { id: 'rail', label: `Interactive 3D Rail (${PROJECT_RAIL_ITEMS.length})`, icon: Layers, dot: 'bg-emerald-500' },
+    { id: 'github', label: `GitHub Archive (${repos.length || 'Live'})`, icon: FolderGit2, dot: 'bg-blue-500' },
+  ]
+
   return (
     <SectionWrapper id="projects">
       <SectionTitle
         index="03"
         label="Selected Work"
-        title="Featured Projects & Code"
-        subtitle="Analytical dashboards, machine learning pipelines, and production full-stack systems."
+        title="Engineering"
+        italicWord="case studies."
+        subtitle="Analytical dashboards, machine learning pipelines, serverless telemetry, and production web systems."
+        accent="violet"
       />
 
-      {/* Interactive Data Sandbox */}
-      <SectionItem className="mb-14">
-        <DataAnalyticsWidget />
-      </SectionItem>
-
-      {/* Mode Switcher Tabs */}
+      {/* Color-Bound Mode Switcher */}
       <SectionItem className="mb-10">
-        <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-slate-100 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] w-fit shadow-xs">
-          <button
-            onClick={() => setActiveTab('featured')}
-            className={`flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-xl transition-all duration-200 ${
-              activeTab === 'featured'
-                ? 'bg-neutral-900 text-white dark:bg-white dark:text-black shadow-md'
-                : 'text-neutral-600 dark:text-white/60 hover:text-neutral-900 dark:hover:text-white'
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Featured Case Studies ({featuredProjects.length})</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('rail')}
-            className={`flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-xl transition-all duration-200 ${
-              activeTab === 'rail'
-                ? 'bg-neutral-900 text-white dark:bg-white dark:text-black shadow-md'
-                : 'text-neutral-600 dark:text-white/60 hover:text-neutral-900 dark:hover:text-white'
-            }`}
-          >
-            <Layers className="w-3.5 h-3.5" />
-            <span>Interactive 3D Rail ({PROJECT_RAIL_ITEMS.length})</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('github')}
-            className={`flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-xl transition-all duration-200 ${
-              activeTab === 'github'
-                ? 'bg-neutral-900 text-white dark:bg-white dark:text-black shadow-md'
-                : 'text-neutral-600 dark:text-white/60 hover:text-neutral-900 dark:hover:text-white'
-            }`}
-          >
-            <FolderGit2 className="w-3.5 h-3.5" />
-            <span>GitHub Repositories ({repos.length || 'Live'})</span>
-          </button>
+        <div className="inline-flex flex-wrap items-center gap-1 p-1 rounded-2xl sm:rounded-full bg-[#efede7] dark:bg-white/[0.04] border border-black/[0.06] dark:border-white/[0.08]">
+          {modeTabs.map((tab) => {
+            const Icon = tab.icon
+            const isSelected = activeTab === tab.id
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+                className={`relative flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-xl sm:rounded-full transition-colors duration-200 ${
+                  isSelected
+                    ? 'text-[#0e1422] dark:text-white'
+                    : 'text-[#586375] dark:text-neutral-400 hover:text-[#0e1422] dark:hover:text-white'
+                }`}
+              >
+                {isSelected && (
+                  <motion.span
+                    layoutId="projects-mode-pill"
+                    transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                    className="absolute inset-0 rounded-xl sm:rounded-full bg-white dark:bg-[#1f2027] border border-black/[0.07] dark:border-white/[0.1] shadow-sm"
+                  />
+                )}
+                <span className={`relative z-10 h-1.5 w-1.5 rounded-full ${tab.dot}`} />
+                <Icon className="relative z-10 w-3.5 h-3.5" />
+                <span className="relative z-10">{tab.label}</span>
+              </button>
+            )
+          })}
         </div>
       </SectionItem>
 
@@ -171,78 +209,103 @@ export default function Projects() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            transition={{ duration: 0.25 }}
+            className="space-y-12"
           >
-            {featuredProjects.map((project) => (
-              <SectionItem key={project.id}>
-                <div className="glass-card rounded-2xl p-6 sm:p-7 flex flex-col justify-between h-full group hover:border-black/20 dark:hover:border-white/20">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="mono-label text-[10px] text-emerald-600 dark:text-emerald-400">
-                        {project.category}
-                      </span>
-                      <span className="text-[11px] font-mono text-neutral-400 dark:text-white/40">
-                        {project.year}
-                      </span>
-                    </div>
+            {/* Color-Bound Flagship Case Studies Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              {featuredProjects.map((project, idx) => {
+                const theme = PROJECT_THEMES[idx % PROJECT_THEMES.length]
+                return (
+                  <SectionItem key={project.id}>
+                    <article className="relative paper-surface rounded-2xl p-6 sm:p-7 flex flex-col justify-between h-full group overflow-hidden">
+                      {/* Signature Domain Accent Bar */}
+                      <span
+                        aria-hidden="true"
+                        className={`absolute top-0 inset-x-0 h-[3px] bg-gradient-to-r ${theme.topBar}`}
+                      />
 
-                    <div>
-                      <h3 className="text-xl font-bold text-neutral-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors">
-                        {project.title}
-                      </h3>
-                      <div className="text-xs text-neutral-500 dark:text-white/50 font-medium mt-0.5">
-                        {project.headline}
-                      </div>
-                    </div>
-
-                    <p className="text-sm leading-relaxed text-neutral-600 dark:text-white/70">
-                      {project.description}
-                    </p>
-
-                    {/* Bullet Highlights */}
-                    <div className="pt-2 border-t border-black/[0.06] dark:border-white/[0.06] space-y-2">
-                      {project.highlights.map((point) => (
-                        <div
-                          key={point}
-                          className="flex items-start gap-2 text-xs text-neutral-600 dark:text-white/60 leading-relaxed"
-                        >
-                          <span className="text-emerald-500 mt-1 shrink-0">&bull;</span>
-                          <span>{point}</span>
+                      <div className="space-y-4">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <span className={`font-mono text-[10px] font-semibold px-2 py-0.5 rounded-md ${theme.numBadge}`}>
+                              {String(idx + 1).padStart(2, '0')}
+                            </span>
+                            <span className={`mono-label text-[10px] font-semibold ${theme.catText}`}>
+                              {project.category}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {project.badge && (
+                              <span className={`text-[10px] font-mono font-medium px-2.5 py-0.5 rounded-full border ${theme.pill}`}>
+                                {project.badge}
+                              </span>
+                            )}
+                            <span className="text-[11px] font-mono text-[#586375] dark:text-neutral-500">
+                              {project.year}
+                            </span>
+                          </div>
                         </div>
-                      ))}
-                    </div>
-                  </div>
 
-                  {/* Tech stack & CTAs */}
-                  <div className="pt-6 mt-4 border-t border-slate-100 dark:border-white/[0.08] flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.tech.map((t) => (
-                        <span
-                          key={t}
-                          className="text-[11px] font-mono rounded px-2 py-0.5 bg-slate-100 dark:bg-white/[0.04] text-neutral-700 dark:text-white/50 border border-slate-200/80 dark:border-white/[0.06]"
+                        <div>
+                          <h3 className={`text-xl font-bold tracking-tight text-[#0e1422] dark:text-white transition-colors ${theme.hoverTitle}`}>
+                            {project.title}
+                          </h3>
+                          <div className="text-xs font-medium text-[#586375] dark:text-neutral-400 mt-0.5">
+                            {project.headline}
+                          </div>
+                        </div>
+
+                        <p className="text-sm leading-relaxed text-[#283040] dark:text-neutral-300">
+                          {project.description}
+                        </p>
+
+                        <ul className="pt-3 border-t border-black/[0.06] dark:border-white/[0.07] space-y-2">
+                          {project.highlights.map((point) => (
+                            <li
+                              key={point}
+                              className="flex items-start gap-2.5 text-xs text-[#586375] dark:text-neutral-400 leading-relaxed"
+                            >
+                              <span className={`font-mono mt-0.5 shrink-0 ${theme.arrow}`}>&rarr;</span>
+                              <span>{point}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="pt-5 mt-5 border-t border-black/[0.06] dark:border-white/[0.08] flex flex-wrap items-center justify-between gap-3">
+                        <div className="flex flex-wrap gap-1.5">
+                          {project.tech.map((t) => (
+                            <span
+                              key={t}
+                              className="text-[11px] font-mono rounded-md px-2 py-0.5 bg-[#faf9f6] dark:bg-white/[0.04] text-[#0e1422] dark:text-neutral-300 border border-black/[0.07] dark:border-white/[0.08]"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-black/[0.11] dark:border-white/[0.14] bg-white dark:bg-[#141418] px-3.5 py-1.5 text-xs font-medium text-[#0e1422] dark:text-white hover:border-emerald-600/40 dark:hover:border-emerald-400/50 transition-all shadow-sm"
                         >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
+                          <Github className="w-3.5 h-3.5" />
+                          <span>Source</span>
+                          <ArrowUpRight className="w-3 h-3 text-[#586375] dark:text-neutral-400" />
+                        </a>
+                      </div>
+                    </article>
+                  </SectionItem>
+                )
+              })}
+            </div>
 
-                    <div className="flex items-center gap-2 ml-auto">
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] px-3.5 py-1.5 text-xs text-neutral-800 dark:text-white/70 hover:text-black dark:hover:text-white hover:border-slate-300 dark:hover:border-white/30 transition-all hover:bg-slate-50 shadow-xs"
-                      >
-                        <Github className="w-3.5 h-3.5" />
-                        <span>Source</span>
-                        <ArrowUpRight className="w-3 h-3 text-neutral-400 dark:text-white/40" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </SectionItem>
-            ))}
+            {/* Interactive Data Telemetry Lab */}
+            <SectionItem>
+              <DataAnalyticsWidget />
+            </SectionItem>
           </motion.div>
         ) : activeTab === 'rail' ? (
           <motion.div
@@ -250,26 +313,28 @@ export default function Projects() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.3 }}
-            className="w-full space-y-6"
+            transition={{ duration: 0.25 }}
+            className="w-full"
           >
             <SectionItem>
-              <div className="glass-card rounded-3xl p-4 sm:p-8 border border-slate-200/80 dark:border-white/[0.08] shadow-sm overflow-hidden">
+              <div className="paper-surface rounded-2xl p-4 sm:p-8 overflow-hidden bg-gradient-to-b from-white via-[#faf9f6] to-emerald-50/30 dark:from-[#111115] dark:via-[#111115] dark:to-emerald-950/10">
                 <Suspense
                   fallback={
                     <div className="flex items-center justify-center min-h-[380px]">
                       <div className="flex flex-col items-center gap-3">
-                        <div className="w-8 h-8 rounded-full border-2 border-emerald-500/20 border-t-emerald-500 animate-spin" />
-                        <span className="text-xs font-mono text-neutral-500 dark:text-white/40">Loading 3D Project Rail…</span>
+                        <div className="w-8 h-8 rounded-full border-2 border-emerald-600/20 border-t-emerald-600 animate-spin" />
+                        <span className="text-xs font-mono text-[#586375] dark:text-neutral-400">
+                          Loading 3D Project Rail…
+                        </span>
                       </div>
                     </div>
                   }
                 >
                   <ClothingRailHero
                     items={PROJECT_RAIL_ITEMS}
-                    eyebrow="Interactive 3D Engineering Showcase"
+                    eyebrow="Interactive 3D Gallery"
                     heading="Project Clothing Rail"
-                    caption="Hover over hangers to tilt • Click any project to open full architecture breakdown • Rotate 360°"
+                    caption="Hover over hangers to tilt • Click any piece to inspect full architecture • Drag to rotate 360°"
                     autoplay={false}
                     hanger="wood"
                   />
@@ -283,7 +348,7 @@ export default function Projects() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
             className="space-y-6"
           >
             <SectionItem>
@@ -303,9 +368,9 @@ export default function Projects() {
                 href={personalInfo.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group mt-6 inline-flex items-center gap-2 text-sm text-neutral-700 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors border border-black/10 dark:border-white/10 rounded-full px-5 py-2.5 hover:border-black/25 dark:hover:border-white/30 bg-black/[0.02] dark:bg-white/[0.02]"
+                className="group inline-flex items-center gap-2 text-xs font-medium text-[#0e1422] dark:text-white border border-black/[0.11] dark:border-white/[0.14] rounded-full px-5 py-2.5 bg-white dark:bg-[#111115] hover:border-emerald-600/40 dark:hover:border-emerald-400/50 transition-all shadow-sm"
               >
-                <Github className="w-4 h-4" />
+                <Github className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 <span>Explore all repositories on GitHub</span>
                 <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="light" style="background-color: #fafafa; color: #0f172a;">
+<html lang="en" class="light" style="background-color: #faf9f6; color: #0e1422;">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -29,27 +29,30 @@
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#fafafa" />
+    <meta name="theme-color" content="#faf9f6" />
 
     <script>
       (function() {
         try {
           var saved = localStorage.getItem('portfolio-theme');
-          // Default to light mode for the modern light aesthetic
-          if (!saved || saved === 'dark') {
-            localStorage.setItem('portfolio-theme', 'light');
+          if (!saved) {
             saved = 'light';
+            localStorage.setItem('portfolio-theme', 'light');
           }
-          if (saved === 'light') {
-            document.documentElement.classList.remove('dark');
-            document.documentElement.classList.add('light');
-            document.documentElement.style.backgroundColor = '#fafafa';
-            document.documentElement.style.color = '#0f172a';
-          } else {
+          if (saved === 'dark') {
             document.documentElement.classList.add('dark');
             document.documentElement.classList.remove('light');
-            document.documentElement.style.backgroundColor = '#000000';
-            document.documentElement.style.color = '#ffffff';
+            document.documentElement.style.backgroundColor = '#09090b';
+            document.documentElement.style.color = '#f4f4f5';
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', '#09090b');
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+            document.documentElement.style.backgroundColor = '#faf9f6';
+            document.documentElement.style.color = '#0e1422';
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', '#faf9f6');
           }
         } catch (e) {}
       })();
@@ -59,7 +62,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
       rel="stylesheet"
     />
   </head>

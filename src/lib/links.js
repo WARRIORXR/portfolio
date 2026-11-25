@@ -59,17 +59,3 @@ export function hostAndPath(url, maxLength = 34) {
   const text = String(url ?? '').replace(/^https?:\/\//, '')
   return text.length > maxLength ? `${text.slice(0, maxLength - 1)}…` : text
 }
-
-/**
- * Message body assembled from the contact form fields.
- *
- * `includeSubject` is on for WhatsApp (where the subject would otherwise be
- * lost) and off for Gmail, which already receives it as the subject header.
- */
-export function composeMessage({ name, email, subject, message }, { includeSubject = true } = {}) {
-  const lines = [message?.trim()].filter(Boolean)
-  if (includeSubject && subject?.trim()) lines.unshift(`Subject: ${subject.trim()}`)
-  const from = [name?.trim(), email?.trim()].filter(Boolean).join(' — ')
-  if (from) lines.push('', `— ${from}`)
-  return lines.join('\n')
-}

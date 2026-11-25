@@ -3,16 +3,16 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ArrowUpRight, Mail, FileText, Sun, Moon } from 'lucide-react'
 import { Github, Linkedin, Whatsapp } from '../ui/BrandIcons'
 import { contactLinks } from '../../lib/links'
+import { personalInfo } from '../../data/personalInfo'
 import { useTheme } from '../../context/ThemeContext'
 
 const navLinks = [
-  { label: 'About', href: '#about', index: '01' },
-  { label: 'Skills', href: '#skills', index: '02' },
-  { label: 'Projects', href: '#projects', index: '03' },
-  { label: 'Contact', href: '#contact', index: '04' },
+  { label: 'About', href: '#about', index: '01', dot: 'bg-emerald-500' },
+  { label: 'Toolkit', href: '#skills', index: '02', dot: 'bg-blue-500' },
+  { label: 'Work', href: '#projects', index: '03', dot: 'bg-violet-500' },
+  { label: 'Connect', href: '#footer', index: '04', dot: 'bg-teal-500' },
 ]
 
-// Icon per link id
 const linkIcons = {
   github: Github,
   linkedin: Linkedin,
@@ -21,22 +21,30 @@ const linkIcons = {
   resume: FileText,
 }
 
-const iconLinks = contactLinks.filter((link) => link.id !== 'resume' && linkIcons[link.id])
+const iconLinks = contactLinks.filter((link) => (link.id === 'github' || link.id === 'linkedin') && linkIcons[link.id])
 const resumeLink = contactLinks.find((link) => link.id === 'resume')
 
 const pillClass =
-  'inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 dark:border-white/10 text-neutral-700 dark:text-white/70 transition-all hover:border-slate-300 dark:hover:border-white/40 hover:text-black dark:hover:text-white hover:scale-105 active:scale-95 bg-white dark:bg-transparent shadow-xs'
+  'inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/[0.09] dark:border-white/15 text-[#0e1422] dark:text-neutral-300 transition-all hover:border-emerald-600/40 dark:hover:border-emerald-400/50 hover:text-emerald-700 dark:hover:text-emerald-300 active:scale-95 bg-white dark:bg-[#141418]'
 
 export default function Navbar() {
-  const { theme, toggleTheme, isDark } = useTheme()
+  const { toggleTheme, isDark } = useTheme()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState('')
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 30)
-      const sections = ['contact', 'projects', 'skills', 'about']
+      setScrolled(window.scrollY > 24)
+      if (window.scrollY < 160) {
+        setActive('')
+        return
+      }
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 120) {
+        setActive('footer')
+        return
+      }
+      const sections = ['footer', 'projects', 'skills', 'about']
       for (const id of sections) {
         const el = document.getElementById(id)
         if (el && el.getBoundingClientRect().top <= 240) {
@@ -45,6 +53,7 @@ export default function Navbar() {
         }
       }
     }
+    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -58,49 +67,67 @@ export default function Navbar() {
   return (
     <>
       <motion.header
-        initial={{ y: -60, opacity: 0 }}
+        initial={{ y: -48, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 pt-3 pb-2 transition-all duration-300 pointer-events-none"
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 pt-3.5 pb-2 pointer-events-none"
       >
         <nav
-          className={`max-w-4xl mx-auto h-13 px-4 sm:px-5 flex items-center justify-between gap-4 rounded-full transition-all duration-300 pointer-events-auto ${
+          aria-label="Primary"
+          className={`max-w-5xl mx-auto h-12 px-3 sm:px-4 flex items-center justify-between gap-4 rounded-full transition-all duration-300 pointer-events-auto ${
             scrolled
-              ? 'bg-white/95 dark:bg-black/80 backdrop-blur-xl border border-slate-200/90 dark:border-white/[0.12] shadow-lg shadow-slate-900/5 dark:shadow-black/80'
-              : 'bg-white/80 dark:bg-black/40 backdrop-blur-md border border-slate-200/70 dark:border-white/[0.08] shadow-xs'
+              ? 'bg-[#faf9f6]/92 dark:bg-[#09090b]/90 backdrop-blur-xl border border-emerald-600/20 dark:border-emerald-400/20 shadow-md shadow-emerald-950/[0.05] dark:shadow-black/60'
+              : 'bg-white/85 dark:bg-[#111115]/80 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.1] shadow-sm'
           }`}
         >
+          {/* Color-Bound Monogram */}
           <button
+            type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-2 text-sm font-semibold tracking-tight text-neutral-900 dark:text-white hover:opacity-80 transition-opacity"
+            className="flex items-center gap-2.5 text-sm font-semibold tracking-tight text-[#0e1422] dark:text-white hover:opacity-85 transition-opacity pl-1"
           >
-            <span className="h-2 w-2 rounded-full bg-emerald-500" />
-            <span>Tanish Jaswal</span>
+            <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-600 via-teal-600 to-blue-600 text-[10px] font-mono font-bold tracking-tight text-white shadow-sm">
+              TJ
+            </span>
+            <span className="hidden xs:inline sm:inline">Tanish Jaswal</span>
           </button>
 
-          <div className="hidden md:flex items-center gap-1 bg-black/[0.03] dark:bg-white/[0.03] p-1 rounded-full border border-black/[0.04] dark:border-white/[0.05]">
+          {/* Navigation with Sliding Color Pill */}
+          <div className="hidden md:flex items-center gap-0.5 bg-[#efede7]/90 dark:bg-white/[0.04] p-1 rounded-full border border-black/[0.05] dark:border-white/[0.07]">
             {navLinks.map((link) => {
               const isActive = active === link.href.slice(1)
               return (
                 <button
                   key={link.label}
+                  type="button"
                   onClick={() => scrollTo(link.href)}
-                  className={`relative px-3.5 py-1 text-xs font-medium rounded-full transition-all duration-200 ${
+                  className={`relative px-3.5 py-1 text-xs font-medium rounded-full transition-colors duration-200 ${
                     isActive
-                      ? 'text-neutral-900 dark:text-white bg-white dark:bg-white/[0.1] shadow-sm'
-                      : 'text-neutral-500 dark:text-white/50 hover:text-neutral-900 dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.04]'
+                      ? 'text-[#0e1422] dark:text-white'
+                      : 'text-[#586375] dark:text-neutral-400 hover:text-[#0e1422] dark:hover:text-white'
                   }`}
                 >
-                  {link.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-active-pill"
+                      transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                      className="absolute inset-0 rounded-full bg-white dark:bg-[#1f2027] border border-emerald-500/25 dark:border-emerald-400/25 shadow-sm"
+                    />
+                  )}
+                  <span className="relative z-10 flex items-center gap-1.5">
+                    <span className={`h-1.5 w-1.5 rounded-full transition-opacity ${link.dot} ${isActive ? 'opacity-100' : 'opacity-40'}`} />
+                    <span className="font-mono text-[10px] opacity-50">{link.index}</span>
+                    <span>{link.label}</span>
+                  </span>
                 </button>
               )
             })}
           </div>
 
-          {/* Socials, Theme Toggle & Resume */}
-          <div className="hidden md:flex items-center gap-2">
-            {/* Theme Toggle Button */}
+          {/* Right Controls: Theme + Socials + Gradient CTA */}
+          <div className="hidden md:flex items-center gap-1.5">
             <button
+              type="button"
               onClick={toggleTheme}
               aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
               title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
@@ -109,7 +136,7 @@ export default function Navbar() {
               {isDark ? (
                 <Sun className="w-3.5 h-3.5 text-amber-300" />
               ) : (
-                <Moon className="w-3.5 h-3.5 text-neutral-700" />
+                <Moon className="w-3.5 h-3.5 text-[#0e1422]" />
               )}
             </button>
 
@@ -119,7 +146,8 @@ export default function Navbar() {
                 <a
                   key={link.id}
                   href={link.href}
-                  {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={link.label}
                   title={link.label}
                   className={pillClass}
@@ -128,31 +156,36 @@ export default function Navbar() {
                 </a>
               )
             })}
+
             <a
-              href={resumeLink.href}
+              href={resumeLink?.href || personalInfo.resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-neutral-900 text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 px-3.5 py-1.5 text-xs font-medium transition-all hover:scale-105 active:scale-95 shadow-sm"
+              className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#0e1422] to-[#065f46] hover:from-emerald-700 hover:to-teal-700 text-white dark:from-emerald-400 dark:to-teal-300 dark:text-[#09090b] dark:hover:from-emerald-300 dark:hover:to-teal-200 px-3.5 py-1.5 text-xs font-semibold transition-all active:scale-95 shadow-sm"
             >
               <span>Resume</span>
               <ArrowUpRight className="w-3 h-3" />
             </a>
           </div>
 
-          <div className="flex md:hidden items-center gap-1">
+          {/* Mobile Controls */}
+          <div className="flex md:hidden items-center gap-1.5">
             <button
+              type="button"
               onClick={toggleTheme}
               aria-label="Toggle theme"
               className={pillClass}
             >
-              {isDark ? <Sun className="w-3.5 h-3.5 text-amber-300" /> : <Moon className="w-3.5 h-3.5" />}
+              {isDark ? <Sun className="w-3.5 h-3.5 text-amber-300" /> : <Moon className="w-3.5 h-3.5 text-[#0e1422]" />}
             </button>
             <button
+              type="button"
               onClick={() => setOpen(!open)}
-              className="p-1.5 text-neutral-800 dark:text-white"
+              className={pillClass}
               aria-label="Toggle navigation"
+              aria-expanded={open}
             >
-              {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {open ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
           </div>
         </nav>
@@ -165,20 +198,22 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-16 z-40 bg-white/95 dark:bg-black/95 backdrop-blur-xl border-b border-black/[0.08] dark:border-white/[0.08] md:hidden shadow-xl"
+            className="fixed inset-x-4 top-[72px] z-40 rounded-2xl bg-white/95 dark:bg-[#111115]/95 backdrop-blur-xl border border-emerald-600/20 dark:border-white/[0.12] md:hidden shadow-xl overflow-hidden"
           >
-            <div className="px-6 py-4 flex flex-col">
+            <div className="px-5 py-2 flex flex-col divide-y divide-black/[0.06] dark:divide-white/[0.07]">
               {navLinks.map((link) => (
                 <button
                   key={link.label}
+                  type="button"
                   onClick={() => scrollTo(link.href)}
-                  className="flex items-center justify-between py-3.5 border-b border-black/[0.05] dark:border-white/[0.06] text-left"
+                  className="flex items-center justify-between py-3.5 text-left"
                 >
-                  <span className="text-sm text-neutral-800 dark:text-white/80">
-                    <span className="font-mono text-[10px] text-neutral-400 dark:text-white/30 mr-3">{link.index}</span>
-                    {link.label}
+                  <span className="flex items-center gap-2.5 text-sm font-medium text-[#0e1422] dark:text-white">
+                    <span className={`h-2 w-2 rounded-full ${link.dot}`} />
+                    <span className="font-mono text-[10px] text-[#586375] dark:text-neutral-500">{link.index}</span>
+                    <span>{link.label}</span>
                   </span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-neutral-400 dark:text-white/30" />
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#586375] dark:text-neutral-500" />
                 </button>
               ))}
 
@@ -189,13 +224,14 @@ export default function Navbar() {
                     key={link.id}
                     href={link.href}
                     {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    className="flex items-center justify-between py-3.5 border-b border-black/[0.05] dark:border-white/[0.06] text-left last:border-b-0"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center justify-between py-3.5 text-left"
                   >
-                    <span className="flex items-center gap-3 text-sm text-neutral-800 dark:text-white/80">
-                      <Icon className="w-4 h-4 text-neutral-400 dark:text-white/40" />
+                    <span className="flex items-center gap-3 text-sm text-[#3a3a37] dark:text-neutral-300">
+                      <Icon className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                       {link.label}
                     </span>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-neutral-400 dark:text-white/30" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#586375] dark:text-neutral-500" />
                   </a>
                 )
               })}
