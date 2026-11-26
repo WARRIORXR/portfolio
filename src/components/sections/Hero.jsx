@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowDown, ArrowUpRight, FileText, Mail, MapPin, Terminal } from 'lucide-react'
 import { personalInfo } from '../../data/personalInfo'
 import { Github, Linkedin } from '../ui/BrandIcons'
 import { gmailComposeUrl } from '../../lib/links'
+
+const ROLES = personalInfo.taglines || ['Data Analyst', 'Python Developer', 'SQL Specialist', 'Machine Learning']
 
 const FOCUS_MODES = [
   {
@@ -14,7 +16,13 @@ const FOCUS_MODES = [
     highlightValue: '+340% Sci-Fi',
     secondaryLabel: 'Scale Verified',
     secondaryValue: '1,200+ Titles',
-    bars: [58, 72, 64, 88, 96],
+    bars: [
+      { label: 'Drama', val: 58, read: '+145%' },
+      { label: 'Mystery', val: 72, read: '+190%' },
+      { label: 'Action', val: 64, read: '+220%' },
+      { label: 'Anim.', val: 88, read: '+280%' },
+      { label: 'Sci-Fi', val: 96, read: '+340%' },
+    ],
     caption: 'CineScope & ExpenseFlow automated EDA pipelines',
     badgeClass: 'bg-emerald-500/12 text-emerald-800 dark:text-emerald-300 border-emerald-500/25',
     barHighlight: 'bg-gradient-to-t from-emerald-600 to-teal-400',
@@ -31,7 +39,13 @@ const FOCUS_MODES = [
     highlightValue: '94.2% RF',
     secondaryLabel: 'Risk ROC-AUC',
     secondaryValue: '0.92 XGB',
-    bars: [74, 81, 88, 91, 95],
+    bars: [
+      { label: 'LogReg', val: 74, read: '81.4%' },
+      { label: 'KNN', val: 81, read: '85.0%' },
+      { label: 'SVM', val: 88, read: '88.5%' },
+      { label: 'GBM', val: 91, read: '91.8%' },
+      { label: 'RF', val: 95, read: '94.2%' },
+    ],
     caption: 'Netmax AI/ML benchmarks & Airline / Credit models',
     badgeClass: 'bg-violet-500/12 text-violet-800 dark:text-violet-300 border-violet-500/25',
     barHighlight: 'bg-gradient-to-t from-violet-600 to-indigo-400',
@@ -48,7 +62,13 @@ const FOCUS_MODES = [
     highlightValue: '19 Passing',
     secondaryLabel: 'Alert SLA',
     secondaryValue: '06:30 AM IST',
-    bars: [68, 79, 86, 92, 90],
+    bars: [
+      { label: 'Ingest', val: 68, read: 'Open-Meteo' },
+      { label: 'Cache', val: 79, read: '< 2ms' },
+      { label: 'Lambda', val: 86, read: 'EventBridge' },
+      { label: 'Alert', val: 92, read: 'SNS SMS' },
+      { label: 'Edge', val: 95, read: '99.9% SLA' },
+    ],
     caption: 'School AQI serverless Lambda + Daily Ink PWA',
     badgeClass: 'bg-blue-500/12 text-blue-800 dark:text-blue-300 border-blue-500/25',
     barHighlight: 'bg-gradient-to-t from-blue-600 to-cyan-400',
@@ -66,12 +86,25 @@ const PILLARS = [
   { idx: '04', title: 'ML & Cloud', detail: 'Scikit-learn · Flask · AWS Lambda', topBar: 'bg-violet-500', tagColor: 'text-violet-700 dark:text-violet-400' },
 ]
 
-export default function Hero() {
+export default function Hero({ onJumpToLab }) {
   const [modeIndex, setModeIndex] = useState(0)
+  const [roleIndex, setRoleIndex] = useState(0)
+  const [hoveredBar, setHoveredBar] = useState(null)
   const activeMode = FOCUS_MODES[modeIndex]
 
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setRoleIndex((i) => (i + 1) % ROLES.length)
+    }, 2800)
+    return () => window.clearInterval(id)
+  }, [])
+
   const scrollTo = (id) => {
-    const el = document.getElementById(id)
+    if (id === 'data-lab' && onJumpToLab) {
+      onJumpToLab()
+      return
+    }
+    const el = document.getElementById(id) || (id === 'data-lab' ? document.getElementById('projects') : null)
     if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -98,7 +131,21 @@ export default function Hero() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600 dark:bg-emerald-400" />
               </span>
-              <span>Available for Data Analyst &amp; AI/ML Roles</span>
+              <span>Open for</span>
+              <span className="relative inline-flex h-4 min-w-[126px] items-center overflow-hidden font-semibold text-emerald-700 dark:text-emerald-300">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={ROLES[roleIndex]}
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -10, opacity: 0 }}
+                    transition={{ duration: 0.24 }}
+                    className="whitespace-nowrap"
+                  >
+                    {ROLES[roleIndex]}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
               <span className="text-emerald-900/25 dark:text-white/25">/</span>
               <span className="flex items-center gap-1 text-emerald-800/80 dark:text-emerald-300/80">
                 <MapPin className="w-3 h-3" />
@@ -204,7 +251,7 @@ export default function Hero() {
             className="lg:col-span-5"
           >
             <div className="paper-surface rounded-2xl overflow-hidden">
-              {/* Sheet Top Bar (Color-Bound to Active Mode) */}
+              {/* Sheet Top Bar */}
               <div className={`flex items-center justify-between px-5 py-3.5 border-b border-black/[0.07] dark:border-white/[0.08] bg-gradient-to-r ${activeMode.headerTint} transition-colors duration-300`}>
                 <div className="flex items-center gap-2">
                   <Terminal className={`w-3.5 h-3.5 transition-colors ${activeMode.iconColor}`} />
@@ -226,7 +273,10 @@ export default function Hero() {
                       <button
                         key={m.id}
                         type="button"
-                        onClick={() => setModeIndex(i)}
+                        onClick={() => {
+                          setModeIndex(i)
+                          setHoveredBar(null)
+                        }}
                         className={`relative py-1.5 text-[11px] font-mono font-medium rounded-lg transition-colors ${
                           selected
                             ? 'text-[#0e1422] dark:text-white'
@@ -286,26 +336,49 @@ export default function Hero() {
                     </div>
                   </div>
 
-                  {/* Color-Bound Signal Bars */}
+                  {/* Interactive Hoverable Signal Bars */}
                   <div className="space-y-2 pt-1">
                     <div className="flex items-end gap-2 h-14 px-1">
-                      {activeMode.bars.map((val, idx) => (
-                        <div key={idx} className="flex-1 h-full flex items-end bg-[#efede7] dark:bg-white/[0.04] rounded-md overflow-hidden p-0.5">
-                          <motion.div
-                            initial={{ height: 0 }}
-                            animate={{ height: `${val}%` }}
-                            transition={{ duration: 0.42, delay: idx * 0.04, ease: 'easeOut' }}
-                            className={`w-full rounded-sm ${
-                              idx >= activeMode.bars.length - 2
-                                ? activeMode.barHighlight
-                                : activeMode.barBase
-                            }`}
-                          />
-                        </div>
-                      ))}
+                      {activeMode.bars.map((bar, idx) => {
+                        const isHovered = hoveredBar === idx
+                        return (
+                          <button
+                            key={bar.label}
+                            type="button"
+                            onMouseEnter={() => setHoveredBar(idx)}
+                            onMouseLeave={() => setHoveredBar(null)}
+                            onFocus={() => setHoveredBar(idx)}
+                            onBlur={() => setHoveredBar(null)}
+                            aria-label={`${bar.label}: ${bar.read}`}
+                            className="flex-1 h-full flex items-end bg-[#efede7] dark:bg-white/[0.04] rounded-md overflow-hidden p-0.5 transition-transform hover:-translate-y-0.5 cursor-pointer"
+                          >
+                            <motion.div
+                              initial={{ height: 0 }}
+                              animate={{ height: `${bar.val}%` }}
+                              transition={{ duration: 0.42, delay: idx * 0.04, ease: 'easeOut' }}
+                              className={`w-full rounded-sm transition-all ${
+                                isHovered || idx >= activeMode.bars.length - 2
+                                  ? activeMode.barHighlight
+                                  : activeMode.barBase
+                              }`}
+                            />
+                          </button>
+                        )
+                      })}
                     </div>
-                    <div className="text-[11px] font-mono text-[#586375] dark:text-neutral-400">
-                      {activeMode.caption}
+                    <div className="flex items-center justify-between text-[11px] font-mono text-[#586375] dark:text-neutral-400">
+                      <span className="truncate">
+                        {hoveredBar !== null && activeMode.bars[hoveredBar]
+                          ? `${activeMode.bars[hoveredBar].label}: ${activeMode.bars[hoveredBar].read}`
+                          : activeMode.caption}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => scrollTo('data-lab')}
+                        className={`shrink-0 ml-2 font-semibold hover:underline ${activeMode.valueText}`}
+                      >
+                        Lab &rarr;
+                      </button>
                     </div>
                   </div>
                 </motion.div>

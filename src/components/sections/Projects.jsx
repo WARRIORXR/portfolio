@@ -1,5 +1,5 @@
-import { useState, useMemo, lazy, Suspense } from 'react'
-import { ArrowUpRight, Sparkles, FolderGit2, Layers } from 'lucide-react'
+import { useState, useMemo, useEffect, lazy, Suspense } from 'react'
+import { ArrowUpRight, Sparkles, FolderGit2, Layers, Cpu, X, GitBranch } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Github } from '../ui/BrandIcons'
 import { useGithubRepos } from '../../hooks/useGithubRepos'
@@ -22,6 +22,8 @@ const PROJECT_THEMES = [
     pill: 'bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border-emerald-500/25',
     arrow: 'text-emerald-600 dark:text-emerald-400',
     hoverTitle: 'group-hover:text-emerald-700 dark:group-hover:text-emerald-400',
+    domain: 'analytics',
+    flow: ['TMDB & Ratings Feeds', 'Flask 8-Endpoint API', 'Pandas ROI Engine', 'Gemini Recommendation UI'],
   },
   {
     topBar: 'from-blue-500 to-cyan-500',
@@ -30,6 +32,8 @@ const PROJECT_THEMES = [
     pill: 'bg-blue-500/10 text-blue-800 dark:text-blue-300 border-blue-500/25',
     arrow: 'text-blue-600 dark:text-blue-400',
     hoverTitle: 'group-hover:text-blue-700 dark:group-hover:text-blue-400',
+    domain: 'analytics',
+    flow: ['Multi-Currency Ledger', '80% / 100% Cap Guard', 'Chart.js BI Engine', 'PDF / CSV Export'],
   },
   {
     topBar: 'from-violet-500 to-indigo-500',
@@ -38,6 +42,8 @@ const PROJECT_THEMES = [
     pill: 'bg-violet-500/10 text-violet-800 dark:text-violet-300 border-violet-500/25',
     arrow: 'text-violet-600 dark:text-violet-400',
     hoverTitle: 'group-hover:text-violet-700 dark:group-hover:text-violet-400',
+    domain: 'fullstack',
+    flow: ['Offline PWA Cache', 'SM-2 Retention Scheduler', 'Supabase Auth + RLS', 'PostgreSQL Sync'],
   },
   {
     topBar: 'from-amber-500 to-emerald-500',
@@ -46,7 +52,16 @@ const PROJECT_THEMES = [
     pill: 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border-amber-500/25',
     arrow: 'text-amber-600 dark:text-amber-400',
     hoverTitle: 'group-hover:text-amber-700 dark:group-hover:text-amber-400',
+    domain: 'cloud',
+    flow: ['Open-Meteo Forecast API', 'EventBridge 06:30 Trigger', 'AWS Lambda + DynamoDB', 'SNS Bilingual SMS & Escalation'],
   },
+]
+
+const CASE_STUDY_FILTERS = [
+  { id: 'all', label: 'All Studies (4)' },
+  { id: 'analytics', label: 'Analytics & BI (2)' },
+  { id: 'fullstack', label: 'Full-Stack PWA (1)' },
+  { id: 'cloud', label: 'Serverless Cloud (1)' },
 ]
 
 const PROJECT_RAIL_ITEMS = [
@@ -143,14 +158,47 @@ function SkeletonList() {
   )
 }
 
-export default function Projects() {
-  const [activeTab, setActiveTab] = useState('featured')
+export default function Projects({ activeTab: controlledTab, onTabChange }) {
+  const [internalTab, setInternalTab] = useState('featured')
+  const [domainFilter, setDomainFilter] = useState('all')
+  const [inspected, setInspected] = useState(null)
+
+  const activeTab = controlledTab ?? internalTab
+  const setActiveTab = (next) => {
+    if (onTabChange) onTabChange(next)
+    else setInternalTab(next)
+  }
+
   const { repos, loading } = useGithubRepos()
 
   const items = useMemo(
     () => repos.slice(0, MAX_PROJECTS).map(toShowcaseItem),
     [repos]
   )
+
+  const enrichedProjects = useMemo(
+    () =>
+      featuredProjects.map((project, idx) => ({
+        ...project,
+        originalIndex: idx,
+        theme: PROJECT_THEMES[idx % PROJECT_THEMES.length],
+      })),
+    []
+  )
+
+  const visibleCaseStudies = useMemo(() => {
+    if (domainFilter === 'all') return enrichedProjects
+    return enrichedProjects.filter((p) => p.theme.domain === domainFilter)
+  }, [domainFilter, enrichedProjects])
+
+  useEffect(() => {
+    if (!inspected) return
+    const onKey = (e) => {
+      if (e.key === 'Escape') setInspected(null)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [inspected])
 
   const modeTabs = [
     { id: 'featured', label: `Case Studies & Data Lab (${featuredProjects.length})`, icon: Sparkles, dot: 'bg-violet-500' },
@@ -170,7 +218,7 @@ export default function Projects() {
       />
 
       {/* Color-Bound Mode Switcher */}
-      <SectionItem className="mb-10">
+      <SectionItem className="mb-8">
         <div className="inline-flex flex-wrap items-center gap-1 p-1 rounded-2xl sm:rounded-full bg-[#efede7] dark:bg-white/[0.04] border border-black/[0.06] dark:border-white/[0.08]">
           {modeTabs.map((tab) => {
             const Icon = tab.icon
@@ -212,14 +260,39 @@ export default function Projects() {
             transition={{ duration: 0.25 }}
             className="space-y-12"
           >
+            {/* Domain Sub-Filter Bar */}
+            <div className="flex flex-wrap items-center gap-2">
+              {CASE_STUDY_FILTERS.map((f) => (
+                <button
+                  key={f.id}
+                  type="button"
+                  onClick={() => setDomainFilter(f.id)}
+                  className={`px-3 py-1 rounded-full font-mono text-[11px] border transition-colors ${
+                    domainFilter === f.id
+                      ? 'bg-[#0e1422] text-white border-[#0e1422] dark:bg-white dark:text-[#09090b] dark:border-white'
+                      : 'bg-white dark:bg-[#111115] text-[#586375] dark:text-neutral-400 border-black/[0.08] dark:border-white/[0.09] hover:border-black/25 dark:hover:border-white/25'
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+
             {/* Color-Bound Flagship Case Studies Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-              {featuredProjects.map((project, idx) => {
-                const theme = PROJECT_THEMES[idx % PROJECT_THEMES.length]
-                return (
-                  <SectionItem key={project.id}>
-                    <article className="relative paper-surface rounded-2xl p-6 sm:p-7 flex flex-col justify-between h-full group overflow-hidden">
-                      {/* Signature Domain Accent Bar */}
+            <motion.div layout className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              <AnimatePresence mode="popLayout">
+                {visibleCaseStudies.map((project) => {
+                  const { theme, originalIndex } = project
+                  return (
+                    <motion.article
+                      key={project.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.97 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.97 }}
+                      transition={{ duration: 0.22 }}
+                      className="relative paper-surface rounded-2xl p-6 sm:p-7 flex flex-col justify-between h-full group overflow-hidden"
+                    >
                       <span
                         aria-hidden="true"
                         className={`absolute top-0 inset-x-0 h-[3px] bg-gradient-to-r ${theme.topBar}`}
@@ -229,7 +302,7 @@ export default function Projects() {
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <div className="flex items-center gap-2">
                             <span className={`font-mono text-[10px] font-semibold px-2 py-0.5 rounded-md ${theme.numBadge}`}>
-                              {String(idx + 1).padStart(2, '0')}
+                              {String(originalIndex + 1).padStart(2, '0')}
                             </span>
                             <span className={`mono-label text-[10px] font-semibold ${theme.catText}`}>
                               {project.category}
@@ -285,22 +358,33 @@ export default function Projects() {
                           ))}
                         </div>
 
-                        <a
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-black/[0.11] dark:border-white/[0.14] bg-white dark:bg-[#141418] px-3.5 py-1.5 text-xs font-medium text-[#0e1422] dark:text-white hover:border-emerald-600/40 dark:hover:border-emerald-400/50 transition-all shadow-sm"
-                        >
-                          <Github className="w-3.5 h-3.5" />
-                          <span>Source</span>
-                          <ArrowUpRight className="w-3 h-3 text-[#586375] dark:text-neutral-400" />
-                        </a>
+                        <div className="ml-auto flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setInspected(project)}
+                            className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.1] dark:border-white/[0.14] bg-[#faf9f6] dark:bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-[#0e1422] dark:text-neutral-200 hover:border-emerald-600/40 dark:hover:border-emerald-400/50 transition-all"
+                          >
+                            <Cpu className={`w-3.5 h-3.5 ${theme.arrow}`} />
+                            <span>Architecture</span>
+                          </button>
+
+                          <a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.11] dark:border-white/[0.14] bg-white dark:bg-[#141418] px-3.5 py-1.5 text-xs font-medium text-[#0e1422] dark:text-white hover:border-emerald-600/40 dark:hover:border-emerald-400/50 transition-all shadow-sm"
+                          >
+                            <Github className="w-3.5 h-3.5" />
+                            <span>Source</span>
+                            <ArrowUpRight className="w-3 h-3 text-[#586375] dark:text-neutral-400" />
+                          </a>
+                        </div>
                       </div>
-                    </article>
-                  </SectionItem>
-                )
-              })}
-            </div>
+                    </motion.article>
+                  )
+                })}
+              </AnimatePresence>
+            </motion.div>
 
             {/* Interactive Data Telemetry Lab */}
             <SectionItem>
@@ -376,6 +460,119 @@ export default function Projects() {
               </a>
             </SectionItem>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Case Study Architecture Inspector Modal */}
+      <AnimatePresence>
+        {inspected && (
+          <div
+            className="fixed inset-0 z-[95] flex items-center justify-center p-4"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="arch-modal-title"
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setInspected(null)}
+              className="fixed inset-0 bg-[#0e1422]/35 dark:bg-black/75 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="relative z-10 w-full max-w-2xl rounded-2xl bg-white dark:bg-[#111115] border border-black/[0.1] dark:border-white/[0.12] shadow-2xl overflow-hidden"
+            >
+              <div className={`h-[3px] w-full bg-gradient-to-r ${inspected.theme.topBar}`} />
+              <div className="p-6 sm:p-7 space-y-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-1">
+                    <span className={`mono-label text-[10px] font-semibold ${inspected.theme.catText}`}>
+                      System Architecture &middot; {inspected.category}
+                    </span>
+                    <h3 id="arch-modal-title" className="text-2xl font-bold tracking-tight text-[#0e1422] dark:text-white">
+                      {inspected.title}
+                    </h3>
+                    <p className="text-xs text-[#586375] dark:text-neutral-400">
+                      {inspected.headline}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setInspected(null)}
+                    aria-label="Close architecture inspector"
+                    className="p-2 rounded-full border border-black/[0.08] dark:border-white/[0.1] text-[#586375] dark:text-neutral-400 hover:text-[#0e1422] dark:hover:text-white transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Data Pipeline Flow Diagram */}
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-2 mono-label text-[10px] text-[#586375] dark:text-neutral-400">
+                    <GitBranch className={`w-3.5 h-3.5 ${inspected.theme.arrow}`} />
+                    <span>Execution Data Flow</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                    {inspected.theme.flow.map((step, i) => (
+                      <div
+                        key={step}
+                        className="relative p-3 rounded-xl bg-[#faf9f6] dark:bg-white/[0.04] border border-black/[0.07] dark:border-white/[0.08] space-y-1"
+                      >
+                        <div className={`font-mono text-[10px] font-semibold ${inspected.theme.catText}`}>
+                          0{i + 1}
+                        </div>
+                        <div className="text-xs font-medium text-[#0e1422] dark:text-white leading-snug">
+                          {step}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Description & Key Engineering Points */}
+                <div className="space-y-3 pt-2 border-t border-black/[0.06] dark:border-white/[0.08]">
+                  <p className="text-sm leading-relaxed text-[#283040] dark:text-neutral-300">
+                    {inspected.description}
+                  </p>
+                  <ul className="space-y-1.5">
+                    {inspected.highlights.map((h) => (
+                      <li key={h} className="flex items-start gap-2.5 text-xs text-[#586375] dark:text-neutral-400">
+                        <span className={`font-mono mt-0.5 ${inspected.theme.arrow}`}>&rarr;</span>
+                        <span>{h}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="pt-4 border-t border-black/[0.06] dark:border-white/[0.08] flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex flex-wrap gap-1.5">
+                    {inspected.tech.map((t) => (
+                      <span
+                        key={t}
+                        className="text-[11px] font-mono rounded-md px-2 py-0.5 bg-[#efede7]/70 dark:bg-white/[0.05] text-[#0e1422] dark:text-neutral-200"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <a
+                    href={inspected.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-[#0e1422] text-white dark:bg-white dark:text-[#09090b] px-4 py-2 text-xs font-semibold hover:opacity-90 transition-opacity"
+                  >
+                    <Github className="w-3.5 h-3.5" />
+                    <span>Open Source on GitHub</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </SectionWrapper>

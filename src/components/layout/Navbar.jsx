@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ArrowUpRight, Mail, FileText, Sun, Moon } from 'lucide-react'
+import { Menu, X, ArrowUpRight, Mail, FileText, Sun, Moon, Command } from 'lucide-react'
 import { Github, Linkedin, Whatsapp } from '../ui/BrandIcons'
 import { contactLinks } from '../../lib/links'
 import { personalInfo } from '../../data/personalInfo'
@@ -27,7 +27,7 @@ const resumeLink = contactLinks.find((link) => link.id === 'resume')
 const pillClass =
   'inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/[0.09] dark:border-white/15 text-[#0e1422] dark:text-neutral-300 transition-all hover:border-emerald-600/40 dark:hover:border-emerald-400/50 hover:text-emerald-700 dark:hover:text-emerald-300 active:scale-95 bg-white dark:bg-[#141418]'
 
-export default function Navbar() {
+export default function Navbar({ onOpenCommand }) {
   const { toggleTheme, isDark } = useTheme()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
@@ -124,8 +124,21 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Right Controls: Theme + Socials + Gradient CTA */}
+          {/* Right Controls: Command Palette + Theme + Socials + Gradient CTA */}
           <div className="hidden md:flex items-center gap-1.5">
+            {onOpenCommand && (
+              <button
+                type="button"
+                onClick={onOpenCommand}
+                aria-label="Open command palette"
+                title="Quick Command Palette (Ctrl+K)"
+                className="inline-flex h-8 items-center gap-1.5 rounded-full border border-black/[0.09] dark:border-white/15 px-2.5 text-[11px] font-mono text-[#586375] dark:text-neutral-300 transition-all hover:border-emerald-600/40 dark:hover:border-emerald-400/50 hover:text-[#0e1422] dark:hover:text-white bg-white dark:bg-[#141418]"
+              >
+                <Command className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                <span>K</span>
+              </button>
+            )}
+
             <button
               type="button"
               onClick={toggleTheme}
@@ -170,6 +183,16 @@ export default function Navbar() {
 
           {/* Mobile Controls */}
           <div className="flex md:hidden items-center gap-1.5">
+            {onOpenCommand && (
+              <button
+                type="button"
+                onClick={onOpenCommand}
+                aria-label="Open command palette"
+                className={pillClass}
+              >
+                <Command className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              </button>
+            )}
             <button
               type="button"
               onClick={toggleTheme}

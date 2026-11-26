@@ -36,7 +36,7 @@ export function SectionWrapper({ children, id, className = '' }) {
   return (
     <motion.section
       id={id}
-      className={`relative py-20 sm:py-24 px-6 max-w-6xl mx-auto border-t border-black/[0.06] dark:border-white/[0.07] scroll-mt-16 ${className}`}
+      className={`relative py-20 sm:py-24 px-6 max-w-6xl mx-auto border-t border-black/[0.06] dark:border-white/[0.07] scroll-mt-24 ${className}`}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.08 }}
