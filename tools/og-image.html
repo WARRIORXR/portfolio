@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Tanish Jaswal — social card</title>
+<style>
+  @font-face {
+    font-family: "Oswald";
+    font-weight: 400 700;
+    src: url("/fonts/oswald-var.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "Public Sans";
+    font-weight: 400 700;
+    src: url("/fonts/public-sans-var.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "Courier Prime";
+    font-weight: 400;
+    src: url("/fonts/courier-prime.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "Courier Prime";
+    font-weight: 700;
+    src: url("/fonts/courier-prime-bold.woff2") format("woff2");
+  }
+
+  :root {
+    --paper: #f1ebe1;
+    --ink: #1f1b16;
+    --muted: #4b433a;
+    --label: #7a5a3c;
+    --rule: #cbc1b2;
+    --highlight: #ffae21;
+    --tag-sand: #efdfbf;
+    --display: "Oswald", "Arial Narrow", sans-serif;
+    --mono: "Courier Prime", "Courier New", ui-monospace, monospace;
+    --body: "Public Sans", system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; }
+
+  body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    position: relative;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+  }
+
+  .grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.45;
+    pointer-events: none;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.36 0 0 0 0 0.29 0 0 0 0 0.2 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  }
+
+  .frame {
+    position: absolute;
+    inset: 26px;
+    border: 1.5px solid var(--rule);
+    border-radius: 4px;
+  }
+
+  .margin {
+    position: absolute;
+    top: 26px;
+    bottom: 26px;
+    left: 96px;
+    width: 2px;
+    background: rgba(207, 95, 76, 0.35);
+  }
+
+  .card {
+    position: absolute;
+    left: 132px;
+    top: 74px;
+    width: 760px;
+  }
+
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 21px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--label);
+  }
+
+  .kicker .line { width: 190px; height: 1.5px; background: var(--rule); }
+
+  h1 {
+    margin: 20px 0 0;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 80px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .marker-word {
+    position: relative;
+    display: inline-block;
+    padding: 0 10px;
+  }
+
+  .marker-word::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    top: 20%;
+    bottom: 14%;
+    background: var(--highlight);
+    opacity: 0.55;
+    border-radius: 4px;
+    transform: rotate(-1deg);
+  }
+
+  .sub {
+    margin: 18px 0 0;
+    max-width: 620px;
+    font-size: 21px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .tags {
+    display: flex;
+    gap: 12px;
+    margin-top: 26px;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  .tags span { padding: 5px 16px; background: var(--tag-sand); border-radius: 3px; }
+
+  .foot {
+    position: absolute;
+    left: 132px;
+    right: 132px;
+    bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--label);
+    border-top: 1.5px solid var(--rule);
+    padding-top: 18px;
+  }
+
+  .stamp {
+    position: absolute;
+    right: 92px;
+    top: 70px;
+    width: 210px;
+    color: #a27b54;
+    opacity: 0.55;
+    mix-blend-mode: multiply;
+    transform: rotate(9deg);
+  }
+
+  .bars {
+    position: absolute;
+    right: 160px;
+    bottom: 168px;
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+  }
+
+  .bars i {
+    display: block;
+    width: 34px;
+    background: #1f1b16;
+    border-radius: 3px 3px 0 0;
+  }
+
+  .bars i:nth-child(1) { height: 44px; background: rgba(31, 27, 22, 0.3); }
+  .bars i:nth-child(2) { height: 74px; background: rgba(31, 27, 22, 0.5); }
+  .bars i:nth-child(3) { height: 58px; background: rgba(31, 27, 22, 0.68); }
+  .bars i:nth-child(4) { height: 104px; background: var(--highlight); }
+</style>
+</head>
+<body>
+  <div class="grain"></div>
+  <div class="frame"></div>
+  <div class="margin"></div>
+
+  <div class="card">
+    <p class="kicker">Data Analyst · AI/ML <span class="line"></span></p>
+    <h1>Tanish Jaswal<br />building things<br />that <span class="marker-word">learn</span>.</h1>
+    <p class="sub">B.Tech CS at IKGPTU — analytics dashboards, ML models and Flask apps, end to end.</p>
+    <div class="tags"><span>Python</span><span>ML</span><span>AWS</span><span>SQL</span></div>
+  </div>
+
+  <svg class="stamp" viewBox="0 0 120 80" aria-hidden="true">
+    <rect x="6" y="6" width="108" height="68" rx="6" fill="none" stroke="currentColor" stroke-width="2.5" />
+    <circle cx="60" cy="40" r="24" fill="none" stroke="currentColor" stroke-width="1.5" />
+    <text x="60" y="45" font-size="15" font-weight="700" fill="currentColor" text-anchor="middle" font-family="'Courier Prime','Courier New',monospace">TJ</text>
+    <text x="14" y="22" font-size="9" font-weight="700" letter-spacing="2" fill="currentColor" font-family="'Courier Prime','Courier New',monospace">DATA · NOTES</text>
+    <text x="14" y="68" font-size="9" font-weight="700" letter-spacing="2" fill="currentColor" font-family="'Courier Prime','Courier New',monospace">OPEN TO WORK</text>
+  </svg>
+
+  <div class="bars"><i></i><i></i><i></i><i></i></div>
+
+  <div class="foot">
+    <span>github.com/WARRIORXR</span>
+    <span>tanishjaswal56@gmail.com</span>
+  </div>
+</body>
+</html>

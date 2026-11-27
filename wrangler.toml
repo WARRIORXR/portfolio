@@ -1,9 +1,0 @@
-# Cloudflare Pages project configuration
-# https://developers.cloudflare.com/pages/configuration/wrangler-configuration/
-
-name = "tanish-portfolio"
-compatibility_date = "2026-10-23"
-
-[assets]
-directory = "./dist"
-not_found_handling = "single-page-application"

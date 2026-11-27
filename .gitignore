@@ -1,29 +1,9 @@
-node_modules
-dist
-.env
-.env.local
-.DS_Store
-*.log
-
-# Local agent/tooling state
+# Local artifacts
+.baseline/
+.baseline-v2/
 .freebuff/
+.staging/
+.zcode/
 
-# Rust gateway
-backend/rust-api/target
-
-# Python service
-backend/py-service/.venv
-backend/py-service/data/*
-!backend/py-service/data/.gitkeep
-__pycache__/
-*.py[cod]
-.pytest_cache/
-
-# Cloudflare local dev
-.wrangler/
-
-# Runtime contact store
-backend/data/
-
-# Rust (any depth)
-target/
+# Dependencies
+node_modules/
