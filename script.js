@@ -186,7 +186,8 @@
     var open = false;
 
     function shift() {
-      var pop = badge.querySelector(".pop");
+      var wrap = badge.closest(".badge-wrap") || badge;
+      var pop = wrap.querySelector(".pop");
       if (!pop) return;
 
       var rect = pop.getBoundingClientRect();
@@ -1424,6 +1425,31 @@
     var email = String(data.get("email") || "").trim();
     var subject = String(data.get("subject") || "").trim();
     var message = String(data.get("message") || "").trim();
+
+    // the required fields are real: never open an empty mail
+    var missing = [];
+    Array.prototype.forEach.call(form.querySelectorAll("[required]"), function (field) {
+      var empty = !String(field.value || "").trim();
+      field.setAttribute("aria-invalid", empty ? "true" : "false");
+      if (empty) missing.push(field);
+    });
+
+    if (status) {
+      if (missing.length) {
+        var label = function (field) {
+          var f = field.closest(".field");
+          return f && f.querySelector("label")
+            ? f.querySelector("label").textContent.toLowerCase()
+            : "details";
+        };
+        status.textContent = missing.length === 1
+          ? "Add your " + label(missing[0]) + " — then send."
+          : "Add your name, email and message — then send.";
+        missing[0].focus();
+        return;
+      }
+    }
+
     var body = message + "\n\n— " + name + (email ? " (" + email + ")" : "");
 
     window.location.href =
@@ -1432,5 +1458,12 @@
       "&body=" + encodeURIComponent(body);
 
     if (status) status.textContent = "Opening your mail app…";
+  });
+
+  // clear the invalid flag as soon as the field gets content
+  Array.prototype.forEach.call(form.querySelectorAll("[required]"), function (field) {
+    field.addEventListener("input", function () {
+      if (String(field.value || "").trim()) field.removeAttribute("aria-invalid");
+    });
   });
 })();

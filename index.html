@@ -7,10 +7,6 @@
 <meta name="description" content="Data Analyst and AI/ML enthusiast. B.Tech Computer Science student at IKGPTU building data-driven products end to end: analytics dashboards, machine learning models and Flask apps." />
 <meta name="theme-color" content="#f1ebe1" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231f1b16'/%3E%3Ctext x='32' y='41' font-family='Courier New, monospace' font-weight='700' font-size='24' fill='%23f1ebe1' text-anchor='middle'%3ETJ%3C/text%3E%3Crect x='18' y='47' width='28' height='4' fill='%23ffae21'/%3E%3C/svg%3E" />
-<link rel="preload" href="fonts/oswald-var.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="fonts/public-sans-var.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="fonts/courier-prime.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="fonts/courier-prime-bold.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="styles.css" />
 <meta property="og:title" content="Tanish Jaswal — AI/ML &amp; Computer Science Portfolio" />
 <meta property="og:description" content="Data Analyst and AI/ML enthusiast. B.Tech Computer Science student at IKGPTU building data-driven products end to end: analytics dashboards, machine learning models and Flask apps." />
@@ -87,7 +83,7 @@
 
     <div class="hero-lede enter" style="--i:2">
       <p>B.Tech Computer Science student at
-        <button class="badge" id="badge-ikgptu" type="button" aria-expanded="false" aria-controls="pop-ikgptu">IKGPTU<span class="sr-only"> — Bachelor of Technology in Computer Science and Engineering, Class of 2027</span>
+        <span class="badge-wrap"><button class="badge" id="badge-ikgptu" type="button" aria-expanded="false" aria-controls="pop-ikgptu">IKGPTU</button><span class="sr-only"> — Bachelor of Technology in Computer Science and Engineering, Class of 2027</span>
           <span class="pop" id="pop-ikgptu" aria-hidden="true">
             <span class="pop-head"><span class="pop-dot"></span>Education</span>
             <span class="pop-line">
@@ -96,10 +92,16 @@
             </span>
             <span class="pop-caret"></span>
           </span>
-        </button>
-        who builds data-driven products end to end: gather the data, analyze it, visualize it and deploy it. I&rsquo;ve built live analytics dashboards (movie ROI analysis, spending trends), a real-time journaling app with a PostgreSQL backend, and an AWS serverless air-quality alert system for schools. Completed an
-        <button class="badge" id="badge-netmax" type="button" aria-expanded="false" aria-controls="pop-netmax">AI/ML internship at Netmax<span class="sr-only"> — AI/ML Intern, June 2025, 6 weeks</span>
-          <span class="pop" id="pop-netmax" aria-hidden="true">
+        </span>
+        who builds data-driven products end to end — gather the data, analyze it, visualize it, deploy it.
+      </p>
+      <ul class="hero-proof" role="list">
+        <li>Live analytics dashboards — movie ROI, spending trends</li>
+        <li>Real-time journaling app on a PostgreSQL backend</li>
+        <li>Serverless AWS air-quality alerts for schools</li>
+      </ul>
+      <p>Completed a 6-week
+        <span class="badge-wrap"><button class="badge" id="badge-netmax" type="button" aria-expanded="false" aria-controls="pop-netmax">AI/ML internship at Netmax</button><span class="sr-only"> — AI/ML Intern, June 2025, structured track</span>          <span class="pop" id="pop-netmax" aria-hidden="true">
             <span class="pop-head"><span class="pop-dot"></span>Experience</span>
             <span class="pop-line">
               <span class="pop-role">AI/ML Intern</span>
@@ -107,9 +109,9 @@
             </span>
             <span class="pop-caret"></span>
           </span>
-        </button>.
+        </span> in June 2025.
       </p>
-      <p>Seeking a Data Analyst internship to turn raw data into decisions.</p>
+      <p class="hero-thesis">Seeking a Data Analyst internship to turn raw data into decisions.</p>
     </div>
 
     <div class="hero-actions enter" style="--i:3">
@@ -217,20 +219,20 @@
 <section class="stats" aria-label="Quick numbers">
   <div class="wrap stats-grid">
     <div class="stat" data-reveal>
-      <span class="stat-num"><span class="count" data-count="17">0</span></span>
-      <span class="stat-label">Skills mastered</span>
+      <span class="stat-num"><span class="count" data-count="15">0</span></span>
+      <span class="stat-label">Tools in the kit</span>
     </div>
     <div class="stat" data-reveal>
-      <span class="stat-num"><span class="count" data-count="6">0</span></span>
-      <span class="stat-label">Projects built</span>
+      <span class="stat-num"><span class="count" data-count="5">0</span></span>
+      <span class="stat-label">Projects hung</span>
     </div>
     <div class="stat" data-reveal>
       <span class="stat-num"><span class="count" data-count="6">0</span></span>
       <span class="stat-label">Internship weeks</span>
     </div>
     <div class="stat" data-reveal>
-      <span class="stat-num"><span class="count" data-count="309">0</span></span>
-      <span class="stat-label">Contributions</span>
+      <span class="stat-num">2027</span>
+      <span class="stat-label">Class of</span>
     </div>
   </div>
 </section>
@@ -272,8 +274,14 @@
         <p class="card-kicker">AI/ML Intern</p>
         <h3 class="card-title">Netmax</h3>
         <ul class="card-list" role="list">
-          <li>Completed a structured 6-week internship focused on practical AI/ML concepts and Python-based workflows.</li>
-          <li>Strengthened skills in data preparation, machine learning experimentation, model evaluation and technical documentation.</li>
+          <li>A structured six-week practical track — data preparation, model experimentation, evaluation and documentation.</li>
+        </ul>
+        <ul class="chips" role="list">
+          <li>Python</li>
+          <li>Data prep</li>
+          <li>ML experiments</li>
+          <li>Model evaluation</li>
+          <li>Docs</li>
         </ul>
       </article>
     </div>
@@ -285,7 +293,7 @@
   <div class="wrap">
     <header class="section-head" data-reveal>
       <p class="eyebrow eyebrow-paper">GitHub Activity</p>
-      <h2 id="activity-title"><span class="count" data-count="309">0</span> contributions in the last year</h2>
+      <h2 id="activity-title">The last year, in ink.</h2>
       <a class="btn btn-paper" href="https://github.com/WARRIORXR">Open GitHub <span aria-hidden="true">↗</span></a>
     </header>
 
@@ -333,60 +341,60 @@
     <header class="section-head" data-reveal>
       <p class="eyebrow"><span class="eyebrow-num">02</span>Capabilities</p>
       <h2 id="skills-title">Skills &amp; tools.</h2>
-      <p class="lede">Python-first stack with a focus on machine learning and data.</p>
+      <p class="lede">Python-first stack with a focus on machine learning and data — tagged by how often each tool is in my hands.</p>
     </header>
 
     <div class="skills-grid">
       <div class="skill-group" data-reveal>
         <h3 class="group-title">Python &amp; Backend</h3>
         <ul class="skill-list" role="list">
-          <li class="skill-row" data-reveal style="--pct:95">
-            <div class="skill-meta">
+          <li class="skill-row" data-reveal>
+            <div class="skill-line">
               <span class="skill-name">Python</span>
-              <span class="skill-note">Primary language — data science, ML, scripting, automation</span>
+              <span class="skill-lead" aria-hidden="true"></span>
+              <span class="skill-tag">daily</span>
             </div>
-            <span class="skill-pct">95%</span>
-            <span class="skill-bar" aria-hidden="true"></span>
+            <p class="skill-note">Scraping, analysis, ML and the servers behind it.</p>
           </li>
-          <li class="skill-row" data-reveal style="--pct:80">
-            <div class="skill-meta">
+          <li class="skill-row" data-reveal>
+            <div class="skill-line">
               <span class="skill-name">Flask</span>
-              <span class="skill-note">REST APIs, web apps, database integration</span>
+              <span class="skill-lead" aria-hidden="true"></span>
+              <span class="skill-tag">weekly</span>
             </div>
-            <span class="skill-pct">80%</span>
-            <span class="skill-bar" aria-hidden="true"></span>
+            <p class="skill-note">Serves the recommender and the journaling app.</p>
           </li>
-          <li class="skill-row" data-reveal style="--pct:78">
-            <div class="skill-meta">
+          <li class="skill-row" data-reveal>
+            <div class="skill-line">
               <span class="skill-name">REST APIs</span>
-              <span class="skill-note">Building and consuming RESTful services</span>
+              <span class="skill-lead" aria-hidden="true"></span>
+              <span class="skill-tag">weekly</span>
             </div>
-            <span class="skill-pct">78%</span>
-            <span class="skill-bar" aria-hidden="true"></span>
+            <p class="skill-note">Most projects here expose or consume one.</p>
           </li>
-          <li class="skill-row" data-reveal style="--pct:72">
-            <div class="skill-meta">
+          <li class="skill-row" data-reveal>
+            <div class="skill-line">
               <span class="skill-name">SQL &amp; Databases</span>
-              <span class="skill-note">Relational databases, queries, data management</span>
+              <span class="skill-lead" aria-hidden="true"></span>
+              <span class="skill-tag">weekly</span>
             </div>
-            <span class="skill-pct">72%</span>
-            <span class="skill-bar" aria-hidden="true"></span>
+            <p class="skill-note">PostgreSQL behind the journaling app.</p>
           </li>
-          <li class="skill-row" data-reveal style="--pct:75">
-            <div class="skill-meta">
+          <li class="skill-row" data-reveal>
+            <div class="skill-line">
               <span class="skill-name">HTML &amp; CSS</span>
-              <span class="skill-note">Frontend markup and styling</span>
+              <span class="skill-lead" aria-hidden="true"></span>
+              <span class="skill-tag">weekly</span>
             </div>
-            <span class="skill-pct">75%</span>
-            <span class="skill-bar" aria-hidden="true"></span>
+            <p class="skill-note">This page, hand-rolled — no frameworks.</p>
           </li>
-          <li class="skill-row" data-reveal style="--pct:70">
-            <div class="skill-meta">
+          <li class="skill-row" data-reveal>
+            <div class="skill-line">
               <span class="skill-name">C / C++</span>
-              <span class="skill-note">Systems programming, data structures, OOP</span>
+              <span class="skill-lead" aria-hidden="true"></span>
+              <span class="skill-tag">coursework</span>
             </div>
-            <span class="skill-pct">70%</span>
-            <span class="skill-bar" aria-hidden="true"></span>
+            <p class="skill-note">Data structures, OOP, the systems view.</p>
           </li>
         </ul>
       </div>
@@ -394,45 +402,45 @@
       <div class="skill-group" data-reveal>
         <h3 class="group-title">AI &amp; Machine Learning</h3>
         <ul class="skill-list" role="list">
-          <li class="skill-row" data-reveal style="--pct:85">
-            <div class="skill-meta">
+          <li class="skill-row" data-reveal>
+            <div class="skill-line">
               <span class="skill-name">Machine Learning</span>
-              <span class="skill-note">Classification, regression, clustering, recommenders</span>
+              <span class="skill-lead" aria-hidden="true"></span>
+              <span class="skill-tag">weekly</span>
             </div>
-            <span class="skill-pct">85%</span>
-            <span class="skill-bar" aria-hidden="true"></span>
+            <p class="skill-note">Classification, regression, clustering, recommenders.</p>
           </li>
-          <li class="skill-row" data-reveal style="--pct:88">
-            <div class="skill-meta">
+          <li class="skill-row" data-reveal>
+            <div class="skill-line">
               <span class="skill-name">NumPy &amp; Pandas</span>
-              <span class="skill-note">Data manipulation, numerical computing</span>
+              <span class="skill-lead" aria-hidden="true"></span>
+              <span class="skill-tag">daily</span>
             </div>
-            <span class="skill-pct">88%</span>
-            <span class="skill-bar" aria-hidden="true"></span>
+            <p class="skill-note">Every notebook starts here.</p>
           </li>
-          <li class="skill-row" data-reveal style="--pct:85">
-            <div class="skill-meta">
+          <li class="skill-row" data-reveal>
+            <div class="skill-line">
               <span class="skill-name">Scikit-learn</span>
-              <span class="skill-note">ML pipelines, model training, evaluation</span>
+              <span class="skill-lead" aria-hidden="true"></span>
+              <span class="skill-tag">weekly</span>
             </div>
-            <span class="skill-pct">85%</span>
-            <span class="skill-bar" aria-hidden="true"></span>
+            <p class="skill-note">KNN to random forests, trained and compared.</p>
           </li>
-          <li class="skill-row" data-reveal style="--pct:75">
-            <div class="skill-meta">
+          <li class="skill-row" data-reveal>
+            <div class="skill-line">
               <span class="skill-name">Deep Learning</span>
-              <span class="skill-note">Neural networks, DL fundamentals</span>
+              <span class="skill-lead" aria-hidden="true"></span>
+              <span class="skill-tag">coursework</span>
             </div>
-            <span class="skill-pct">75%</span>
-            <span class="skill-bar" aria-hidden="true"></span>
+            <p class="skill-note">Fundamentals — the next deep dive.</p>
           </li>
-          <li class="skill-row" data-reveal style="--pct:72">
-            <div class="skill-meta">
+          <li class="skill-row" data-reveal>
+            <div class="skill-line">
               <span class="skill-name">Generative AI</span>
-              <span class="skill-note">Generative models, prompt engineering concepts</span>
+              <span class="skill-lead" aria-hidden="true"></span>
+              <span class="skill-tag">coursework</span>
             </div>
-            <span class="skill-pct">72%</span>
-            <span class="skill-bar" aria-hidden="true"></span>
+            <p class="skill-note">Concepts and prompt patterns, still forming.</p>
           </li>
         </ul>
       </div>
@@ -440,37 +448,37 @@
       <div class="skill-group" data-reveal>
         <h3 class="group-title">Cloud &amp; Tools</h3>
         <ul class="skill-list" role="list">
-          <li class="skill-row" data-reveal style="--pct:75">
-            <div class="skill-meta">
+          <li class="skill-row" data-reveal>
+            <div class="skill-line">
               <span class="skill-name">AWS</span>
-              <span class="skill-note">Serverless functions, alerts, deployments</span>
+              <span class="skill-lead" aria-hidden="true"></span>
+              <span class="skill-tag">shipped</span>
             </div>
-            <span class="skill-pct">75%</span>
-            <span class="skill-bar" aria-hidden="true"></span>
+            <p class="skill-note">The school air-quality alert pipeline runs on it.</p>
           </li>
-          <li class="skill-row" data-reveal style="--pct:85">
-            <div class="skill-meta">
+          <li class="skill-row" data-reveal>
+            <div class="skill-line">
               <span class="skill-name">Git &amp; GitHub</span>
-              <span class="skill-note">Version control, collaboration, open source</span>
+              <span class="skill-lead" aria-hidden="true"></span>
+              <span class="skill-tag">daily</span>
             </div>
-            <span class="skill-pct">85%</span>
-            <span class="skill-bar" aria-hidden="true"></span>
+            <p class="skill-note">Version control, issues, the occasional README.</p>
           </li>
-          <li class="skill-row" data-reveal style="--pct:90">
-            <div class="skill-meta">
+          <li class="skill-row" data-reveal>
+            <div class="skill-line">
               <span class="skill-name">Jupyter Notebook</span>
-              <span class="skill-note">Data exploration, ML experiments, documentation</span>
+              <span class="skill-lead" aria-hidden="true"></span>
+              <span class="skill-tag">daily</span>
             </div>
-            <span class="skill-pct">90%</span>
-            <span class="skill-bar" aria-hidden="true"></span>
+            <p class="skill-note">Where the ML practice portfolio lives.</p>
           </li>
-          <li class="skill-row" data-reveal style="--pct:90">
-            <div class="skill-meta">
+          <li class="skill-row" data-reveal>
+            <div class="skill-line">
               <span class="skill-name">VS Code</span>
-              <span class="skill-note">Primary IDE with Python/ML extensions</span>
+              <span class="skill-lead" aria-hidden="true"></span>
+              <span class="skill-tag">daily</span>
             </div>
-            <span class="skill-pct">90%</span>
-            <span class="skill-bar" aria-hidden="true"></span>
+            <p class="skill-note">Home base, with the Python extensions.</p>
           </li>
         </ul>
       </div>
@@ -494,7 +502,7 @@
       </div>
       <div class="rail-dots" role="group" aria-label="Projects" hidden></div>
       <div class="rail-caption" aria-live="polite">
-        <p class="rail-caption-title" data-caption-title>Brush along the rail to light a project, drag a frame aside, click to lift it off the wall.</p>
+        <p class="rail-caption-title" data-caption-title>Five builds, 2025 → 2026.</p>
         <p class="rail-caption-sub" data-caption-sub></p>
       </div>
     </div>

@@ -280,7 +280,7 @@ html.px-on .px-cursor .px-art[data-active] { display: block; }
 .nav-links kbd {
   margin-left: 0.4em;
   font-family: inherit;
-  font-size: 0.78em;
+  font-size: 0.85em;
   color: var(--label);
 }
 
@@ -367,6 +367,7 @@ html:not(.js) .greeting { display: none; }
   min-height: 100dvh;
   display: flex;
   align-items: stretch;
+  overflow-x: clip;
 }
 
 /* notebook margin rule */
@@ -454,14 +455,42 @@ html.js[data-docked] .marker {
   margin-top: clamp(18px, 4dvh, 26px);
   max-width: 46rem;
   font-size: clamp(0.94rem, 0.85rem + 0.3vw, 1.05rem);
-  line-height: 2.05;
+  line-height: 1.8;
   color: var(--muted);
 }
 
-.hero-lede p + p { margin-top: 0.6em; }
+.hero-lede p + p { margin-top: 0.9em; }
 
 .hero-lede .badge {
   color: var(--ink);
+}
+
+.hero-proof {
+  display: grid;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.hero-proof li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.hero-proof li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.68em;
+  width: 10px;
+  height: 2px;
+  background: var(--dot-terra);
+}
+
+.hero-thesis {
+  color: var(--ink);
+  font-weight: 600;
 }
 
 .hero-actions {
@@ -669,6 +698,7 @@ html.js .nav-rule {
   font-weight: 700;
   font-size: 0.86em;
   line-height: 1.9;
+  white-space: nowrap;
   cursor: pointer;
   transition: translate 200ms ease-out, box-shadow 200ms ease-out;
 }
@@ -693,6 +723,12 @@ html.js .nav-rule {
   box-shadow: 0 2px 0 rgba(31, 27, 22, 0.14);
 }
 
+/* badge + popover pair (popover is a sibling of the button) */
+.badge-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
 .pop {
   position: absolute;
   z-index: 60;
@@ -715,11 +751,16 @@ html.js .nav-rule {
   color: var(--ink);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 250ms var(--nb-ease), translate 250ms var(--nb-ease);
+  visibility: hidden;
+  transition: opacity 250ms var(--nb-ease), translate 250ms var(--nb-ease),
+    visibility 0s linear 250ms;
 }
 
-.badge[aria-expanded="true"] .pop {
+.badge[aria-expanded="true"] ~ .pop {
   opacity: 1;
+  visibility: visible;
+  transition: opacity 250ms var(--nb-ease), translate 250ms var(--nb-ease),
+    visibility 0s;
   translate: calc(-50% + var(--pop-shift, 0px)) 0;
 }
 
@@ -741,7 +782,7 @@ html.js .nav-rule {
   background: var(--dot-sand);
 }
 
-#badge-netmax .pop-dot { background: var(--dot-terra); }
+#badge-netmax ~ .pop .pop-dot { background: var(--dot-terra); }
 
 .pop-line {
   position: relative;
@@ -971,7 +1012,7 @@ html.js [data-reveal].in {
   display: block;
   margin-top: 10px;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--label);
@@ -1187,7 +1228,7 @@ html.js [data-reveal].in {
   gap: 5px;
   margin-top: 12px;
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   color: var(--muted-on-dark);
 }
 
@@ -1220,7 +1261,7 @@ html.js [data-reveal].in {
   display: block;
   margin-top: 8px;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--muted-on-dark);
@@ -1230,7 +1271,7 @@ html.js [data-reveal].in {
   display: block;
   margin-top: 3px;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--muted-on-dark);
 }
 
@@ -1252,14 +1293,15 @@ html.js [data-reveal].in {
 }
 
 .skill-row {
-  padding-block: 16px;
+  padding-block: 13px;
   border-bottom: 1px solid var(--rule);
 }
 
-.skill-meta {
+/* ledger line: name …… frequency tag */
+.skill-line {
   display: flex;
-  flex-direction: column;
-  gap: 3px;
+  align-items: baseline;
+  gap: 0.7em;
 }
 
 .skill-name {
@@ -1267,45 +1309,27 @@ html.js [data-reveal].in {
   font-size: 0.98rem;
 }
 
+.skill-lead {
+  flex: 1;
+  min-width: 1.6em;
+  border-bottom: 2px dotted var(--rule);
+}
+
+.skill-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--label);
+  white-space: nowrap;
+}
+
 .skill-note {
+  margin-top: 5px;
   font-size: 0.8rem;
   line-height: 1.5;
   color: var(--muted);
+  max-width: 44ch;
 }
-
-.skill-pct {
-  display: block;
-  margin-top: 10px;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--label);
-}
-
-.skill-bar {
-  display: block;
-  margin-top: 7px;
-  height: 3px;
-  background: rgba(203, 193, 178, 0.45);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.skill-bar::after {
-  content: "";
-  display: block;
-  width: var(--pct, 0%);
-  height: 100%;
-  background: var(--ink);
-  border-radius: inherit;
-}
-
-html.js .skill-bar::after {
-  width: 0;
-  transition: width 0.9s var(--nb-ease);
-  transition-delay: calc(var(--i, 0) * 60ms);
-}
-
-html.js .skill-row.in .skill-bar::after { width: var(--pct, 0%); }
 
 /* -------------------------------------------------------------Work */
 .section-work {
@@ -1388,7 +1412,7 @@ html.js .skill-row.in .skill-bar::after { width: var(--pct, 0%); }
 
 .repo-chips span {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   padding: 0.3em 0.7em;
   border: 1px solid var(--rule);
   border-radius: 2px;
@@ -1479,7 +1503,7 @@ html.js .skill-row.in .skill-bar::after { width: var(--pct, 0%); }
 
 .subject-chips button {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   padding: 0.35em 0.8em;
   border: 1px solid var(--rule);
   border-radius: 2px;
@@ -1512,7 +1536,7 @@ html.js .skill-row.in .skill-bar::after { width: var(--pct, 0%); }
   justify-content: space-between;
   gap: 12px;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--label);
@@ -1527,7 +1551,7 @@ html.js .skill-row.in .skill-bar::after { width: var(--pct, 0%); }
 .field label {
   display: block;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--label);
@@ -1547,13 +1571,16 @@ html.js .skill-row.in .skill-bar::after { width: var(--pct, 0%); }
 }
 
 .field input::placeholder,
-.field textarea::placeholder { color: rgba(75, 67, 58, 0.45); }
+.field textarea::placeholder { color: #6e6355; }
 
 .field input:focus,
 .field textarea:focus {
   outline: none;
   border-bottom-color: var(--ink);
 }
+
+.field input[aria-invalid="true"],
+.field textarea[aria-invalid="true"] { border-bottom-color: var(--dot-terra); }
 
 .field textarea {
   resize: vertical;
@@ -2369,7 +2396,7 @@ html.js .skill-row.in .skill-bar::after { width: var(--pct, 0%); }
 
 .dialog-index {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   letter-spacing: 0.2em;
   color: var(--muted);
 }
